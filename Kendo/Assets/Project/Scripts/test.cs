@@ -3,10 +3,11 @@ using UnityEngine;
 public class test : MonoBehaviour
 {
     public GameObject p;
+    float time;
 
     void Start()
     {
-        
+        time = 0f;
     }
 
     void Update()
@@ -45,5 +46,14 @@ public class test : MonoBehaviour
                 BulletPatterns.ShootSide(new Vector3(-29f, 0f, i), 3f, false, BulletManager.Instance.SpawnBullet);
             }
         }
+
+        time += Time.deltaTime;
+        if (time > 7f)
+        {
+            BulletPatterns.ShootSpiral(transform.position, 0f, 30f, 24, 3f, (pos, vel, spin) => BulletManager.Instance.SpawnBullet(pos, vel));
+            time = 0f;
+        }
+
+
     }
 }
