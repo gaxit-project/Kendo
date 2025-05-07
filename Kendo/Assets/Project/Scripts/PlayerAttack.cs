@@ -5,12 +5,11 @@ public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private InputActionReference _attackAction;
     [SerializeField] private GameObject _target;
-    private RectTransform _rectTransform;
+    [SerializeField] private float knockbackDistance = 10f;
 
     private void Awake()
     {
         _attackAction.action.performed += OnAttack;
-        _rectTransform = _target.GetComponent<RectTransform>();
     }
 
     private void OnDestroy()
@@ -23,22 +22,27 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        // ボタンが押されたときだけ呼ばれる
         Debug.Log("Attack pressed!");
 
-        // 射出するスタート地点
-        Vector3 startPosition = new Vector3(_rectTransform.anchoredPosition.x,25f,_rectTransform.anchoredPosition.y);
+        Vector3 startPosition = transform.position + Vector3.up * 1f;
+        Vector3 direction = transform.forward;
 
-        // 下向きに30fのRayを撃つ
-        Ray ray = new Ray(startPosition, Vector3.down);
+        Ray ray = new Ray(startPosition, direction);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 30f))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 3f))
         {
             if (hitInfo.collider.CompareTag("Mob"))
             {
                 Debug.Log("Mob hit!");
-                hitInfo.collider.gameObject.SetActive(false);
+
+                test mobScript = hitInfo.collider.GetComponent<test>();
+                if (mobScript != null)
+                {
+                    mobScript.Knockback(transform.forward); // プレイヤーの前方向を渡す
+                }
             }
         }
     }
+
+
 }

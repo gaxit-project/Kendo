@@ -27,12 +27,24 @@ public class player : MonoBehaviour
     private void Update()
     {
         // x-z•½–Ê‚ÅˆÚ“®‚·‚é
-        Vector3 move = new Vector3(_moveInput.x, 0f, _moveInput.y) * _moveSpeed * Time.deltaTime;
-        transform.position += move;
+        Vector3 move = new Vector3(_moveInput.x, 0f, _moveInput.y);
+
+        // ˆÚ“®‚µ‚Ä‚¢‚é‚Æ‚«‚¾‚¯Œü‚«‚ğ•Ï‚¦‚é
+        if (move.sqrMagnitude > 0.01f)
+        {
+            // ƒLƒƒƒ‰‚ÌŒü‚«‚ğˆÚ“®•ûŒü‚É•ÏX
+            transform.forward = move.normalized;
+        }
+
+        // ÀÛ‚ÌˆÚ“®ˆ—
+        transform.position += move * _moveSpeed * Time.deltaTime;
     }
+
 
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
     }
+
+
 }

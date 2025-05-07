@@ -74,6 +74,17 @@ public class BulletManager : MonoBehaviour
         return pos.x > -30f && pos.x < 30f && pos.z > -30f && pos.z < 30f; // “K‹X’²®
     }
 
+    public void ClearAllBullets()
+    {
+        foreach (var bullet in activeBullets)
+        {
+            bullet.GameObject.SetActive(false);
+            bulletPool.Enqueue(bullet);
+        }
+        activeBullets.Clear();
+    }
+
+
     private class Bullet
     {
         public GameObject GameObject { get; private set; }
