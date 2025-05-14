@@ -428,6 +428,8 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194230}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -509,6 +511,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bdebfb004a79694aa989396644cecd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 30, z: 0}
+  view: {fileID: 963194230}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9318c4f1beda34792818ed3f65dcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1146616959
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,8 +552,8 @@ GameObject:
   - component: {fileID: 1146616964}
   - component: {fileID: 1146616965}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: Roulette
+  m_TagString: Roulette
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -918,8 +946,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackAction: {fileID: 1120369429361536294, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  _target: {fileID: 254493397}
-  knockbackDistance: 10
+  projectilePrefab: {fileID: 5371795644545483581, guid: ffc8e5e2316345a478e889f104537556, type: 3}
+  firePoint: {fileID: 487327927}
 --- !u!114 &2061841336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +986,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 36
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!1 &2128755074
 GameObject:
@@ -1121,6 +1149,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 980014923525162225, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+      propertyPath: lineWidth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4216711999463692955, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -15,6 +15,8 @@ public class MobManager : MonoBehaviour
     private Queue<GameObject> mobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
 
+    private float minX, maxX, minZ, maxZ;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -34,6 +36,25 @@ public class MobManager : MonoBehaviour
 
     private void Start()
     {
+        // MapOutLineから座標範囲を取得
+        MapOutLine outline = FindObjectOfType<MapOutLine>();
+        if (outline != null)
+        {
+            Vector3 up = outline.MapUp.transform.position;
+            Vector3 down = outline.MapDown.transform.position;
+            Vector3 left = outline.MapLeft.transform.position;
+            Vector3 right = outline.MapRight.transform.position;
+
+            minX = left.x;
+            maxX = right.x;
+            minZ = down.z;
+            maxZ = up.z;
+        }
+        else
+        {
+            Debug.LogError("MapOutLine がシーンに存在しません。");
+        }
+
         StartCoroutine(SpawnMobsRoutine());
     }
 
@@ -51,6 +72,16 @@ public class MobManager : MonoBehaviour
         if (mobPool.Count > 0)
         {
             Vector3 spawnPos = GetRandomSpawnPosition(playerTransform.position, spawnRadius);
+
+            // 範囲外ならリトライ（最大10回）
+            for (int i = 0; i < 10 && !IsInsideBounds(spawnPos); i++)
+            {
+                spawnPos = GetRandomSpawnPosition(playerTransform.position, spawnRadius);
+            }
+
+            if (!IsInsideBounds(spawnPos))
+                return; // 範囲内に収まらなければ生成しない
+
             GameObject mob = mobPool.Dequeue();
             mob.transform.position = spawnPos;
             mob.SetActive(true);
@@ -58,16 +89,22 @@ public class MobManager : MonoBehaviour
         }
     }
 
+    private Vector3 GetRandomSpawnPosition(Vector3 center, float radius)
+    {
+        Vector2 randomCircle = Random.insideUnitCircle * radius;
+        return new Vector3(center.x + randomCircle.x, center.y, center.z + randomCircle.y);
+    }
+
+    private bool IsInsideBounds(Vector3 position)
+    {
+        return position.x >= minX && position.x <= maxX &&
+               position.z >= minZ && position.z <= maxZ;
+    }
+
     public void ReleaseMob(GameObject mob)
     {
         mob.SetActive(false);
         activeMobs.Remove(mob);
         mobPool.Enqueue(mob);
-    }
-
-    private Vector3 GetRandomSpawnPosition(Vector3 center, float radius)
-    {
-        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * radius;
-        return new Vector3(center.x + randomCircle.x, center.y, center.z + randomCircle.y);
     }
 }

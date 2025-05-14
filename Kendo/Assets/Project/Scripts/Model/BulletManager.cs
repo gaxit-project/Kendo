@@ -71,7 +71,7 @@ public class BulletManager : MonoBehaviour
 
     private bool IsInScreen(Vector3 pos)
     {
-        return pos.x > -30f && pos.x < 30f && pos.z > -30f && pos.z < 30f; // “K‹X’²®
+        return pos.x > -60f && pos.x < 60f && pos.z > -30f && pos.z < 30f; // “K‹X’²®
     }
 
     public void ClearAllBullets()

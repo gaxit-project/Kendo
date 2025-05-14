@@ -40,8 +40,8 @@ public class ruretto : MonoBehaviour
     {
         if (other.CompareTag("Mob"))
         {
-            var mob = other.GetComponent<test>();
-            if (mob != null && mob.hit)
+            var mob = other.GetComponent<MobController>();
+            if (mob != null /*&& mob.hit*/)
             {
                 isRotating = false;
                 Debug.Log("Mob‚Ìhit‚Åƒ‹[ƒŒƒbƒg’â~");
