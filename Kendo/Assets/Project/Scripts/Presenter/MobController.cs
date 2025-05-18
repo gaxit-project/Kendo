@@ -2,70 +2,141 @@
 
 public class MobController : MonoBehaviour
 {
-    private Vector3 velocity;
-    private bool isKnockbacked = false;
-    private int wallHitCount = 0;
-    private const float moveSpeed = 10f;
+    // ノックバック終了とみなす速度の下限
+    private const float KnockbackThreshold = 0.5f;
 
-    private KnockbackMob knockbackMob;
+    // 壁反射の上限回数
+    private const int MaxBounceCount = 2;
 
-    void Awake()
+    // 壁との当たり判定に使うSphereCastの半径
+    private const float WallCheckRadius = 1f;
+
+    // 壁との当たり判定の距離
+    private const float WallCheckDistance = 1f;
+
+    private bool isKnockback = false;
+    private Vector3 knockbackVelocity;
+    private int bounceCount = 0;
+
+    float time;
+
+
+    private void Awake()
     {
-        knockbackMob = GetComponent<KnockbackMob>();
+        time = 0f;
     }
 
-    public void Knockback(Vector3 hitDirection)
+    private void Update()
     {
-        if (knockbackMob != null)
+
+        time += Time.deltaTime;
+        if(time >= 3f)
         {
-            knockbackMob.Initialize(hitDirection.normalized * 10f);
+
+            BulletPatterns.ShootRandomSpread(transform.position, 15f, 10);
+
+            time = 0f;
+        }
+
+
+
+        if (isKnockback)
+        {
+            // 移動
+            transform.position += knockbackVelocity * Time.deltaTime;
+
+            // 壁に当たったら反射
+            if (IsHitWall(out Vector3 wallNormal))
+            {
+                knockbackVelocity = Vector3.Reflect(knockbackVelocity, wallNormal);
+                bounceCount++;
+
+                if (bounceCount >= MaxBounceCount)
+                {
+                    MobManager.Instance.ReleaseMob(gameObject);
+                    return;
+                }
+            }
+            else
+            {
+                // 減速処理（使用しない）: knockbackVelocity *= 0.95f;
+            }
+
+            // 一定以下の速度で停止
+            if (knockbackVelocity.magnitude < KnockbackThreshold)
+            {
+                StopKnockback();
+            }
         }
     }
 
-    void Update()
+    /// <summary>
+    /// ノックバックを指定の速度で開始
+    /// </summary>
+    public void ApplyKnockback(Vector3 velocity)
     {
-        if (!isKnockbacked) return;
-
-        transform.position += velocity * Time.deltaTime;
-
-        CheckCollision();
+        isKnockback = true;
+        knockbackVelocity = velocity;
+        bounceCount = 0;
     }
 
-    private void CheckCollision()
+    public bool GetIsKnockback() => isKnockback;
+    public Vector3 GetKnockbackVelocity() => knockbackVelocity;
+    public int GetBounceCount() => bounceCount;
+
+    private void StopKnockback()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, 0.3f);
+        isKnockback = false;
+        knockbackVelocity = Vector3.zero;
+        bounceCount = 0;
+    }
 
-        foreach (var hit in hits)
+    /// <summary>
+    /// 壁との接触判定（SphereCast）
+    /// </summary>
+    private bool IsHitWall(out Vector3 wallNormal)
+    {
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position, WallCheckRadius, knockbackVelocity.normalized, out hit, WallCheckDistance))
         {
-            if (hit.gameObject == this.gameObject) continue;
+            if (hit.collider.CompareTag("Wall"))
+            {
+                wallNormal = hit.normal;
+                return true;
+            }
+        }
 
-            if (hit.CompareTag("Wall"))
+        wallNormal = Vector3.zero;
+        return false;
+    }
+
+    /// <summary>
+    /// 他のMobまたはPlayerに当たったときの処理
+    /// </summary>
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isKnockback) return;
+
+        if (other.CompareTag("Mob"))
+        {
+            if (InGameManager.Instance.GetKnockbackOnMobHit())
             {
-                wallHitCount++;
-                if (wallHitCount >= 2)
+                var otherMob = other.GetComponent<MobController>();
+                if (otherMob != null && !otherMob.GetIsKnockback())
                 {
-                    isKnockbacked = false;
-                    MobManager.Instance.ReleaseMob(gameObject);
-                }
-                else
-                {
-                    Vector3 normal = (transform.position - hit.ClosestPoint(transform.position)).normalized;
-                    velocity = Vector3.Reflect(velocity, normal);
+                    Vector3 dir = (other.transform.position - transform.position).normalized;
+                    otherMob.ApplyKnockback(dir * knockbackVelocity.magnitude);
                 }
             }
-            else if (hit.CompareTag("Mob"))
+            else
             {
-                MobController other = hit.GetComponent<MobController>();
-                if (other != null && !other.isKnockbacked)
-                {
-                    MobManager.Instance.ReleaseMob(other.gameObject); // 当たった相手を倒す
-                }
+                MobManager.Instance.ReleaseMob(other.gameObject);
             }
-            else if (hit.CompareTag("Roulette"))
-            {
-                isKnockbacked = false;
-                MobManager.Instance.ReleaseMob(gameObject);
-            }
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            // プレイヤーにはノックバックしない
         }
     }
 }
