@@ -1,28 +1,25 @@
-using System;
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// å¼¾ã®ç”Ÿæˆãƒ»æ›´æ–°ãƒ»ç ´æ£„ãƒ»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ—ãƒ¼ãƒ«ç®¡ç†ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
+/// </summary>
 public class BulletManager : MonoBehaviour
 {
     public static BulletManager Instance { get; private set; }
 
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private int poolSize = 1000;
+    [SerializeField] private int initialPoolSize = 100;
 
-    private List<Bullet> activeBullets = new List<Bullet>();
-    private Queue<Bullet> bulletPool = new Queue<Bullet>();
+    private readonly Queue<Bullet> bulletPool = new Queue<Bullet>();
+    private readonly List<Bullet> activeBullets = new List<Bullet>();
 
-    void Awake()
+    private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject); // d•¡‚·‚éƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü
-            return;
-        }
         Instance = this;
 
-
-        for (int i = 0; i < poolSize; i++)
+        // ãƒ—ãƒ¼ãƒ«ã®åˆæœŸåŒ–
+        for (int i = 0; i < initialPoolSize; i++)
         {
             GameObject obj = Instantiate(bulletPrefab);
             obj.SetActive(false);
@@ -30,50 +27,85 @@ public class BulletManager : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        float dt = Time.deltaTime;
-
-        // ‘S’eˆ—
         for (int i = activeBullets.Count - 1; i >= 0; i--)
         {
             Bullet bullet = activeBullets[i];
-            bullet.Position += bullet.Velocity * dt;
+
+            if (bullet.IsTrueSpiral)
+            {
+                // çœŸã®ã‚¹ãƒ‘ã‚¤ãƒ©ãƒ«è»Œé“ï¼šè§’åº¦å›è»¢ã¨åŠå¾„å¢—åŠ 
+                bullet.AngleDeg += bullet.AngularSpeedDeg * Time.deltaTime;
+                bullet.Radius += bullet.RadiusGrowthPerSec * Time.deltaTime;
+
+                float rad = bullet.AngleDeg * Mathf.Deg2Rad;
+                bullet.Position = bullet.Center + new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * bullet.Radius;
+            }
+            else if (bullet.IsCircular)
+            {
+                // å††é‹å‹•ï¼šè§’åº¦ã«åŸºã¥ãå††å‘¨ä¸Šã‚’ç§»å‹•
+                bullet.AngleDeg += bullet.AngularSpeedDeg * Time.deltaTime;
+                float rad = bullet.AngleDeg * Mathf.Deg2Rad;
+                bullet.Position = bullet.Center + new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * bullet.Radius;
+            }
+            else
+            {
+                // é€šå¸¸ã®ç›´é€²å¼¾
+                bullet.Position += bullet.Velocity * Time.deltaTime;
+            }
+
             bullet.GameObject.transform.position = bullet.Position;
 
-            // ‰æ–ÊŠO‚È‚Ç‚ÅÁ‚·ğŒ
-            if (!IsInScreen(bullet.Position))
+            // ä¸€å®šè·é›¢ä»¥ä¸Šé›¢ã‚ŒãŸã‚‰ç ´æ£„ï¼ˆä»®ï¼‰
+            if (bullet.Position.magnitude > 100f)
             {
-                ReleaseBullet(bullet);
+                bullet.GameObject.SetActive(false);
+                bulletPool.Enqueue(bullet);
                 activeBullets.RemoveAt(i);
             }
         }
+
     }
 
-    public void SpawnBullet(Vector3 position, Vector3 velocity)
+    /// <summary>
+    /// å¼¾ã‚’ç”Ÿæˆã—ã¦æœ‰åŠ¹åŒ–ã™ã‚‹ï¼ˆå††é‹å‹•ã€çœŸã®ã‚¹ãƒ‘ã‚¤ãƒ©ãƒ«ã«ã‚‚å¯¾å¿œï¼‰
+    /// </summary>
+    public void SpawnBullet(
+        Vector3 position,
+        Vector3 velocity,
+        bool isCircular = false,
+        Vector3 center = default,
+        float radius = 0f,
+        float startAngleDeg = 0f,
+        float angularSpeedDeg = 0f,
+        float radiusGrowthPerSec = 0f,
+        bool isTrueSpiral = false)
     {
         if (bulletPool.Count > 0)
         {
             Bullet bullet = bulletPool.Dequeue();
             bullet.Position = position;
             bullet.Velocity = velocity;
+
+            bullet.IsCircular = isCircular;
+            bullet.Center = center;
+            bullet.Radius = radius;
+            bullet.AngleDeg = startAngleDeg;
+            bullet.AngularSpeedDeg = angularSpeedDeg;
+
+            bullet.RadiusGrowthPerSec = radiusGrowthPerSec;
+            bullet.IsTrueSpiral = isTrueSpiral;
+
             bullet.GameObject.transform.position = position;
             bullet.GameObject.SetActive(true);
             activeBullets.Add(bullet);
         }
     }
 
-    private void ReleaseBullet(Bullet bullet)
-    {
-        bullet.GameObject.SetActive(false);
-        bulletPool.Enqueue(bullet);
-    }
-
-    private bool IsInScreen(Vector3 pos)
-    {
-        return pos.x > -60f && pos.x < 60f && pos.z > -30f && pos.z < 30f; // “K‹X’²®
-    }
-
+    /// <summary>
+    /// ç”»é¢ä¸Šã®ã™ã¹ã¦ã®å¼¾ã‚’å‰Šé™¤ï¼ˆéã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ï¼‰ã—ã¦ãƒ—ãƒ¼ãƒ«ã«æˆ»ã™
+    /// </summary>
     public void ClearAllBullets()
     {
         foreach (var bullet in activeBullets)
@@ -83,99 +115,29 @@ public class BulletManager : MonoBehaviour
         }
         activeBullets.Clear();
     }
-
-
-    private class Bullet
-    {
-        public GameObject GameObject { get; private set; }
-        public Vector3 Position;
-        public Vector3 Velocity;
-
-        // ‰Ô•Ù’e—p
-        public float AngularVelocityDeg; // ‰ñ“]’eŠp‘¬“xi–ˆ•b“xj
-
-        // ‰~‰^“®’e—p
-        public bool IsCircular;
-        public Vector3 Center;
-        public float Radius;
-        public float AngleDeg;
-        public float AngularSpeedDeg;
-
-        public Bullet(GameObject obj)
-        {
-            GameObject = obj;
-        }
-    }
 }
 
-
-
-    // ’e‚Ìƒpƒ^[ƒ“”­Ëƒ‰ƒCƒuƒ‰ƒŠ
-
-public static class BulletPatterns
+/// <summary>
+/// å¼¾1ç™ºåˆ†ã®æƒ…å ±ï¼ˆæŒ™å‹•ãƒ»åº§æ¨™ãªã©ï¼‰
+/// </summary>
+public class Bullet
 {
-    // ’P”­FƒvƒŒƒCƒ„[‚ÉŒü‚©‚Á‚Ä”­Ë
-    public static void ShootAt(Vector3 spawnPos, Vector3 targetPos, float speed, Action<Vector3, Vector3> fire)
-    {
-        Vector3 dir = (targetPos - spawnPos).normalized;
-        fire(spawnPos, dir * speed);
-    }
+    public GameObject GameObject;
 
-    // 3Way’eFƒvƒŒƒCƒ„[’†SA}angle‚Åîó‚É”­Ë
-    public static void Shoot3Way(Vector3 spawnPos, Vector3 targetPos, float speed, float angle, Action<Vector3, Vector3> fire)
-    {
-        Vector3 baseDir = (targetPos - spawnPos).normalized;
-        for (int i = -1; i <= 1; i++)
-        {
-            Vector3 rotatedDir = Quaternion.Euler(0, angle * i, 0) * baseDir;
-            fire(spawnPos, rotatedDir * speed);
-        }
-    }
+    public Vector3 Position;
+    public Vector3 Velocity;
 
-    // îŒ^’ei”CˆÓ–{”j
-    public static void ShootFan(Vector3 spawnPos, float startAngle, float totalAngle, int count, float speed, Action<Vector3, Vector3> fire)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            float angle = startAngle + (totalAngle / (count - 1)) * i;
-            Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.right;
-            fire(spawnPos, dir.normalized * speed);
-        }
-    }
+    public bool IsCircular;
+    public Vector3 Center;
+    public float Radius;
+    public float AngleDeg;
+    public float AngularSpeedDeg;
 
-    // ’Ç”ö’eFVelocity‚ğ–ˆƒtƒŒ[ƒ€•â³‚·‚éi•Ê“r’Ç”öˆ—‚ª•K—vj
-    public static void ShootHoming(Vector3 spawnPos, float speed, Transform target, Action<Vector3, Vector3, Transform> fire)
-    {
-        Vector3 dir = (target.position - spawnPos).normalized;
-        fire(spawnPos, dir * speed, target);
-    }
+    public float RadiusGrowthPerSec; // çœŸã®ã‚¹ãƒ‘ã‚¤ãƒ©ãƒ«ç”¨ï¼šåŠå¾„ã®å¢—åŠ é€Ÿåº¦
+    public bool IsTrueSpiral; // çœŸã®ã‚¹ãƒ‘ã‚¤ãƒ©ãƒ«åˆ¤å®šãƒ•ãƒ©ã‚°
 
-    // ƒ‰ƒ“ƒ_ƒ€‚Î‚çT‚«’e
-    public static void ShootRandomSpread(Vector3 spawnPos, float speed, int count, Action<Vector3, Vector3> fire)
+    public Bullet(GameObject obj)
     {
-        for (int i = 0; i < count; i++)
-        {
-            Vector3 dir = UnityEngine.Random.insideUnitCircle.normalized;
-            fire(spawnPos, dir * speed);
-        }
+        GameObject = obj;
     }
-
-    // ‰Ô‚Ñ‚çƒXƒsƒ“’eiVelocity‚ğŠÔ‚Å‰ñ‚·j
-    public static void ShootSpiral(Vector3 spawnPos, float baseAngle, float spinOffset, int count, float speed, Action<Vector3, Vector3, float> fire)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            float angle = baseAngle + spinOffset * i;
-            Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.right;
-            fire(spawnPos, dir.normalized * speed, spinOffset);
-        }
-    }
-
-    // ‰¡‚©‚ç—ˆ‚é’e
-    public static void ShootSide(Vector3 spawnPos, float speed, bool fromRight, Action<Vector3, Vector3> fire)
-    {
-        Vector3 dir = fromRight ? Vector3.left : Vector3.right;
-        fire(spawnPos, dir * speed);
-    }
-
 }

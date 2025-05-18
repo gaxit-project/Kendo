@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3664501457621827110}
   - component: {fileID: 6008940259406224656}
   - component: {fileID: 138768045180058632}
-  - component: {fileID: 1224602060399367668}
   - component: {fileID: 5634002386812252488}
   m_Layer: 0
   m_Name: Mob
@@ -129,21 +128,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &1224602060399367668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682392547248133583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 541753ffb511b97409bb17f05377d3c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  friction: 1
-  minVelocity: 0.1
-  knockbackPower: 15
 --- !u!136 &5634002386812252488
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -159,7 +143,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

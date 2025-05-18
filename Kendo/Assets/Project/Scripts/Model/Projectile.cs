@@ -1,9 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
     [SerializeField] private float lifeTime = 3f;
+    [SerializeField] private float power = 15f;
     private Vector3 moveDirection;
 
     public void Initialize(Vector3 direction)
@@ -22,7 +24,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Mob"))
         {
-            KnockbackMob mob = other.GetComponent<KnockbackMob>();
+            MobController mob = other.GetComponent<MobController>();
             if (mob != null)
             {
                 /*
@@ -32,7 +34,7 @@ public class Projectile : MonoBehaviour
                 */
 
                 Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
-                mob.Initialize(knockbackDirection);
+                mob.ApplyKnockback(knockbackDirection * power);
             }
 
             Destroy(gameObject);
@@ -40,6 +42,10 @@ public class Projectile : MonoBehaviour
         else if (other.CompareTag("Wall") || other.CompareTag("Roulette"))
         {
             Destroy(gameObject);
+        }
+        else if (other.CompareTag("Player"))
+        {
+
         }
     }
 }

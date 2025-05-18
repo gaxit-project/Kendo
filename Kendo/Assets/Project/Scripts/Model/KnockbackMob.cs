@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class KnockbackMob : MonoBehaviour
 {
@@ -6,9 +6,9 @@ public class KnockbackMob : MonoBehaviour
     private bool isKnockedBack = false;
     private int wallHitCount = 0;
 
-    [SerializeField] private float friction = 0.97f;       // –€CŒW”i‘¬“xŒ¸Š—¦j
-    [SerializeField] private float minVelocity = 0.1f;      // ‘¬“x‚ª‚±‚Ì’l‚ğ‰º‰ñ‚Á‚½‚ç’â~
-    [SerializeField] private float knockbackPower = 15f;    // ‚Á”ò‚Ñ‰‘¬“x
+    [SerializeField] private float friction = 0.97f;       // æ‘©æ“¦ä¿‚æ•°ï¼ˆé€Ÿåº¦æ¸›è¡°ç‡ï¼‰
+    [SerializeField] private float minVelocity = 0.1f;      // é€Ÿåº¦ãŒã“ã®å€¤ã‚’ä¸‹å›ã£ãŸã‚‰åœæ­¢
+    [SerializeField] private float knockbackPower = 15f;    // å¹ã£é£›ã³åˆé€Ÿåº¦
 
     public void Initialize(Vector3 knockbackDirection)
     {
@@ -39,7 +39,7 @@ public class KnockbackMob : MonoBehaviour
                 KnockbackMob otherMob = hit.collider.GetComponent<KnockbackMob>();
                 if (otherMob != null && !otherMob.IsKnockedBack())
                 {
-                    MobManager.Instance.ReleaseMob(hit.collider.gameObject); // Ã~’†‚ÌMob‚ğ“|‚·
+                    MobManager.Instance.ReleaseMob(hit.collider.gameObject); // é™æ­¢ä¸­ã®Mobã‚’å€’ã™
                 }
             }
             else if (hit.collider.CompareTag("Roulette"))
@@ -50,40 +50,19 @@ public class KnockbackMob : MonoBehaviour
 
 
 
-        // –€C‚É‚æ‚é‘¬“xŒ¸Š
+        // æ‘©æ“¦ã«ã‚ˆã‚‹é€Ÿåº¦æ¸›è¡°
         velocity *= friction;
 
-        // ˆê’èˆÈ‰º‚Ì‘¬“x‚É‚È‚Á‚½‚ç’â~
+        // ä¸€å®šä»¥ä¸‹ã®é€Ÿåº¦ã«ãªã£ãŸã‚‰åœæ­¢
         if (velocity.magnitude < minVelocity)
         {
             StopAndRelease();
         }
 
-        // ˆÚ“®XV
+        // ç§»å‹•æ›´æ–°
         transform.position += velocity * Time.deltaTime;
     }
 
-    /*
-    private void FixedUpdate()
-    {
-        if (!isKnockedBack) return;
-
-        Vector3 nextPos = transform.position + velocity * Time.deltaTime;
-        Vector3 direction = velocity.normalized;
-        float rayLength = (nextPos - transform.position).magnitude + 1f;
-
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, rayLength))
-        {
-            if (hit.collider.CompareTag("Wall"))
-            {
-                Vector3 normal = hit.normal;
-                velocity = Vector3.Reflect(velocity, normal);
-
-                IncrementWallHitCount();
-            }
-        }
-    }
-    */
 
     private void OnTriggerEnter(Collider other)
     {
@@ -101,7 +80,7 @@ public class KnockbackMob : MonoBehaviour
             KnockbackMob otherMob = other.GetComponent<KnockbackMob>();
             if (otherMob != null && !otherMob.IsKnockedBack())
             {
-                MobManager.Instance.ReleaseMob(other.gameObject); // Ã~’†‚ÌMob‚ğ“|‚·
+                MobManager.Instance.ReleaseMob(other.gameObject); // é™æ­¢ä¸­ã®Mobã‚’å€’ã™
             }
         }
         else if (other.CompareTag("Roulette"))
