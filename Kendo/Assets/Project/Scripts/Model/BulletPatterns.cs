@@ -52,6 +52,13 @@ public static class BulletPatterns
         }
     }
 
+    /// <summary>横から来る弾</summary>
+    public static void ShootSide(Vector3 spawnPos, float speed, bool fromRight)
+    {
+        Vector3 dir = fromRight ? Vector3.left : Vector3.right;
+        BulletSpawner.SpawnBullet(spawnPos, dir * speed);
+    }
+
     /// <summary>花びらスピン弾（Velocityを時間で回す）</summary>
     public static void ShootSpiral(Vector3 spawnPos, float baseAngle, float spinOffset, int count, float speed)
     {
@@ -63,12 +70,7 @@ public static class BulletPatterns
         }
     }
 
-    /// <summary>横から来る弾</summary>
-    public static void ShootSide(Vector3 spawnPos, float speed, bool fromRight)
-    {
-        Vector3 dir = fromRight ? Vector3.left : Vector3.right;
-        BulletSpawner.SpawnBullet(spawnPos, dir * speed);
-    }
+    ///////////////////////////////////////////////////////////////ここから改修予定////////////////////////////////////////////////////////////////////////////////////
 
     /// <summary>円運動する弾を扇状に配置して発射</summary>
     public static void ShootCircularFan(Vector3 center, float radius, int count, float startAngle, float angleStep, float angularSpeed)
