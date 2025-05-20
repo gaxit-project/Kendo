@@ -46,6 +46,8 @@ public class ruretto : MonoBehaviour
                 isRotating = false;
                 Debug.Log("Mobのhitでルーレット停止");
                 other.gameObject.SetActive(false);
+                // スコア加算（Mobが倒されたとき）
+                ScoreManager.Instance?.AddKill();
             }
         }
     }

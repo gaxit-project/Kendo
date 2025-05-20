@@ -103,6 +103,9 @@ public class MobManager : MonoBehaviour
 
     public void ReleaseMob(GameObject mob)
     {
+        // スコア加算（Mobが倒されたとき）
+        ScoreManager.Instance?.AddKill();
+
         mob.SetActive(false);
         activeMobs.Remove(mob);
         mobPool.Enqueue(mob);
