@@ -48,4 +48,12 @@ public class ScoreManager : MonoBehaviour
     }
 
     public int GetTotalScore() => Mathf.FloorToInt(elapsedTime * timeMultiplier + killCount * killMultiplier);
+
+    //Žæ‚Á‚Ä‚­‚é—p
+    public void SaveScoreToPlayerPrefs()
+    {
+        PlayerPrefs.SetInt("TotalScore", GetTotalScore());
+        PlayerPrefs.Save();
+    }
+
 }

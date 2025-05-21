@@ -46,5 +46,18 @@ public class player : MonoBehaviour
         _moveInput = context.ReadValue<Vector2>();
     }
 
+    // “G‚â“G’e‚Æ‚ÌÕ“Ë‚Åƒ_ƒ[ƒW
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Mob") || other.CompareTag("Bullet"))
+        {
+            PlayerHP.Instance?.TakeDamage();
+
+            if (other.CompareTag("Bullet"))
+            {
+                other.gameObject.SetActive(false);// ’eÁ‚·
+            }
+        }
+    }
 
 }
