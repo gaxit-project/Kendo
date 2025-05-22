@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class MobController : MonoBehaviour
 {
@@ -20,25 +21,44 @@ public class MobController : MonoBehaviour
 
     float time;
 
+    private GameObject player;
+    private Coroutine attackCoroutine;
+    //見た目変える用
+    private ColorChanger colorChanger;
+
 
     private void Awake()
     {
         time = 0f;
+        player = GameObject.FindGameObjectWithTag("Player");
+        colorChanger = GetComponent<ColorChanger>();
     }
 
     private void Update()
     {
-
-        time += Time.deltaTime;
-        if(time >= 3f)
+        // プレイヤーを常に向く
+        if (!isKnockback && player != null)
         {
-
-            BulletPatterns.ShootRandomSpread(transform.position, 15f, 10);
-
-            time = 0f;
+            Vector3 lookPos = player.transform.position;
+            lookPos.y = transform.position.y; 
+            transform.LookAt(lookPos);
         }
 
-
+        // 攻撃
+        if (!isKnockback)
+        {
+            time += Time.deltaTime;
+            if (time >= 3f && player != null)
+            {
+                Vector3 dir = (player.transform.position - transform.position).normalized;
+                if (attackCoroutine != null)
+                {
+                    StopCoroutine(attackCoroutine);
+                }
+                StartCoroutine(FireStraightWithDelay(dir));
+                time = 0f;
+            }
+        }
 
         if (isKnockback)
         {
@@ -69,6 +89,23 @@ public class MobController : MonoBehaviour
             }
         }
     }
+    //3連弾
+    private IEnumerator FireStraightWithDelay(Vector3 direction)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            BulletManager.Instance.SpawnBullet(transform.position, direction.normalized * 8f);
+            yield return new WaitForSeconds(0.4f); // 各弾の間隔
+            if (isKnockback)
+            {
+                attackCoroutine = null;
+                yield break;
+            }
+        }
+        attackCoroutine = null;
+    }
+
+
 
     /// <summary>
     /// ノックバックを指定の速度で開始
@@ -78,6 +115,13 @@ public class MobController : MonoBehaviour
         isKnockback = true;
         knockbackVelocity = velocity;
         bounceCount = 0;
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
+
+        colorChanger?.SetColor(Color.red); // ノックバック中に赤
     }
 
     public bool GetIsKnockback() => isKnockback;
@@ -89,6 +133,8 @@ public class MobController : MonoBehaviour
         isKnockback = false;
         knockbackVelocity = Vector3.zero;
         bounceCount = 0;
+
+        colorChanger?.ResetColor(); // 色を戻す
     }
 
     /// <summary>

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6008940259406224656}
   - component: {fileID: 138768045180058632}
   - component: {fileID: 5634002386812252488}
+  - component: {fileID: -3523041909744864443}
   m_Layer: 0
   m_Name: Mob
   m_TagString: Mob
@@ -151,3 +152,15 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &-3523041909744864443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682392547248133583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18cfe71d95e44f4e92651ba13dcecf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
