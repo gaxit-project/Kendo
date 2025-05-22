@@ -7,6 +7,13 @@ public class TitleBGM : MonoBehaviour
     {
         // BGM‚ğÄ¶
         SoundBGM.Instance.Play("Title");
+
+    }
+
+    private void OnDestroy()
+    {
+        // ƒV[ƒ“Ø‚è‘Ö‚¦‚ÅBGM‚ğ~‚ß‚é
+        SoundBGM.Instance.Stop();
     }
 
     // Update is called once per frame
