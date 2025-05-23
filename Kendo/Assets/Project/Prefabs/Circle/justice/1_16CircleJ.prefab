@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8598914256693785650}
   - component: {fileID: 6485597493174446969}
   - component: {fileID: 868597988074058515}
+  - component: {fileID: -9052833256261223597}
   m_Layer: 0
   m_Name: 1_16CircleJ
   m_TagString: Wall
@@ -88,6 +89,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-9052833256261223597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4679484354661529655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b343369963e1f4f408bf77d145cc0cff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHits: 3
+  hitColors:
+  - {r: 0.33774376, g: 1, b: 0, a: 0}
+  - {r: 1, g: 0.96381336, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0, a: 0}
 --- !u!1 &7959664529692397206
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,6 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9182696386609769403}
   - component: {fileID: 8200365909804928713}
+  - component: {fileID: 6114650412945085916}
   m_Layer: 0
   m_Name: Coll2
   m_TagString: Wall
@@ -135,6 +154,27 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.46, y: 2, z: 2.68}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6114650412945085916
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7959664529692397206}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -151,6 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6660840113127371580}
   - component: {fileID: 3160521468092884598}
+  - component: {fileID: 4180548052010697187}
   m_Layer: 0
   m_Name: Coll1
   m_TagString: Wall
@@ -174,6 +215,27 @@ Transform:
   m_Father: {fileID: 8598914256693785650}
   m_LocalEulerAnglesHint: {x: 71.96, y: -89.939, z: -89.935}
 --- !u!65 &3160521468092884598
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8237412394047168445}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.46, y: 2, z: 2.68}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &4180548052010697187
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

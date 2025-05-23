@@ -148,6 +148,19 @@ public class MobController : MonoBehaviour
             if (hit.collider.CompareTag("Wall"))
             {
                 wallNormal = hit.normal;
+
+                // 子のColliderから親にあるBreakableObstacleを探して呼び出す
+                BreakableObstacle obstacle = hit.collider.GetComponent<BreakableObstacle>();
+                if (obstacle == null)
+                {
+                    obstacle = hit.collider.GetComponentInParent<BreakableObstacle>();
+                }
+
+                if (obstacle != null)
+                {
+                    obstacle.Hit();
+                }
+
                 return true;
             }
         }
@@ -155,6 +168,8 @@ public class MobController : MonoBehaviour
         wallNormal = Vector3.zero;
         return false;
     }
+
+
 
     /// <summary>
     /// 他のMobまたはPlayerに当たったときの処理
@@ -177,6 +192,15 @@ public class MobController : MonoBehaviour
             else
             {
                 MobManager.Instance.ReleaseMob(other.gameObject);
+            }
+        }
+        else if (other.CompareTag("Wall"))
+        {
+            // 壊れる壁だったら処理する
+            var obstacle = other.GetComponent<BreakableObstacle>();
+            if (obstacle != null)
+            {
+                obstacle.Hit(); // 耐久減らす
             }
         }
 
