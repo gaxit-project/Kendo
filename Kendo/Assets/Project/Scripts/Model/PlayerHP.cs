@@ -42,4 +42,12 @@ public class PlayerHP : MonoBehaviour
     {
         return currentHP;
     }
+
+    public void RecoverHP()
+    {
+        if (currentHP <= 2)
+        {
+            currentHP++;
+        }
+    }
 }

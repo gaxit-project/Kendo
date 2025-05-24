@@ -1054,6 +1054,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CircleManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6075425175226249287, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7088958856918041087, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.339198
@@ -1111,7 +1115,6 @@ GameObject:
   - component: {fileID: 1146616962}
   - component: {fileID: 1146616961}
   - component: {fileID: 1146616960}
-  - component: {fileID: 1146616964}
   - component: {fileID: 1146616965}
   - component: {fileID: 1146616966}
   m_Layer: 0
@@ -1212,20 +1215,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146616964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146616959}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c96d386a08b83d41924b7a00c9937d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotateSpeed: 100
-  reverseDuration: 2
 --- !u!54 &1146616965
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1266,6 +1255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: Mob
+  gacha: {fileID: 1371149308}
 --- !u!1 &1291952789
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,6 +1331,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1371149306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1371149307}
+  - component: {fileID: 1371149308}
+  m_Layer: 0
+  m_Name: GachaManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1371149307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371149306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.2530565, y: -2.79041, z: 3.443938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371149308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371149306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4703ab193a5966341a168e99fd354911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 956208947}
 --- !u!1 &1788654671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2556,4 +2591,5 @@ SceneRoots:
   - {fileID: 2003146039}
   - {fileID: 2027190449}
   - {fileID: 396425200}
+  - {fileID: 1371149307}
   - {fileID: 988917413}
