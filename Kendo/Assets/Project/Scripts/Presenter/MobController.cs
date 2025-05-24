@@ -24,14 +24,15 @@ public class MobController : MonoBehaviour
     private GameObject player;
     private Coroutine attackCoroutine;
     //見た目変える用
-    private ColorChanger colorChanger;
-
+    //private ColorChanger colorChanger;
+    private MaterialChanger materialChanger;
 
     private void Awake()
     {
         time = 0f;
         player = GameObject.FindGameObjectWithTag("Player");
-        colorChanger = GetComponent<ColorChanger>();
+        //colorChanger = GetComponent<ColorChanger>();
+        materialChanger = GetComponent<MaterialChanger>();
     }
 
     private void Update()
@@ -122,7 +123,9 @@ public class MobController : MonoBehaviour
             attackCoroutine = null;
         }
 
-        colorChanger?.SetColor(Color.red); // ノックバック中に赤
+        //colorChanger?.SetColor(Color.red); // ノックバック中に赤
+        materialChanger?.SetKnockbackMaterial(); // マテリアル変更
+
     }
 
     public bool GetIsKnockback() => isKnockback;
@@ -135,7 +138,9 @@ public class MobController : MonoBehaviour
         knockbackVelocity = Vector3.zero;
         bounceCount = 0;
 
-        colorChanger?.ResetColor(); // 色を戻す
+        //colorChanger?.ResetColor(); // 色を戻す
+        materialChanger?.ResetToNormalMaterial(); // 元に戻す
+
     }
 
     /// <summary>
