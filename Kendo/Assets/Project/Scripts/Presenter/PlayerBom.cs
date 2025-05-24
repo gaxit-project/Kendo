@@ -39,6 +39,8 @@ public class PlayerBom : MonoBehaviour
             bom = true;
             currentBomCount--;
             BulletManager.Instance.ClearAllBullets();
+            //SE
+            SoundSE.Instance?.Play("Bom");
         }
     }
     // ŠO•”‚©‚çƒ{ƒ€‚ð’Ç‰Á‚·‚é—p

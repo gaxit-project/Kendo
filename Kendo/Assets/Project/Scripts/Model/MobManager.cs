@@ -126,6 +126,8 @@ public class MobManager : MonoBehaviour
     {
         // スコア加算（Mobが倒されたとき）
         ScoreManager.Instance?.AddKill();
+        //SE
+        SoundSE.Instance?.Play("Explosion");
 
         mob.SetActive(false);
         activeMobs.Remove(mob);

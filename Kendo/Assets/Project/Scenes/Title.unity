@@ -1002,6 +1002,10 @@ MonoBehaviour:
   seList:
   - name: Shot
     clip: {fileID: 8300000, guid: 4dfbfd7ea9887ed4d871c8c80f7b5c60, type: 3}
+  - name: Bom
+    clip: {fileID: 8300000, guid: 7f065fc8c31cb0a4db17e98abc32c22b, type: 3}
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 23f94973f5f88ca49804bfb3d80abf19, type: 3}
 --- !u!4 &770899010
 Transform:
   m_ObjectHideFlags: 0
