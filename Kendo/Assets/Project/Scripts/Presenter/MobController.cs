@@ -38,7 +38,7 @@ public class MobController : MonoBehaviour
     private void Update()
     {
         // プレイヤーを常に向く
-        if (!isKnockback && player != null)
+        if (!isKnockback && player != null && !PlayerBom.bom)
         {
             Vector3 lookPos = player.transform.position;
             lookPos.y = transform.position.y; 
@@ -46,7 +46,7 @@ public class MobController : MonoBehaviour
         }
 
         // 攻撃
-        if (!isKnockback)
+        if (!isKnockback && !PlayerBom.bom)
         {
             time += Time.deltaTime;
             if (time >= 3f && player != null)
