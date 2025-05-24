@@ -10,7 +10,7 @@ public class MobDestroy : MonoBehaviour
         if (other.CompareTag(targetTag))
         {
             Destroy(other.gameObject);
-            gacha.GachaStart();
+            GachaManager.Instance.Gacha();
         }
     }
 }
