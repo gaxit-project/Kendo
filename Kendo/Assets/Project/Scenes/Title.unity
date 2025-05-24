@@ -999,7 +999,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seSource: {fileID: 770899008}
-  seList: []
+  seList:
+  - name: Shot
+    clip: {fileID: 8300000, guid: 4dfbfd7ea9887ed4d871c8c80f7b5c60, type: 3}
 --- !u!4 &770899010
 Transform:
   m_ObjectHideFlags: 0

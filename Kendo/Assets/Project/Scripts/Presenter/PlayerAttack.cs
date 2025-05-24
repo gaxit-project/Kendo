@@ -30,5 +30,7 @@ public class PlayerAttack : MonoBehaviour
 
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
         projectile.GetComponent<Projectile>().Initialize(transform.forward);
+        //SE
+        SoundSE.Instance?.Play("Shot");
     }
 }
