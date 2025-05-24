@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerBom : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class PlayerBom : MonoBehaviour
 
     [SerializeField] private int maxBomCount = 3;
     private int currentBomCount = 1;
+
+    [SerializeField] private float bomDuration = 5f; // ボムの効果時間（秒）
 
     public static PlayerBom Instance { get; private set; }
 
@@ -41,8 +44,17 @@ public class PlayerBom : MonoBehaviour
             BulletManager.Instance.ClearAllBullets();
             //SE
             SoundSE.Instance?.Play("Bom");
+
+            // 一定時間後にボム効果解除
+            StartCoroutine(BomCooldown());
         }
     }
+    private IEnumerator BomCooldown()
+    {
+        yield return new WaitForSeconds(bomDuration);
+        bom = false;
+    }
+
     // 外部からボムを追加する用
     public void AddBom()
     {

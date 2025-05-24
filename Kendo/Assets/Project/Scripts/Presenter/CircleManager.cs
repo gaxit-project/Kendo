@@ -7,6 +7,7 @@ public class CircleManager : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float spawnChance = 0.8f;
     [SerializeField] private float rotateSpeed = 30f;
 
+    private float currentSpeed = 0f;
     private List<GameObject> obstacles = new List<GameObject>();
 
     private void Start()
@@ -16,6 +17,7 @@ public class CircleManager : MonoBehaviour
 
     private void Update()
     {
+        currentSpeed = PlayerBom.bom ? 0f : rotateSpeed;
         RotateObstacles();
     }
 
@@ -47,7 +49,7 @@ public class CircleManager : MonoBehaviour
             if (obj == null) continue;
 
             Vector3 euler = obj.transform.rotation.eulerAngles;
-            euler.y = (euler.y + rotateSpeed * Time.deltaTime) % 360f; // Yだけ加算＆ループ
+            euler.y = (euler.y + currentSpeed * Time.deltaTime) % 360f; // Yだけ加算＆ループ
             obj.transform.rotation = Quaternion.Euler(euler);
         }
     }
