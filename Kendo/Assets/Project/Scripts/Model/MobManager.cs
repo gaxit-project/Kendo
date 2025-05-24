@@ -71,23 +71,44 @@ public class MobManager : MonoBehaviour
     {
         if (mobPool.Count > 0)
         {
-            Vector3 spawnPos = GetRandomSpawnPosition(playerTransform.position, spawnRadius);
+            const int maxAttempts = 10;
 
-            // 範囲外ならリトライ（最大10回）
-            for (int i = 0; i < 10 && !IsInsideBounds(spawnPos); i++)
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                spawnPos = GetRandomSpawnPosition(playerTransform.position, spawnRadius);
+                Vector3 spawnPos = GetRandomSpawnPosition(playerTransform.position, spawnRadius);
+
+                if (!IsInsideBounds(spawnPos)) continue;
+
+                // 判定用の仮の球の半径
+                float checkRadius = 1f;
+
+                // 重なり検出：周囲に当たる Collider を取得
+                Collider[] colliders = Physics.OverlapSphere(spawnPos, checkRadius);
+                bool isOverlapping = false;
+
+                foreach (var col in colliders)
+                {
+                    if (col.CompareTag("Player") || col.CompareTag("Wall") || col.CompareTag("Roulette"))
+                    {
+                        isOverlapping = true;
+                        break;
+                    }
+                }
+
+                if (isOverlapping) continue;
+
+                // 問題なければ生成
+                GameObject mob = mobPool.Dequeue();
+                mob.transform.position = spawnPos;
+                mob.SetActive(true);
+                activeMobs.Add(mob);
+                return;
             }
 
-            if (!IsInsideBounds(spawnPos))
-                return; // 範囲内に収まらなければ生成しない
-
-            GameObject mob = mobPool.Dequeue();
-            mob.transform.position = spawnPos;
-            mob.SetActive(true);
-            activeMobs.Add(mob);
+            Debug.LogWarning("安全なスポーン位置が見つかりませんでした");
         }
     }
+
 
     private Vector3 GetRandomSpawnPosition(Vector3 center, float radius)
     {
