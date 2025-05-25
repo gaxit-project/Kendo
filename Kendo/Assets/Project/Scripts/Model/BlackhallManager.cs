@@ -12,7 +12,7 @@ public class BlackhallManager : MonoBehaviour
             Destroy(other.gameObject);
             GachaManager.Instance.Gacha();
         }
-        else if (other.CompareTag(Player))
+        else if (other.CompareTag(playerTag))
         {
 
         }
