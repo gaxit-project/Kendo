@@ -3,27 +3,42 @@ using UnityEngine;
 public class BreakableObstacle : MonoBehaviour
 {
     [SerializeField] private int maxHits = 3;
-    [SerializeField] private Color[] hitColors; // 0:初期色, 1:1回目, 2:2回目
-    private int currentHits = 0;
+    [SerializeField] private Material[] hitMaterials; // Cube に設定するマテリアル
+    [SerializeField] private string targetChildName = "Cube"; // マテリアルを変更したい子オブジェクト名
 
-    private Renderer rend;
+    private int currentHits = 0;
+    private Renderer targetRenderer;
 
     private void Awake()
     {
-        rend = GetComponent<Renderer>();
-        if (rend != null && hitColors.Length > 0)
+        Transform targetChild = transform.Find(targetChildName);
+        if (targetChild != null)
         {
-            rend.material.color = hitColors[0];
+            targetRenderer = targetChild.GetComponent<Renderer>();
+            if (targetRenderer != null && hitMaterials.Length > 0)
+            {
+                Debug.Log("Renderer found and material set.");
+                targetRenderer.material = hitMaterials[0];
+            }
+            else
+            {
+                Debug.LogWarning("Renderer not found on child.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Child with name '{targetChildName}' not found.");
         }
     }
 
     public void Hit()
     {
         currentHits++;
+        Debug.Log($"BreakableObstacle hit! count: {currentHits}");
 
-        if (rend != null && currentHits < hitColors.Length)
+        if (targetRenderer != null && currentHits < hitMaterials.Length)
         {
-            rend.material.color = hitColors[currentHits];
+            targetRenderer.material = hitMaterials[currentHits];
         }
 
         if (currentHits >= maxHits)

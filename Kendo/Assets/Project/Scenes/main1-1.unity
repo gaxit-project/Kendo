@@ -1388,7 +1388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91514215d3a074443bea7e7323c3ee1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Mob
+  mobTag: Mob
+  playerTag: Player
 --- !u!1 &1291952789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2688,6 +2689,10 @@ PrefabInstance:
     - target: {fileID: 8353887392689284599, guid: ad0819f2e172ce14fa0438a575013717, type: 3}
       propertyPath: m_Name
       value: BulletManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8353887392689284599, guid: ad0819f2e172ce14fa0438a575013717, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

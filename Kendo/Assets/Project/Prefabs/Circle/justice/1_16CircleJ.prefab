@@ -32,9 +32,9 @@ Transform:
   m_LocalScale: {x: 1500, y: 1500, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4374190504562575785}
   - {fileID: 6660840113127371580}
   - {fileID: 9182696386609769403}
-  - {fileID: 4374190504562575785}
   - {fileID: 6276841775356856899}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 1.236}
@@ -104,10 +104,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHits: 3
-  hitColors:
-  - {r: 0.33774376, g: 1, b: 0, a: 0}
-  - {r: 1, g: 0.96381336, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0, a: 0}
+  hitMaterials:
+  - {fileID: 2100000, guid: 0c3d48cd3c27e9847960eac591e98c2c, type: 2}
+  - {fileID: 2100000, guid: b49cab152e3702142a5e549d06186cb2, type: 2}
+  - {fileID: 2100000, guid: 28617b79c6b8b7440b846373bb48f73b, type: 2}
 --- !u!1 &6307556167432922661
 GameObject:
   m_ObjectHideFlags: 0
