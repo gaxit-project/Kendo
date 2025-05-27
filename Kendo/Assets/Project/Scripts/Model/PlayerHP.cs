@@ -31,6 +31,13 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
+    public void KillPlayer()
+    {
+        currentHP = 0;
+        Debug.Log($"‚­‚ç‚Á‚½ HP: {currentHP}");
+        GameOver();
+    }
+
     private void GameOver()
     {
         Debug.Log("‚ª‚ß");

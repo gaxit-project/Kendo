@@ -14,6 +14,7 @@ public class BlackhallManager : MonoBehaviour
         }
         else if (other.CompareTag(playerTag))
         {
+            PlayerHP.Instance.KillPlayer();
 
         }
     }
