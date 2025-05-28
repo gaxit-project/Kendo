@@ -44,7 +44,8 @@ public class CircleManager : MonoBehaviour
 
             float angle = i * angleStep;
             Quaternion rotation = Quaternion.Euler(90, angle, 0);
-            GameObject obj = Instantiate(obstaclePrefab, Vector3.zero, rotation);
+            Vector3 spawnPosition = new Vector3(0, -2, 0);
+            GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
 
             obstacles.Add(obj);
         }

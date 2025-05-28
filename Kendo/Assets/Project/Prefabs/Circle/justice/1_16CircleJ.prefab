@@ -108,6 +108,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0c3d48cd3c27e9847960eac591e98c2c, type: 2}
   - {fileID: 2100000, guid: b49cab152e3702142a5e549d06186cb2, type: 2}
   - {fileID: 2100000, guid: 28617b79c6b8b7440b846373bb48f73b, type: 2}
+  targetChildName: Cube
 --- !u!1 &6307556167432922661
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +398,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.46, y: 2, z: 2.68}
+  m_Size: {x: 2.46, y: 6, z: 2.68}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8237412394047168445
 GameObject:
@@ -472,5 +473,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.46, y: 2, z: 2.68}
+  m_Size: {x: 2.46, y: 6, z: 2.68}
   m_Center: {x: 0, y: 0, z: 0}
