@@ -6,10 +6,11 @@ public class GachaManager : MonoBehaviour
 {
     public static GachaManager Instance { get; private set; }
 
-    [SerializeField] private Image gachaImage;           //ガチャのImageコンポーネント
-    [SerializeField] private Sprite[] rollingSprites;    //各種アイテム画像
-    [SerializeField] private float rollInterval = 0.1f;  //ガチャの回転間隔
-    [SerializeField] private float totalRollTime = 2.0f; //ガチャの回転時間
+    [SerializeField] private Image gachaImage;                  //ガチャのImageコンポーネント
+    [SerializeField] private Sprite[] rollingSprites;           //各種アイテム画像
+    [SerializeField] private float rollInterval = 0.1f;         //ガチャの回転間隔
+    [SerializeField] private float totalRollTime = 2.0f;        //ガチャの回転時間
+    [SerializeField] private float resultDisplayTime = 2.0f;    //結果表示時間
 
     private bool isRolling = false;
 
@@ -40,6 +41,7 @@ public class GachaManager : MonoBehaviour
     IEnumerator GachaStart()
     {
         isRolling = true;
+        gachaImage.enabled = true;
         float timer = 0f;
         int index = 0;
 
@@ -66,6 +68,9 @@ public class GachaManager : MonoBehaviour
                 break;
         }
 
+        yield return new WaitForSeconds(resultDisplayTime);
+
+        gachaImage.enabled = false;
         isRolling = false;
     }
 
