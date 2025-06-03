@@ -929,6 +929,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &876225939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8516728559532158007, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+  m_PrefabInstance: {fileID: 2098136712061247308}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &876225940 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3770239378952710387, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+  m_PrefabInstance: {fileID: 2098136712061247308}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876225939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe049d1d38058e46893e925210ae66e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &876225944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876225939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9645fa4c4b2c5459b98fe2f5932846, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapPresenter: {fileID: 876225940}
 --- !u!1 &921240080
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,6 +1216,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 30, z: 0}
   view: {fileID: 963194230}
+  mapPresenter: {fileID: 876225940}
+  cameraToControl: {fileID: 963194227}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,6 +1230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea9318c4f1beda34792818ed3f65dcfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraSmoothTime: 0.3
+  cameraMaxSpeed: 5
 --- !u!1001 &988917413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2902,6 +2935,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -40
       objectReference: {fileID: 0}
+    - target: {fileID: 3770239378952710387, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+      propertyPath: lineWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3770239378952710387, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+      propertyPath: lineMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2bf0604b6b78b694495a027349556ca2, type: 2}
     - target: {fileID: 4216711999463692955, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2944,7 +2985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8516728559532158007, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
       propertyPath: m_Name
-      value: MapClamp
+      value: MapManager
       objectReference: {fileID: 0}
     - target: {fileID: 8925988069619515711, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2957,7 +2998,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8516728559532158007, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 876225944}
   m_SourcePrefab: {fileID: 100100000, guid: ba8d7b13b9d642341b697d4ea61b0f45, type: 3}
 --- !u!1001 &3813529720565133699
 PrefabInstance:

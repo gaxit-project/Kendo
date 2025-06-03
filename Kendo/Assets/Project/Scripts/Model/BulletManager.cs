@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Main.Presenter;
 
 /// <summary>
 /// 弾の生成・更新・破棄・オブジェクトプール管理を行うクラス
@@ -10,6 +11,8 @@ public class BulletManager : MonoBehaviour
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private int initialPoolSize = 100;
+    private MapPresenter mapPresenter;
+    private float mapSize;
 
     private readonly Queue<Bullet> bulletPool = new Queue<Bullet>();
     private readonly List<Bullet> activeBullets = new List<Bullet>();
@@ -25,6 +28,18 @@ public class BulletManager : MonoBehaviour
             obj.SetActive(false);
             bulletPool.Enqueue(new Bullet(obj));
         }
+    }
+    
+    private void Start()
+    {
+        if (mapPresenter == null)
+        {
+            mapPresenter = FindObjectOfType<MapPresenter>();
+        }
+        mapSize = mapPresenter.GetCurrentMapSize();
+
+        // 2. MapPresenterのマップサイズ更新イベントを購読
+        mapPresenter.OnMapSizeUpdated += HandleMapSizeUpdated;
     }
 
     private void Update()
@@ -57,6 +72,7 @@ public class BulletManager : MonoBehaviour
 
             bullet.GameObject.transform.position = bullet.Position;
 
+            /*
             // 一定距離以上離れたら破棄（仮）
             if (bullet.Position.magnitude > 100f)
             {
@@ -64,6 +80,9 @@ public class BulletManager : MonoBehaviour
                 bulletPool.Enqueue(bullet);
                 activeBullets.RemoveAt(i);
             }
+            */
+            
+            MapOutBullets(bullet, i);
         }
 
     }
@@ -114,6 +133,32 @@ public class BulletManager : MonoBehaviour
             bulletPool.Enqueue(bullet);
         }
         activeBullets.Clear();
+    }
+
+    /// <summary>
+    /// マップ外の弾を削除（非アクティブ化）してプールに戻す
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="indexInActiveList"></param>
+    public void MapOutBullets(Bullet bullet, int indexInActiveList)
+    {
+        bool isOutOfMap = bullet.Position.x < -mapSize || bullet.Position.x > mapSize ||
+                          bullet.Position.z < -mapSize || bullet.Position.z > mapSize;
+
+        if (isOutOfMap)
+        {
+            bullet.GameObject.SetActive(false);
+            bulletPool.Enqueue(bullet);
+            activeBullets.RemoveAt(indexInActiveList);
+        }
+    }
+    
+    /// <summary>
+    /// MapPresenterからマップサイズ変更の通知を受けた際のイベントハンドラ。
+    /// </summary>
+    private void HandleMapSizeUpdated(float newMapSize)
+    {
+        mapSize = newMapSize;
     }
 }
 
