@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class player : MonoBehaviour
 {
@@ -14,6 +15,12 @@ public class player : MonoBehaviour
     [SerializeField] private Texture idleTexture;
     [SerializeField] private Texture[] textures;
     private int textureIndex = 0;
+
+    //–³“G—p
+    [SerializeField] private float invincibleTime = 1.0f; // –³“GŠÔ
+    [SerializeField] private float blinkInterval = 0.1f;   // “_–ÅŠÔŠu
+    private bool isInvincible = false; // –³“Gƒtƒ‰ƒO
+
 
     private Vector2 _moveInput;
 
@@ -75,8 +82,11 @@ public class player : MonoBehaviour
     // “G‚â“G’e‚Æ‚ÌÕ“Ë‚Åƒ_ƒ[ƒW
     private void OnTriggerEnter(Collider other)
     {
+        if (isInvincible) return; // –³“G’†‚Í•Ô‚·
+
         if (other.CompareTag("Mob") || other.CompareTag("Bullet"))
         {
+            StartCoroutine(InvincibleCoroutine());
             PlayerHP.Instance?.TakeDamage();
 
             if (other.CompareTag("Bullet"))
@@ -85,5 +95,25 @@ public class player : MonoBehaviour
             }
         }
     }
+
+    //–³“Gˆ—
+    private IEnumerator InvincibleCoroutine()
+    {
+        isInvincible = true;
+        float elapsed = 0f;
+
+        while (elapsed < invincibleTime)
+        {
+            rend.enabled = false; // ƒŒƒ“ƒ_ƒ‰[‚ğ”ñ•\¦‚É
+            yield return new WaitForSeconds(blinkInterval);
+            rend.enabled = true; // ƒŒƒ“ƒ_ƒ‰[‚ğ•\¦
+            yield return new WaitForSeconds(blinkInterval);
+            elapsed += blinkInterval * 2;
+        }
+
+        rend.enabled = true;
+        isInvincible = false;
+    }
+
 
 }
