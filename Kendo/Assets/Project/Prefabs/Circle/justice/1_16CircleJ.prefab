@@ -105,9 +105,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHits: 3
   hitMaterials:
-  - {fileID: 2100000, guid: 0c3d48cd3c27e9847960eac591e98c2c, type: 2}
-  - {fileID: 2100000, guid: b49cab152e3702142a5e549d06186cb2, type: 2}
-  - {fileID: 2100000, guid: 28617b79c6b8b7440b846373bb48f73b, type: 2}
+  - {fileID: 2100000, guid: 2bf0604b6b78b694495a027349556ca2, type: 2}
+  - {fileID: 2100000, guid: dae2d9047372a8d4cab29cc145e76fd0, type: 2}
+  - {fileID: 2100000, guid: 050f405cb37644c43bc3f4cbf0143860, type: 2}
   targetChildName: Cube
 --- !u!1 &6307556167432922661
 GameObject:
