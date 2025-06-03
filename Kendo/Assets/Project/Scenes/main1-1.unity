@@ -2566,6 +2566,8 @@ MonoBehaviour:
   textures:
   - {fileID: 2800000, guid: a1c7df4b04e054b4c891e7cb1f2a08f9, type: 3}
   - {fileID: 2800000, guid: c2bf59dede65b074a9ab3c9e78a68e6e, type: 3}
+  invincibleTime: 1
+  blinkInterval: 0.1
 --- !u!114 &2061841335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2950,6 +2952,10 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 2061841333}
+    - target: {fileID: 7285111048897910005, guid: 8848419501d381641b85c40f38ae95c4, type: 3}
+      propertyPath: destroyEffectPrefab
+      value: 
+      objectReference: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

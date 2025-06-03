@@ -12,6 +12,8 @@ public class MobManager : MonoBehaviour
     [SerializeField] private float spawnRadius = 20f;
     [SerializeField] private Transform playerTransform;
 
+    [SerializeField] private GameObject destroyEffectPrefab;  // 破壊エフェクトのプレハブ
+
     private Queue<GameObject> mobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
 
@@ -126,11 +128,26 @@ public class MobManager : MonoBehaviour
     {
         // スコア加算（Mobが倒されたとき）
         ScoreManager.Instance?.AddKill();
-        //SE
+
+        // SE
         SoundSE.Instance?.Play("Explosion");
 
+        // Mob の位置にエフェクト生成（ちょっと上）
+        if (destroyEffectPrefab != null)
+        {
+            Vector3 effectPos = mob.transform.position;
+            Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f); // X軸に90度回転
+
+            GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);  // ← ここで使う
+            effect.transform.localScale *= 2f;
+            Destroy(effect, 1f);
+        }
+
+
+        // Mob をプールに戻す
         mob.SetActive(false);
         activeMobs.Remove(mob);
         mobPool.Enqueue(mob);
     }
+
 }
