@@ -46,6 +46,13 @@ public class player : MonoBehaviour
         _moveAction.action.canceled += OnMove;
         rend = GetComponent<Renderer>();
         rend.material.mainTexture = idleTexture;
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
     
     private void Start()

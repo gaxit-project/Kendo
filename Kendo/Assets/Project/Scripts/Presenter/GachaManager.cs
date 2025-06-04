@@ -67,9 +67,9 @@ public class GachaManager : MonoBehaviour
             case 1:
                 bomb();
                 break;
-            //case 2:
-            //    speed();
-            //    break;
+            case 2:
+                speed();
+                break;
         }
 
         yield return new WaitForSeconds(resultDisplayTime);
