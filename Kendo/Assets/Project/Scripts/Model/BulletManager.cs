@@ -145,8 +145,8 @@ public class BulletManager : MonoBehaviour
     /// <param name="indexInActiveList"></param>
     public void MapOutBullets(Bullet bullet, int indexInActiveList)
     {
-        bool isOutOfMap = bullet.Position.x < -mapSize || bullet.Position.x > mapSize ||
-                          bullet.Position.z < -mapSize || bullet.Position.z > mapSize;
+        bool isOutOfMap = bullet.Position.x < -100f || bullet.Position.x > 100f ||
+                          bullet.Position.z < -100f || bullet.Position.z > 100f;
 
         if (isOutOfMap)
         {
