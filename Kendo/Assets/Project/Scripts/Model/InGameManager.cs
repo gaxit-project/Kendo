@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class InGameManager : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class InGameManager : MonoBehaviour
         Instance = this;
     }
 
+    void Start()
+    {
+        Delay(1);
+        SoundBGM.Instance.Play("main");
+    }
+
     public bool GetKnockbackOnMobHit()
     {
         return knockbackOnMobHit;
@@ -24,5 +31,10 @@ public class InGameManager : MonoBehaviour
     public void SetKnockbackOnMobHit(bool value)
     {
         knockbackOnMobHit = value;
+    }
+
+    async void Delay(float delay)
+    {
+        await UniTask.Delay(System.TimeSpan.FromSeconds(delay));
     }
 }
