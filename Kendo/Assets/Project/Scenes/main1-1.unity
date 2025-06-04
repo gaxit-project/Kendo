@@ -2899,6 +2899,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7775250244822538289, guid: ad0819f2e172ce14fa0438a575013717, type: 3}
+      propertyPath: mapPresenter
+      value: 
+      objectReference: {fileID: 876225940}
+    - target: {fileID: 7775250244822538289, guid: ad0819f2e172ce14fa0438a575013717, type: 3}
       propertyPath: initialPoolSize
       value: 10000
       objectReference: {fileID: 0}
@@ -3059,6 +3063,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7285111048897910005, guid: 8848419501d381641b85c40f38ae95c4, type: 3}
+      propertyPath: mapPresenter
+      value: 
+      objectReference: {fileID: 876225940}
     - target: {fileID: 7285111048897910005, guid: 8848419501d381641b85c40f38ae95c4, type: 3}
       propertyPath: spawnInterval
       value: 5

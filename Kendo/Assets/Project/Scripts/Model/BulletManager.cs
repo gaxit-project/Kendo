@@ -11,7 +11,7 @@ public class BulletManager : MonoBehaviour
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private int initialPoolSize = 100;
-    private MapPresenter mapPresenter;
+    [SerializeField] private MapPresenter mapPresenter;
     private float mapSize;
 
     private readonly Queue<Bullet> bulletPool = new Queue<Bullet>();
@@ -36,7 +36,10 @@ public class BulletManager : MonoBehaviour
         {
             mapPresenter = FindObjectOfType<MapPresenter>();
         }
-        mapSize = mapPresenter.GetCurrentMapSize();
+        else
+        {
+            MapPresenter.OnMapPresenterReady += InitializeWithMapPresenter;
+        }
 
         // 2. MapPresenterのマップサイズ更新イベントを購読
         mapPresenter.OnMapSizeUpdated += HandleMapSizeUpdated;
@@ -147,11 +150,34 @@ public class BulletManager : MonoBehaviour
 
         if (isOutOfMap)
         {
+            Debug.Log("消したよ");
             bullet.GameObject.SetActive(false);
             bulletPool.Enqueue(bullet);
             activeBullets.RemoveAt(indexInActiveList);
         }
     }
+    
+    private void InitializeWithMapPresenter()
+    {
+
+        // OnMapPresenterReady から呼ばれた場合、mapPresenter は MapPresenter.Instance で確実に取得できるか、
+        if (mapPresenter == null && MapPresenter.Instance != null) 
+        {
+            mapPresenter = MapPresenter.Instance;
+        }
+        
+        if (mapPresenter == null) {
+
+            HandleMapSizeUpdated(100f); // 再度フォールバック
+            return;
+        }
+
+        mapSize = mapPresenter.GetCurrentMapSize();
+
+        // イベントから一度だけ呼び出されるように、購読を解除する
+        MapPresenter.OnMapPresenterReady -= InitializeWithMapPresenter;
+    }
+    
     
     /// <summary>
     /// MapPresenterからマップサイズ変更の通知を受けた際のイベントハンドラ。

@@ -14,6 +14,10 @@ namespace Main.Presenter
     /// </summary>
     public class MapPresenter : MonoBehaviour
     {
+        public static MapPresenter Instance { get; private set; }
+        public static event Action OnMapPresenterReady; // 準備完了イベント
+        public bool IsReady { get; private set; } = false;
+        
         [Header("View Dependencies")]
         [Tooltip("マップの描画を担当するMapViewコンポーネント")]
         [SerializeField] private MapView mapView;
@@ -43,10 +47,20 @@ namespace Main.Presenter
         private CancellationTokenSource _scalingCTS; // サイズ変更アニメーションのキャンセル用トークンソース
         public event Action<float> OnMapSizeUpdated;
     
-        /// <summary>
-        /// コンポーネント初期化時に呼び出されます。
-        /// Modelの生成、イベント購読、Viewの初期化、および初回マップ描画を行います。
-        /// </summary>
+        void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            IsReady = false;
+        }
+        
         void Start()
         {
             // Modelを初期化設定で生成
@@ -66,6 +80,9 @@ namespace Main.Presenter
 
             // Modelの現在のサイズで初回マップ描画を実行
             HandleModelSizeChanged(_mapModel.GetCurrentSize());
+            
+            IsReady = true; // 準備完了
+            OnMapPresenterReady?.Invoke(); // 準備完了イベントを発行
         }
     
         /// <summary>

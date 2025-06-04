@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Main.Presenter;
 // MapPresenterがMain.Model名前空間にあるため、usingディレクティブは不要な場合もありますが、
 // 明示的に追加するか、MapPresenterのnamespaceに合わせて調整してください。
 // using Main.Model; // MapPresenterがこの名前空間にある場合
@@ -16,6 +17,8 @@ public class MobManager : MonoBehaviour
     [SerializeField] private Transform playerTransform;
 
     [SerializeField] private GameObject destroyEffectPrefab;
+    
+    [SerializeField] private MapPresenter mapPresenter;
 
     private Queue<GameObject> mobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
@@ -25,7 +28,7 @@ public class MobManager : MonoBehaviour
 
     // MapPresenterが見つからなかった場合のフォールバック用の境界サイズ
     [Header("Fallback Map Settings")]
-    [SerializeField] private float defaultMapBoundarySize = 25f;
+    [SerializeField] private float defaultMapBoundarySize = 40f;
 
 
     private void Awake()
@@ -39,6 +42,27 @@ public class MobManager : MonoBehaviour
 
         InitializeMobPool();
     }
+    
+    private void Start()
+    {
+        if (mapPresenter == null)
+        {
+            mapPresenter = MapPresenter.Instance;
+        }
+
+        if (mapPresenter != null)
+        {
+            if (mapPresenter.IsReady)
+            {
+                SetupMapBoundaries();
+            }
+            else
+            {
+                MapPresenter.OnMapPresenterReady += SetupMapBoundaries;
+            }
+        }
+        StartCoroutine(SpawnMobsRoutine());
+    }
 
     private void InitializeMobPool()
     {
@@ -50,35 +74,33 @@ public class MobManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        SetupMapBoundaries();
-        StartCoroutine(SpawnMobsRoutine());
-    }
-
     /// <summary>
     /// マップの境界を設定します。MapPresenterから取得し、失敗した場合はデフォルト値を使用します。
     /// </summary>
     private void SetupMapBoundaries()
     {
-        // MapPresenterを探し、そこからマップサイズを取得
-        Main.Presenter.MapPresenter mapPresenter = FindObjectOfType<Main.Presenter.MapPresenter>(); // 名前空間を明示
-        if (mapPresenter != null)
+        if (mapPresenter == null && MapPresenter.Instance != null)
         {
-            float mapSize = mapPresenter.GetCurrentMapSize();
-            minX = -mapSize;
-            maxX = mapSize;
-            minZ = -mapSize;
-            maxZ = mapSize;
+            mapPresenter = MapPresenter.Instance;
         }
-        else
+        
+        try
         {
-            Debug.LogError("MapPresenter がシーンに存在しません。フォールバック境界を使用します。");
+            float currentMapHalfSize = mapPresenter.GetCurrentMapSize();
+            minX = -currentMapHalfSize;
+            maxX = currentMapHalfSize;
+            minZ = -currentMapHalfSize;
+            maxZ = currentMapHalfSize;
+        }
+        catch (System.NullReferenceException ex)
+        {
             minX = -defaultMapBoundarySize;
             maxX = defaultMapBoundarySize;
             minZ = -defaultMapBoundarySize;
             maxZ = defaultMapBoundarySize;
         }
+        // イベントから一度だけ呼び出されるように、購読を解除する
+        MapPresenter.OnMapPresenterReady -= SetupMapBoundaries;
     }
 
     private IEnumerator SpawnMobsRoutine()
@@ -104,14 +126,12 @@ public class MobManager : MonoBehaviour
                 // 生成位置がマップ境界内にあるか確認
                 if (!IsInsideMapBounds(spawnPos))
                 {
-                    // Debug.Log($"Spawn attempt {attempt + 1}: Position {spawnPos} is outside map bounds.");
                     continue;
                 }
 
                 // 他の重要オブジェクトと重なっていないか確認
                 if (IsOverlappingWithCriticalObjects(spawnPos))
                 {
-                    // Debug.Log($"Spawn attempt {attempt + 1}: Position {spawnPos} is overlapping.");
                     continue;
                 }
 
@@ -120,11 +140,8 @@ public class MobManager : MonoBehaviour
                 mob.transform.position = spawnPos;
                 mob.SetActive(true);
                 activeMobs.Add(mob);
-                // Debug.Log($"Mob spawned at {spawnPos}");
                 return; // Mobをスポーンしたらループを抜ける
             }
-
-            // Debug.LogWarning($"最大試行回数({maxAttempts})を超過しても安全なスポーン位置が見つかりませんでした。");
         }
     }
 
