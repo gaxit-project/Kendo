@@ -74,4 +74,16 @@ public class PlayerBom : MonoBehaviour
     {
         return maxBomCount;
     }
+
+    //ガチャ結果でボムが出た場合に即起動する用
+    public void GachaBom()
+    {
+        bom = true;
+        BulletManager.Instance.ClearAllBullets();
+        //SE
+        SoundSE.Instance?.Play("Bom");
+
+        // 一定時間後にボム効果解除
+        StartCoroutine(BomCooldown());
+    }
 }

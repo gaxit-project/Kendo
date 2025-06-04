@@ -5,6 +5,8 @@ using Main.Presenter;
 
 public class player : MonoBehaviour
 {
+    public static player Instance { get; private set; }
+
     // InputActionAssetへの参照
     [SerializeField] private InputActionReference _moveAction;
     [SerializeField] private float _moveSpeed = 5f;
@@ -256,5 +258,9 @@ public class player : MonoBehaviour
         // Debug.Log($"[Player] Map half size updated to: {newMapHalfSize}");
     }
 
-
+    //スピード変更用
+    public void ChangeSpeed()
+    {
+        _moveSpeed += 1f;
+    }
 }
