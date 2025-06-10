@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// í‚ÉƒJƒƒ‰‚Ì•û‚ğŒü‚­ƒIƒuƒWƒFƒNƒg‰ñ“]‚ğƒJƒƒ‰‚ÉŒÅ’è
+/// å¸¸ã«ã‚«ãƒ¡ãƒ©ã®æ–¹ã‚’å‘ãã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå›è»¢ã‚’ã‚«ãƒ¡ãƒ©ã«å›ºå®š
 /// </summary>
 public class Billboard : MonoBehaviour
 {
@@ -11,23 +11,26 @@ public class Billboard : MonoBehaviour
     [SerializeField]
     private float offset;
 
+    private Camera camera;
+
     private void Awake()
     {
-        // ‰ñ“]‚ğƒJƒƒ‰‚Æ“¯Šú‚³‚¹‚é
+        camera = Camera.main;
+        // å›è»¢ã‚’ã‚«ãƒ¡ãƒ©ã¨åŒæœŸã•ã›ã‚‹
         rectTransform = GetComponent<RectTransform>();
     }
     
     void LateUpdate()
     {
-        // ‰ñ“]‚ğƒJƒƒ‰‚Æ“¯Šú‚³‚¹‚é
-        transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - offset, Camera.main.transform.position.z);
-        transform.rotation = Camera.main.transform.rotation;
+        // å›è»¢ã‚’ã‚«ãƒ¡ãƒ©ã¨åŒæœŸã•ã›ã‚‹
+        transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y - offset, camera.transform.position.z);
+        transform.rotation = camera.transform.rotation;
 
-        // Orthographic Size‚ğŠî‚ÉCanvasƒTƒCƒY‚ğŒvZ
-        float height = Camera.main.orthographicSize * 2f;
-        float width = height * Camera.main.aspect;
+        // Orthographic Sizeã‚’åŸºã«Canvasã‚µã‚¤ã‚ºã‚’è¨ˆç®—
+        float height = camera.orthographicSize * 2f;
+        float width = height * camera.aspect;
 
-        // RectTransform‚ÌƒTƒCƒY‚ğİ’è
+        // RectTransformã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
         rectTransform.sizeDelta = new Vector2(width, height);
     }
 }

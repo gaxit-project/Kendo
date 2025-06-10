@@ -1,26 +1,30 @@
 using UnityEngine;
 using Utility.ScenLoader;
+using UnityEngine.UI;
+
 public class TitleManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private Button firstSelect;
+    
+    private CanvasGroup canvasGroup;
+
+    private void Awake()
+    {
+        canvasGroup = GameObject.Find("UI").GetComponent<CanvasGroup>();
+    }
+    
     void Start()
     {
         // BGMを再生
         SoundBGM.Instance.Play("Title");
 
     }
-
-    private void OnDestroy()
+    
+    public Button GetFirstButton()
     {
-        // シーン切り替えでBGMを止める
-        //SoundBGM.Instance.Stop();
+        return firstSelect;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     #region Buttonメソッド
 
@@ -32,6 +36,7 @@ public class TitleManager : MonoBehaviour
 
     public void OnConfigButtonClic()
     {
+        canvasGroup.interactable = false;
         SceneLoader.LoadConfig();
     }
     

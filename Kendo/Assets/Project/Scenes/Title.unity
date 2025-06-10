@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 422077568}
   - component: {fileID: 422077572}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1623,6 +1623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d89b1b6f041148478e55c60d745aadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstSelect: {fileID: 297451943}
 --- !u!4 &1865476919
 Transform:
   m_ObjectHideFlags: 0

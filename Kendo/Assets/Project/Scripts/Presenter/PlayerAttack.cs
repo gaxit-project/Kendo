@@ -22,15 +22,18 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (projectilePrefab == null || firePoint == null)
+        if (Time.timeScale != 0)
         {
-            Debug.LogWarning("ProjectilePrefab or FirePoint not assigned");
-            return;
-        }
+            if (projectilePrefab == null || firePoint == null)
+            {
+                Debug.LogWarning("ProjectilePrefab or FirePoint not assigned");
+                return;
+            }
 
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.GetComponent<Projectile>().Initialize(transform.forward);
-        //SE
-        SoundSE.Instance?.Play("Shot");
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+            projectile.GetComponent<Projectile>().Initialize(transform.forward);
+            //SE
+            SoundSE.Instance?.Play("Shot");
+        }
     }
 }

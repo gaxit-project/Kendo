@@ -190,7 +190,11 @@ public class player : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext context)
     {
-        _moveInput = context.ReadValue<Vector2>();
+        if (Time.timeScale != 0)
+        {
+            _moveInput = context.ReadValue<Vector2>();
+        }
+        
     }
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {

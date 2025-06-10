@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.ScenLoader;
+using UnityEngine.EventSystems;
 
 public class ConfigManager : MonoBehaviour
 {
     [SerializeField] private Button firstSelected;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private CanvasGroup canvasGroup;
+    private EventSystem eventSystem;
     void Start()
     {
         firstSelected.Select();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         
@@ -19,6 +20,21 @@ public class ConfigManager : MonoBehaviour
 
     public void OnUnload()
     {
+        canvasGroup = GameObject.Find("UI").GetComponent<CanvasGroup>();
+        canvasGroup.interactable = true;
+
+        
+        if (GameObject.Find("TitleManager") != null)
+        {
+            GameObject.Find("TitleManager").GetComponent<TitleManager>().GetFirstButton().Select();
+        }
+        
+        if (GameObject.Find("InGameManager") != null)
+        {
+            GameObject.Find("InGameManager").GetComponent<InGameManager>().GetFirstButton().Select();
+        }
+        
+        
         SceneLoader.UnLoadConfig();
     }
     

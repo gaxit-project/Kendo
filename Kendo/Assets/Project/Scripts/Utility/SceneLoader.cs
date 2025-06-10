@@ -5,18 +5,24 @@ namespace Utility.ScenLoader
 {
     public static class SceneLoader
     {
+
+        public static bool IsConfig = false;
+        
         public static void LoadTitle()
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene("Title", LoadSceneMode.Single);
         }
         
         public static void LoadConfig()
         {
+            IsConfig =  true;
             SceneManager.LoadScene("Config", LoadSceneMode.Additive);
         }
         
         public static void UnLoadConfig()
         {
+            IsConfig = false;
             SceneManager.UnloadSceneAsync("Config");
         }
         
