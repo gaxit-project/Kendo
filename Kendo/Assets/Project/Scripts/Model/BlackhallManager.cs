@@ -17,7 +17,8 @@ public class BlackhallManager : MonoBehaviour
         }
         else if (other.CompareTag(playerTag))
         {
-            PlayerHP.Instance.KillPlayer();
+            //PlayerHP.Instance.KillPlayer();
+            StartCoroutine(SuckAndKillPlayer(other.gameObject));
 
         }
     }
@@ -55,5 +56,43 @@ public class BlackhallManager : MonoBehaviour
         // 最後に破壊＋ガチャ処ri
         Destroy(mob);
         GachaManager.Instance.Gacha();
+    }
+
+    private IEnumerator SuckAndKillPlayer(GameObject player)
+    {
+        SoundSE.Instance?.Play("warp");
+
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
+        // PlayerMovementやコントロールスクリプトを停止
+        MonoBehaviour[] components = player.GetComponents<MonoBehaviour>();
+        foreach (var comp in components)
+        {
+            comp.enabled = false;
+        }
+
+        Vector3 startPos = player.transform.position;
+        Vector3 endPos = transform.position;
+        Vector3 startScale = player.transform.localScale;
+        Vector3 endScale = startScale * 0.5f;
+        float timer = 0f;
+        float rotationSpeed = 180f;
+
+        while (timer < suckDuration)
+        {
+            if (player == null) yield break;
+
+            timer += Time.deltaTime;
+            float t = timer / suckDuration;
+
+            player.transform.position = Vector3.Lerp(startPos, endPos, t);
+            player.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+            player.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            yield return null;
+        }
+
+        // プレイヤー死亡処理
+        PlayerHP.Instance.KillPlayer(); // GameOver画面などに移行
     }
 }
