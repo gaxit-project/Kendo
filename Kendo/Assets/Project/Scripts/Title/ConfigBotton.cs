@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ConfigBotton : MonoBehaviour
 {
-    [SerializeField] private GameObject configCanvas; // •\¦‚³‚¹‚½‚¢İ’èCanvas
+    [SerializeField] private GameObject configCanvas; // è¡¨ç¤ºã•ã›ãŸã„è¨­å®šCanvas
 
     public void OnClickOpenConfig()
     {
-        configCanvas.SetActive(true); // •\¦‚É‚·‚é
+        SceneManager.LoadScene("Config", LoadSceneMode.Additive);
+        //configCanvas.SetActive(true); // è¡¨ç¤ºã«ã™ã‚‹
     }
     public void OnClickCloseConfig()
     {
-        configCanvas.SetActive(false); // ”ñ•\¦‚É‚·‚é
+        configCanvas.SetActive(false); // éè¡¨ç¤ºã«ã™ã‚‹
     }
 
 }

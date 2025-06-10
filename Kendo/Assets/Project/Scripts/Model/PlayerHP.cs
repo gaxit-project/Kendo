@@ -23,7 +23,7 @@ public class PlayerHP : MonoBehaviour
     public void TakeDamage()
     {
         currentHP--;
-        Debug.Log($"‚­‚ç‚Á‚½ HP: {currentHP}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ HP: {currentHP}");
 
         if (currentHP <= 0)
         {
@@ -34,15 +34,15 @@ public class PlayerHP : MonoBehaviour
     public void KillPlayer()
     {
         currentHP = 0;
-        Debug.Log($"‚­‚ç‚Á‚½ HP: {currentHP}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ HP: {currentHP}");
         GameOver();
     }
 
     private void GameOver()
     {
-        Debug.Log("‚ª‚ß");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½");
         ScoreManager.Instance?.SaveScoreToPlayerPrefs();
-        SceneManager.LoadScene("Result"); // ƒQ[ƒ€ƒI[ƒo[Žž‚ÉƒŠƒUƒ‹ƒg‚Ö
+        SceneManager.LoadScene("Result"); // ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Éƒï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½ï¿½
     }
 
     public int GetCurrentHP()

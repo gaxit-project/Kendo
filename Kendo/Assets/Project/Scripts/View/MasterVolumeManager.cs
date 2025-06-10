@@ -12,7 +12,7 @@ public class MasterVolumeManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        float volume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1.0f); // ƒfƒtƒHƒ‹ƒg1.0
+        float volume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1.0f); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ1.0
         SetVolume(volume);
     }
 

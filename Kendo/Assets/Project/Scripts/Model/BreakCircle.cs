@@ -10,30 +10,30 @@ public class BreakCircle : MonoBehaviour
 
     private void Awake()
     {
-        // Renderer ‚ğæ“¾ie‚Ü‚½‚Íqj
+        // Renderer ã‚’å–å¾—ï¼ˆè¦ªã¾ãŸã¯å­ï¼‰
         rend = GetComponent<Renderer>();
         if (rend == null)
         {
             rend = GetComponentInChildren<Renderer>();
             if (rend == null)
             {
-                Debug.LogWarning("Renderer ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
+                Debug.LogWarning("Renderer ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ");
                 return;
             }
         }
 
-        // ƒ}ƒeƒŠƒAƒ‹‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚µ‚Ä‹¤—L–h~
+        // ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ã¦å…±æœ‰é˜²æ­¢
         rend.material = new Material(rend.material);
 
-        // ‰ŠúF‚Ìİ’è
+        // åˆæœŸè‰²ã®è¨­å®š
         if (hitColors != null && hitColors.Length > 0)
         {
             rend.material.color = hitColors[0];
-            Debug.Log("‰ŠúF‚ğİ’è‚µ‚Ü‚µ‚½: " + hitColors[0]);
+            Debug.Log("åˆæœŸè‰²ã‚’è¨­å®šã—ã¾ã—ãŸ: " + hitColors[0]);
         }
         else
         {
-            Debug.LogWarning("hitColors ‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogWarning("hitColors ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“");
         }
     }
 
@@ -45,25 +45,25 @@ public class BreakCircle : MonoBehaviour
         if (rend != null && currentHits < hitColors.Length)
         {
             rend.material.color = hitColors[currentHits];
-            Debug.Log($"BreakCircle: F•ÏX ¨ {hitColors[currentHits]}");
+            Debug.Log($"BreakCircle: è‰²å¤‰æ›´ â†’ {hitColors[currentHits]}");
         }
 
         if (currentHits >= maxHits)
         {
-            Debug.Log("BreakCircle: Å‘åƒqƒbƒg”‚É’B‚µ‚½‚Ì‚Å”ñ•\¦‰»");
+            Debug.Log("BreakCircle: æœ€å¤§ãƒ’ãƒƒãƒˆæ•°ã«é”ã—ãŸã®ã§éè¡¨ç¤ºåŒ–");
             gameObject.SetActive(false);
         }
     }
     public void OnHitRelayFromChild(Collider other)
     {
-        Debug.Log($"[Relay] qCollider‚ª {other.name} ‚ÉÕ“Ë");
+        Debug.Log($"[Relay] å­ColliderãŒ {other.name} ã«è¡çª");
 
         if (other.CompareTag("Mob"))
         {
             var mob = other.GetComponent<MobController>();
             if (mob != null && mob.GetIsKnockback())
             {
-                Debug.Log("ƒmƒbƒNƒoƒbƒN’†‚ÌMob‚Éƒqƒbƒg ¨ F•ÏX");
+                Debug.Log("ãƒãƒƒã‚¯ãƒãƒƒã‚¯ä¸­ã®Mobã«ãƒ’ãƒƒãƒˆ â†’ è‰²å¤‰æ›´");
                 OnHitByKnockback();
             }
         }
