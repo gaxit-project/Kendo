@@ -2383,6 +2383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 3
+  explosionEffectPrefab: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
+  explosionDelay: 1
 --- !u!54 &1601606269
 Rigidbody:
   m_ObjectHideFlags: 0
