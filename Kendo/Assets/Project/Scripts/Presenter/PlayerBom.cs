@@ -43,7 +43,7 @@ public class PlayerBom : MonoBehaviour
             currentBomCount--;
             BulletManager.Instance.ClearAllBullets();
             //SE
-            SoundSE.Instance?.Play("Bom");
+            SoundSE.Instance?.Play("BomTime");
 
             // ˆê’èŠÔŒã‚Éƒ{ƒ€Œø‰Ê‰ğœ
             StartCoroutine(BomCooldown());
@@ -81,7 +81,7 @@ public class PlayerBom : MonoBehaviour
         bom = true;
         BulletManager.Instance.ClearAllBullets();
         //SE
-        SoundSE.Instance?.Play("Bom");
+        SoundSE.Instance?.Play("BomTime");
 
         // ˆê’èŠÔŒã‚Éƒ{ƒ€Œø‰Ê‰ğœ
         StartCoroutine(BomCooldown());
