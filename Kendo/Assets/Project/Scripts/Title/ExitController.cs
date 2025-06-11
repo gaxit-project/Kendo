@@ -18,6 +18,7 @@ public class ExitController : MonoBehaviour
     }
     public void onClickExitButton()
     {
+        SoundSE.Instance?.Play("Cancel");
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else

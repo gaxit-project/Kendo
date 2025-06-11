@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 150235600}
   - component: {fileID: 150235602}
   - component: {fileID: 150235601}
+  - component: {fileID: 150235603}
   m_Layer: 5
   m_Name: 'SESlider '
   m_TagString: Untagged
@@ -395,6 +396,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &150235603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150235599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f898faf22636454b9c8dd7a2de3d114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &180908407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,6 +1159,7 @@ GameObject:
   - component: {fileID: 480222129}
   - component: {fileID: 480222130}
   - component: {fileID: 480222131}
+  - component: {fileID: 480222132}
   m_Layer: 5
   m_Name: BGMSlider
   m_TagString: Untagged
@@ -1239,6 +1253,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmSlider: {fileID: 480222130}
+--- !u!114 &480222132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480222128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f898faf22636454b9c8dd7a2de3d114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &559537136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,6 +1423,7 @@ GameObject:
   - component: {fileID: 807076759}
   - component: {fileID: 807076761}
   - component: {fileID: 807076760}
+  - component: {fileID: 807076762}
   m_Layer: 5
   m_Name: 'MasterSlider '
   m_TagString: Untagged
@@ -1490,6 +1517,23 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &807076762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807076758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f898faf22636454b9c8dd7a2de3d114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &859205517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7675189486630332187, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
+  m_PrefabInstance: {fileID: 1597126836}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &951176752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,6 +1656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d89b1b6f041148478e55c60d745aadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstSelect: {fileID: 0}
 --- !u!1 &963955281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2661,7 +2706,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7675189486630332187, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1597126841}
   m_SourcePrefab: {fileID: 100100000, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
 --- !u!224 &1597126837 stripped
 RectTransform:
@@ -2673,10 +2721,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3408062372239996015, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
   m_PrefabInstance: {fileID: 1597126836}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 859205517}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1597126841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859205517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f898faf22636454b9c8dd7a2de3d114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1609028258

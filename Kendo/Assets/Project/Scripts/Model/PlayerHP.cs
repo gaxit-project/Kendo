@@ -53,8 +53,10 @@ public class PlayerHP : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("gameover");
+        SoundBGM.Instance.Stop();
         ScoreManager.Instance?.SaveScoreToPlayerPrefs();
         SceneManager.LoadScene("Result"); // �Q�[���I�[�o�[���Ƀ��U���g��
+
     }
 
     private IEnumerator HandlePlayerDeath()

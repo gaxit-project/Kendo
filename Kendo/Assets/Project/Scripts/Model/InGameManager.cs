@@ -95,18 +95,21 @@ public class InGameManager : MonoBehaviour
 
     public void OnBackButtonClick()
     {
+        SoundSE.Instance?.Play("Cancel");
         pauseUI.SetActive(false);
         Time.timeScale = 1f;
     }
 
     public void OnConfigButtonClick()
     {
+        SoundSE.Instance?.Play("Enter");
         canvasGroup.blocksRaycasts = false;
         SceneLoader.LoadConfig();
     }
     
     public void OnTitleButtonClick()
     {
+        SoundSE.Instance?.Play("Enter");
         SoundBGM.Instance.Stop();
         SceneLoader.LoadTitle();
     }
@@ -114,6 +117,7 @@ public class InGameManager : MonoBehaviour
 
     public void OnExitButtonClick()
     {
+        SoundSE.Instance?.Play("Cancel");
         SceneLoader.Exit();
     }
     #endregion

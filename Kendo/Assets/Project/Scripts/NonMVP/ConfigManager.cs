@@ -20,6 +20,7 @@ public class ConfigManager : MonoBehaviour
 
     public void OnUnload()
     {
+        SoundSE.Instance?.Play("Cancel");
         canvasGroup = GameObject.Find("UI").GetComponent<CanvasGroup>();
         canvasGroup.interactable = true;
 

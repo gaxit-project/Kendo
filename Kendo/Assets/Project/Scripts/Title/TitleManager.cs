@@ -30,12 +30,14 @@ public class TitleManager : MonoBehaviour
 
     public void OnStartButtonClick()
     {
+        SoundSE.Instance?.Play("Enter");
         SoundBGM.Instance.Stop();
         SceneLoader.LoadInGame();
     }
 
     public void OnConfigButtonClic()
     {
+        SoundSE.Instance?.Play("Enter");
         canvasGroup.interactable = false;
         SceneLoader.LoadConfig();
     }
@@ -43,6 +45,7 @@ public class TitleManager : MonoBehaviour
 
     public void OnExitButtonClic()
     {
+        SoundSE.Instance?.Play("Cancel");
         SceneLoader.Exit();
     }
     #endregion
