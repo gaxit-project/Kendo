@@ -1,20 +1,31 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ResultManager : MonoBehaviour
 {
-    [SerializeField] private Text scoreText;
-    
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private float countUpDuration = 3f; // カウントアップにかける時間（秒）
+
+    private int targetScore;
+    private float currentDisplayScore = 0f;
+    private float timer = 0f;
+
     void Start()
     {
-        int totalScore = PlayerPrefs.GetInt("TotalScore", 0);
-        scoreText.text = $"Score: {totalScore}";
+        targetScore = PlayerPrefs.GetInt("TotalScore", 0);
+        currentDisplayScore = 0f;
+        scoreText.text = "Score: 0";
+        SoundSE.Instance?.Play("Count");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (currentDisplayScore < targetScore)
+        {
+            timer += Time.deltaTime;
+            float progress = Mathf.Clamp01(timer / countUpDuration);
+            currentDisplayScore = Mathf.Lerp(0, targetScore, progress);
+            scoreText.text = $"Score: {Mathf.FloorToInt(currentDisplayScore)}";
+        }
     }
 }

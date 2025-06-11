@@ -1823,6 +1823,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: fcc4aec03392fb048b15c3ced268caab, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[4].name
+      value: Count
+      objectReference: {fileID: 0}
     - target: {fileID: 7447850714824617423, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: m_Name
       value: SEManager
@@ -1958,5 +1970,5 @@ SceneRoots:
   - {fileID: 1081566332}
   - {fileID: 8257895345544078013}
   - {fileID: 1088456741824041057}
-  - {fileID: 8528035361013370509}
   - {fileID: 1865476919}
+  - {fileID: 8528035361013370509}

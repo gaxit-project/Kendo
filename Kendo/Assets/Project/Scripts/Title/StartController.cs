@@ -17,4 +17,8 @@ public class StartController : MonoBehaviour
     {
         SceneManager.LoadScene("main1-1");
     }
+    public void onClickTitleButton()
+    {
+        SceneManager.LoadScene("Title");
+    }
 }
