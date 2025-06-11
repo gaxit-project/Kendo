@@ -289,7 +289,7 @@ public class player : MonoBehaviour
     //登場
     private IEnumerator PlayAppearEffect()
     {
-        SoundSE.Instance?.Play("Warp");
+        SoundSE.Instance?.Play("warp");
         _canMove = false;
         SetPlayerAlpha(0f); // プレイヤー透明に
 

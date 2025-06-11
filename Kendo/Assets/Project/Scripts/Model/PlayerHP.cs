@@ -36,6 +36,7 @@ public class PlayerHP : MonoBehaviour
 
         if (currentHP <= 0)
         {
+            isDead = true;
             StartCoroutine(HandlePlayerDeath());
         }
     }
