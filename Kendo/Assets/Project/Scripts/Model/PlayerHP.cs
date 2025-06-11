@@ -55,7 +55,8 @@ public class PlayerHP : MonoBehaviour
         Debug.Log("gameover");
         SoundBGM.Instance.Stop();
         ScoreManager.Instance?.SaveScoreToPlayerPrefs();
-        SceneManager.LoadScene("Result"); // �Q�[���I�[�o�[���Ƀ��U���g��
+        //SceneManager.LoadScene("Result"); // �Q�[���I�[�o�[���Ƀ��U���g��
+        FadeManager.Instance.FadeOutAndLoad("Result");
 
     }
 

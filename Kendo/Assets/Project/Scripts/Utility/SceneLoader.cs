@@ -28,7 +28,8 @@ namespace Utility.ScenLoader
         
         public static void LoadInGame()
         {
-            SceneManager.LoadScene("main1-1", LoadSceneMode.Single);
+            //SceneManager.LoadScene("main1-1", LoadSceneMode.Single);
+            FadeManager.Instance.FadeOutAndLoad("main1-1");
         }
         
         public static void LoadResult()
