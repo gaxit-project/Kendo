@@ -2461,6 +2461,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: c2bf59dede65b074a9ab3c9e78a68e6e, type: 3}
   invincibleTime: 1
   blinkInterval: 0.1
+  appearEffectPrefab: {fileID: 5905395945586664278, guid: 2552f814d3d1ad94e8fb6e6529806830, type: 3}
+  appearDuration: 2
   mapPresenter: {fileID: 0}
   boundaryPushSmoothTime: 0.05
 --- !u!65 &1601606273

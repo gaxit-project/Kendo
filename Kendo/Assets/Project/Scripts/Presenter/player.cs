@@ -25,7 +25,14 @@ public class player : MonoBehaviour
     private bool isInvincible = false; // 無敵フラグ
     
     private Vector2 _moveInput;
-    
+
+    //登場
+    [SerializeField] private GameObject appearEffectPrefab; // 登場時エフェクト
+    [SerializeField] private float appearDuration = 1.5f;    // 再生時間
+    private bool _canMove = false; // 移動許可フラグ
+
+
+
     // --- マップ連携用 ---
     [Header("Map Dependencies")]
     [SerializeField] private MapPresenter mapPresenter;
@@ -81,6 +88,9 @@ public class player : MonoBehaviour
             _currentMapHalfSize = float.MaxValue; // 事実上、境界制限なし
             _isMapPresenterReady = true; // 処理を進めるためにReady扱いにするが、制限は効かない
         }
+        //登場
+        StartCoroutine(PlayAppearEffect());
+
     }
 
     private void OnDestroy()
@@ -106,6 +116,7 @@ public class player : MonoBehaviour
 
     private void Update()
     {
+        if (!_canMove) return;
         // x-z平面で移動する
         Vector3 move = new Vector3(_moveInput.x, 0f, _moveInput.y);
         Vector3 intendedMovementDelta = Vector3.zero; 
@@ -274,4 +285,77 @@ public class player : MonoBehaviour
     {
         _moveSpeed += 1f;
     }
+
+    //登場
+    private IEnumerator PlayAppearEffect()
+    {
+        SoundSE.Instance?.Play("Warp");
+        _canMove = false;
+        SetPlayerAlpha(0f); // プレイヤー透明に
+
+        GameObject effect = null;
+        Renderer effectRenderer = null;
+
+        if (appearEffectPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + Vector3.up * 2.0f;
+            Quaternion rotation = Quaternion.Euler(90f, 0f, 0f);
+            effect = Instantiate(appearEffectPrefab, spawnPosition, rotation);
+            effectRenderer = effect.GetComponent<Renderer>();
+        }
+
+        // 同時にエフェクトを消しつつプレイヤーを出す
+        float fadeDuration = appearDuration; // 両方同時に使う
+        float timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / fadeDuration;
+
+            // エフェクトを消す：1 → 0
+            if (effectRenderer != null)
+            {
+                float effectAlpha = Mathf.Lerp(1f, 0f, t);
+                SetAlpha(effectRenderer.material, effectAlpha);
+            }
+
+            // プレイヤーを出す：0 → 1
+            float playerAlpha = Mathf.Lerp(0f, 1f, t);
+            SetPlayerAlpha(playerAlpha);
+
+            yield return null;
+        }
+
+        // 完了処理
+        if (effect != null) Destroy(effect);
+        SetPlayerAlpha(1f);
+        _canMove = true;
+    }
+
+    // プレイヤーのマテリアル透明度を設定（0 = 完全透明, 1 = 完全表示）
+    private void SetPlayerAlpha(float alpha)
+    {
+        if (rend != null && rend.material.HasProperty("_Color"))
+        {
+            Color c = rend.material.color;
+            c.a = alpha;
+            rend.material.color = c;
+        }
+    }
+
+    // 任意のマテリアルの透明度を設定（エフェクト用など）
+    private void SetAlpha(Material mat, float alpha)
+    {
+        if (mat != null && mat.HasProperty("_Color"))
+        {
+            Color c = mat.color;
+            c.a = alpha;
+            mat.color = c;
+        }
+    }
+
+
+
+
 }
