@@ -95,7 +95,7 @@ public class MobController : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            BulletManager.Instance.SpawnBullet(transform.position, direction.normalized * 8f);
+            BulletManager.Instance.SpawnBullet(transform.position, transform.forward.normalized * 8f);
             SoundSE.Instance?.Play("Shot");
             yield return new WaitForSeconds(0.4f); // 各弾の間隔
             if (isKnockback)
