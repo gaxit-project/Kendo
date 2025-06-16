@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &163780546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5801081098353986540, guid: 8a80bef0e9b1d4f46ae3499bfeceac82, type: 3}
+  m_PrefabInstance: {fileID: 1629742213544154973}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &163780547 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7127117755401175081, guid: 8a80bef0e9b1d4f46ae3499bfeceac82, type: 3}
@@ -2599,6 +2604,7 @@ MonoBehaviour:
   totalText: {fileID: 473391530}
   timeMultiplier: 10
   killMultiplier: 100
+  scorePopupObject: {fileID: 163780546}
 --- !u!4 &2027190449
 Transform:
   m_ObjectHideFlags: 0
