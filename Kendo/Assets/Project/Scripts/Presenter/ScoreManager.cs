@@ -43,7 +43,7 @@ public class ScoreManager : MonoBehaviour
         int seconds = totalSeconds % 60;
 
         timeText.text = $"{minutes:D2}:{seconds:D2}";
-        killText.text = $"Å~{killCount}";
+        killText.text = $"{killCount}";
         totalText.text = $"{totalScore}";
     }
 
