@@ -1864,8 +1864,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.size
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f7221e1960a602247bf12e61380bcdee, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 00448579dd5bd3e4fb40d63e7812ec20, type: 3}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[4].clip
       value: 
@@ -1909,10 +1917,26 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[9].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 83d94dcab51db1449aa16dc4abbeb0ce, type: 3}
+      objectReference: {fileID: 8300000, guid: 13597dc3fb8426e49bdc3c0244e08451, type: 3}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[9].name
       value: BomTime
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[10].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0001bf50545e17141804137887deba05, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[10].name
+      value: Elect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[11].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f0d901574458022429132f0633ecd3ea, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[11].name
+      value: Hit
       objectReference: {fileID: 0}
     - target: {fileID: 7447850714824617423, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: m_Name

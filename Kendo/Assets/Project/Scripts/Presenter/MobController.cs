@@ -122,6 +122,9 @@ public class MobController : MonoBehaviour
             StopCoroutine(attackCoroutine);
             attackCoroutine = null;
         }
+        //ここに被弾SE
+        SoundSE.Instance?.Play("Hit");
+
 
         //colorChanger?.SetColor(Color.red); // ノックバック中に赤
         materialChanger?.SetKnockbackMaterial(); // マテリアル変更
@@ -154,7 +157,8 @@ public class MobController : MonoBehaviour
             if (hit.collider.CompareTag("Wall"))
             {
                 wallNormal = hit.normal;
-
+                //ここにノックバックSE
+                SoundSE.Instance?.Play("Elect");
                 // 子のColliderから親にあるBreakableObstacleを探して呼び出す
                 BreakableObstacle obstacle = hit.collider.GetComponent<BreakableObstacle>();
                 if (obstacle == null)
@@ -182,6 +186,13 @@ public class MobController : MonoBehaviour
     /// </summary>
     private void OnTriggerEnter(Collider other)
     {
+        // ノックバックでない状態で Wall に触れたら即死（スコア加算なし）
+        if (!isKnockback && other.CompareTag("Wall"))
+        {
+            MobManager.Instance.ReleaseMobWithoutScore(gameObject);
+            return;
+        }
+
         if (!isKnockback) return;
 
         if (other.CompareTag("Mob"))

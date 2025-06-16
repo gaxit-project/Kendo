@@ -204,4 +204,26 @@ public class MobManager : MonoBehaviour
         }
         mobPool.Enqueue(mob);
     }
+    //スコアに加算しない死
+    public void ReleaseMobWithoutScore(GameObject mob)
+    {
+        SoundSE.Instance?.Play("Explosion");
+
+        if (destroyEffectPrefab != null)
+        {
+            Vector3 effectPos = mob.transform.position;
+            Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
+            GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
+            effect.transform.localScale *= 2f;
+            Destroy(effect, 1f);
+        }
+
+        mob.SetActive(false);
+        if (activeMobs.Contains(mob))
+        {
+            activeMobs.Remove(mob);
+        }
+        mobPool.Enqueue(mob);
+    }
+
 }
