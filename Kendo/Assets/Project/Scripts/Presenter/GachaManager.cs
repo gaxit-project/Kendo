@@ -1,4 +1,5 @@
 using System.Collections;
+using Main.Presenter;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,11 +7,11 @@ public class GachaManager : MonoBehaviour
 {
     public static GachaManager Instance { get; private set; }
 
-    [SerializeField] private Image gachaImage;                  //ƒKƒ`ƒƒ‚ÌImageƒRƒ“ƒ|[ƒlƒ“ƒg
-    [SerializeField] private Sprite[] rollingSprites;           //ŠeíƒAƒCƒeƒ€‰æ‘œ
-    [SerializeField] private float rollInterval = 0.1f;         //ƒKƒ`ƒƒ‚Ì‰ñ“]ŠÔŠu
-    [SerializeField] private float totalRollTime = 2.0f;        //ƒKƒ`ƒƒ‚Ì‰ñ“]ŠÔ
-    [SerializeField] private float resultDisplayTime = 2.0f;    //Œ‹‰Ê•\¦ŠÔ
+    [SerializeField] private Image gachaImage;                  //ã‚¬ãƒãƒ£ã®Imageã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+    [SerializeField] private Sprite[] rollingSprites;           //å„ç¨®ã‚¢ã‚¤ãƒ†ãƒ ç”»åƒ
+    [SerializeField] private float rollInterval = 0.1f;         //ã‚¬ãƒãƒ£ã®å›è»¢é–“éš”
+    [SerializeField] private float totalRollTime = 2.0f;        //ã‚¬ãƒãƒ£ã®å›è»¢æ™‚é–“
+    [SerializeField] private float resultDisplayTime = 2.0f;    //çµæœè¡¨ç¤ºæ™‚é–“
 
     private bool isRolling = false;
 
@@ -24,13 +25,13 @@ public class GachaManager : MonoBehaviour
         Instance = this;
     }
 
-    //Mob‚ªƒuƒ‰ƒbƒNƒz[ƒ‹‚É‹z‚¢‚Ü‚ê‚½‚çŒÄ‚Ño‚·
+    //MobãŒãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«ã«å¸ã„è¾¼ã¾ã‚ŒãŸã‚‰å‘¼ã³å‡ºã™
     public void Gacha()
     {
         if (!isRolling)
         {
             StartCoroutine(GachaStart());
-            Debug.Log("ƒKƒ`ƒƒƒXƒ^[ƒgI");
+            Debug.Log("ã‚¬ãƒãƒ£ã‚¹ã‚¿ãƒ¼ãƒˆï¼");
         }
         else
         {
@@ -53,12 +54,12 @@ public class GachaManager : MonoBehaviour
             yield return new WaitForSeconds(rollInterval);
         }
 
-        // ƒ‰ƒ“ƒ_ƒ€‚ÈƒAƒCƒeƒ€‚ğ•\¦
+        // ãƒ©ãƒ³ãƒ€ãƒ ãªã‚¢ã‚¤ãƒ†ãƒ ã‚’è¡¨ç¤º
         index = Random.Range(0, rollingSprites.Length);
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
 
-        //Œø‰Ê”­“®
+        //åŠ¹æœç™ºå‹•
         switch (index)
         {
             case 0:
@@ -79,29 +80,38 @@ public class GachaManager : MonoBehaviour
     }
 
 
-    //Œø‰Ê”­“®—pƒƒ\ƒbƒh
+    //åŠ¹æœç™ºå‹•ç”¨ãƒ¡ã‚½ãƒƒãƒ‰
     
-    //ƒn[ƒg’Ç‰Á
+    //ãƒãƒ¼ãƒˆè¿½åŠ 
     private void health()
     {
         int hp;
 
         PlayerHP.Instance.RecoverHP();
         hp = PlayerHP.Instance?.GetCurrentHP() ?? 0;
-        Debug.Log("HP‰ñ•œF" + hp);
+        Debug.Log("HPå›å¾©ï¼š" + hp);
     }
 
-    //ƒ{ƒ€”­“®
+    //ãƒœãƒ ç™ºå‹•
     private void bomb()
     {
         PlayerBom.Instance.GachaBom();
-        Debug.Log("ƒ{ƒ€”­“®");
+        Debug.Log("ãƒœãƒ ç™ºå‹•");
     }
 
-    //ƒXƒs[ƒhƒAƒbƒv
+    //ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚¢ãƒƒãƒ—
     private void speed()
     {
         player.Instance.ChangeSpeed();
-        Debug.Log("ƒXƒs[ƒhƒAƒbƒv");
+        Debug.Log("ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚¢ãƒƒãƒ—");
+    }
+
+    /// <summary>
+    /// Mapã‚’æ‹¡å¤§ã—ã¾ã™
+    /// </summary>
+    private void ExtendMap()
+    {
+        MapPresenter.Instance.ExpandMap();
+        Debug.Log("Mapæ‹¡å¤§");
     }
 }

@@ -1,13 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using System.Collections;
+
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    [SerializeField] private Text timeText;
-    [SerializeField] private Text killText;
-    [SerializeField] private Text totalText;
+    // Text ã‚’ TextMeshProUGUI ã«å¤‰æ›´
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI killText;
+    [SerializeField] private TextMeshProUGUI totalText;
 
     [SerializeField] private float timeMultiplier = 10f;
     [SerializeField] private int killMultiplier = 100;
@@ -46,6 +48,7 @@ public class ScoreManager : MonoBehaviour
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
 
+        // .textãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ä½¿ã„æ–¹ã¯åŒã˜
         timeText.text = $"{minutes:D2}:{seconds:D2}";
         killText.text = $"{killCount}";
         totalText.text = $"{totalScore}";
@@ -53,30 +56,32 @@ public class ScoreManager : MonoBehaviour
 
     public int GetTotalScore() => Mathf.FloorToInt(elapsedTime * timeMultiplier + killCount * killMultiplier);
 
-    //æ‚Á‚Ä‚­‚é—p
+    //å–ã£ã¦ãã‚‹ç”¨
     public void SaveScoreToPlayerPrefs()
     {
         PlayerPrefs.SetInt("TotalScore", GetTotalScore());
         PlayerPrefs.Save();
     }
+
     private IEnumerator ShowScorePopup()
     {
         if (scorePopupObject == null) yield break;
 
-        // ‰Šúó‘Ô‚Ìİ’è
+        // åˆæœŸçŠ¶æ…‹ã®è¨­å®š
         scorePopupObject.SetActive(true);
 
         RectTransform rect = scorePopupObject.GetComponent<RectTransform>();
-        Text text = scorePopupObject.GetComponentInChildren<Text>(); 
+        // GetComponentInChildren ã§ TextMeshProUGUI ã‚’å–å¾—
+        TextMeshProUGUI text = scorePopupObject.GetComponentInChildren<TextMeshProUGUI>(); 
 
         if (text == null)
         {
-            Debug.LogError("Text component not found!");
+            Debug.LogError("TextMeshProUGUI component not found in children of scorePopupObject!");
             yield break;
         }
 
         Vector2 startPos = rect.anchoredPosition;
-        Vector2 endPos = startPos + new Vector2(0, 50); // Y•ûŒü‚É50ã‚Ö
+        Vector2 endPos = startPos + new Vector2(0, 50); // Yæ–¹å‘ã«50ä¸Šã¸
         Color startColor = text.color;
 
         float duration = 0.8f;
@@ -86,21 +91,19 @@ public class ScoreManager : MonoBehaviour
         {
             float t = time / duration;
 
-            // ã‚ÉˆÚ“®
+            // ä¸Šã«ç§»å‹•
             rect.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
 
-            // ƒtƒF[ƒhƒAƒEƒg
+            // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ (.colorãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ä½¿ã„æ–¹ã‚‚åŒã˜)
             text.color = new Color(startColor.r, startColor.g, startColor.b, 1f - t);
 
             time += Time.deltaTime;
             yield return null;
         }
 
-        // Š®—¹‚É”ñ•\¦‚ÆFEˆÊ’u‚ğŒ³‚É–ß‚·
+        // å®Œäº†æ™‚ã«éè¡¨ç¤ºã¨è‰²ãƒ»ä½ç½®ã‚’å…ƒã«æˆ»ã™
         rect.anchoredPosition = startPos;
         text.color = startColor;
         scorePopupObject.SetActive(false);
     }
-
-
 }

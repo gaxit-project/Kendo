@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Main.Presenter;
-// MapPresenterがMain.Model名前空間にあるため、usingディレクティブは不要な場合もありますが、
-// 明示的に追加するか、MapPresenterのnamespaceに合わせて調整してください。
-// using Main.Model; // MapPresenterがこの名前空間にある場合
 using UnityEngine;
 
 public class MobManager : MonoBehaviour
@@ -13,12 +10,12 @@ public class MobManager : MonoBehaviour
     [SerializeField] private GameObject mobPrefab;
     [SerializeField] private int poolSize = 100;
     [SerializeField] private float spawnInterval = 2f;
-    [SerializeField] private float spawnRadius = 20f; // プレイヤーを中心としたMobの出現半径
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform playerTransform; // Y座標の基準として使用
 
     [SerializeField] private GameObject destroyEffectPrefab;
     
     [SerializeField] private MapPresenter mapPresenter;
+    [SerializeField] private Camera mainCamera; // スポーン判定に使用するカメラ
 
     private Queue<GameObject> mobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
@@ -45,6 +42,12 @@ public class MobManager : MonoBehaviour
     
     private void Start()
     {
+        // カメラが設定されていなければメインカメラを自動で取得
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+
         if (mapPresenter == null)
         {
             mapPresenter = MapPresenter.Instance;
@@ -111,31 +114,43 @@ public class MobManager : MonoBehaviour
             SpawnMob();
         }
     }
-
+    
+    /// <summary>
+    /// 【変更箇所】モブを「マップ内」「カメラ外」「重なり無し」の条件でスポーンさせます。
+    /// </summary>
     private void SpawnMob()
     {
-        if (mobPool.Count > 0)
+        if (mobPool.Count > 0 && mainCamera != null)
         {
             const int maxAttempts = 10; // スポーン位置探査の最大試行回数
 
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                // プレイヤーの位置から一定のspawnRadius内にランダムな位置を生成
-                Vector3 spawnPos = GetRandomSpawnPositionAroundPlayer(playerTransform.position, spawnRadius);
+                // 1. マップ境界内でランダムな位置を生成
+                float randomX = Random.Range(minX, maxX);
+                float randomZ = Random.Range(minZ, maxZ);
+                Vector3 spawnPos = new Vector3(randomX, playerTransform.position.y, randomZ);
 
-                // 生成位置がマップ境界内にあるか確認
-                if (!IsInsideMapBounds(spawnPos))
+                // 2. カメラの視野外か判定
+                Vector3 viewportPoint = mainCamera.WorldToViewportPoint(spawnPos);
+                // ビューポート座標のXとYが0-1の範囲内にある場合、カメラの視野内と判定
+                // (viewportPoint.z > 0 はカメラの前方にあることを確認する条件)
+                bool isInCameraView = viewportPoint.z > 0 && 
+                                      viewportPoint.x >= 0 && viewportPoint.x <= 1 && 
+                                      viewportPoint.y >= 0 && viewportPoint.y <= 1;
+
+                if (isInCameraView)
                 {
-                    continue;
+                    continue; // カメラ内なので再試行
                 }
 
-                // 他の重要オブジェクトと重なっていないか確認
+                // 3. 他の重要オブジェクトと重なっていないか確認
                 if (IsOverlappingWithCriticalObjects(spawnPos))
                 {
                     continue;
                 }
 
-                // 問題なければMobを配置
+                // すべての条件をクリアしたらMobを配置
                 GameObject mob = mobPool.Dequeue();
                 mob.transform.position = spawnPos;
                 mob.SetActive(true);
@@ -146,17 +161,7 @@ public class MobManager : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤーの周囲の指定された半径内にランダムなスポーン位置を取得します。
-    /// </summary>
-    private Vector3 GetRandomSpawnPositionAroundPlayer(Vector3 playerPos, float radius)
-    {
-        Vector2 randomCirclePoint = Random.insideUnitCircle * radius;
-        // Y座標はプレイヤーと同じか、地面に合わせるなど調整が必要な場合は変更
-        return new Vector3(playerPos.x + randomCirclePoint.x, playerPos.y, playerPos.z + randomCirclePoint.y);
-    }
-
-    /// <summary>
-    /// 指定された位置がマップ境界内にあるかどうかを判定します。
+    /// 指定された位置がマップ境界内にあるかどうかを判定します。（このメソッドは現在SpawnMob内では使用されませんが、他の用途のために残しています）
     /// </summary>
     private bool IsInsideMapBounds(Vector3 position)
     {
@@ -204,7 +209,7 @@ public class MobManager : MonoBehaviour
         }
         mobPool.Enqueue(mob);
     }
-    //スコアに加算しない死
+    
     public void ReleaseMobWithoutScore(GameObject mob)
     {
         SoundSE.Instance?.Play("Explosion");
