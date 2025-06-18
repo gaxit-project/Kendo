@@ -45,7 +45,7 @@ public class CircleManager : MonoBehaviour
 
             float angle = i * angleStep;
             Quaternion rotation = Quaternion.Euler(90, angle, 0);
-            Vector3 spawnPosition = new Vector3(0, -2, 0);
+            Vector3 spawnPosition = new Vector3(0, -4, 0);
             GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
             obj.transform.localScale = initialCircleScale;
             obstacles.Add(obj);
