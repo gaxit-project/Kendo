@@ -1817,6 +1817,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
+--- !u!114 &988917414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2884565923875132770, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
+  m_PrefabInstance: {fileID: 988917413}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63bd1c5419e2e44fbfaadf38cc601d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1062883310
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,7 +1973,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.8, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 18, y: 1, z: 18}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1360086548}
@@ -2010,6 +2021,11 @@ MonoBehaviour:
   mobTag: Mob
   playerTag: Player
   suckDuration: 1.5
+  circleManager: {fileID: 988917414}
+  DestroyedEnemy: 0
+  NumExpand: 1
+  scaleMultiplier: 1.2
+  barrier: {fileID: 4679484354661529655, guid: 3cb672f6f99ba5d4ea2a0a15c604f942, type: 3}
 --- !u!1 &1278285696
 GameObject:
   m_ObjectHideFlags: 0

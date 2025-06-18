@@ -7,6 +7,7 @@ public class CircleManager : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField, Range(0f, 1f)] private float spawnChance = 0.8f;
     [SerializeField] private float rotateSpeed = 30f;
+    [SerializeField] private Vector3 initialCircleScale = new Vector3(1500f, 1500f, 172f);
 
     private float currentSpeed = 0f;
     private List<GameObject> obstacles = new List<GameObject>();
@@ -46,7 +47,7 @@ public class CircleManager : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(90, angle, 0);
             Vector3 spawnPosition = new Vector3(0, -2, 0);
             GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
-
+            obj.transform.localScale = initialCircleScale;
             obstacles.Add(obj);
         }
     }
@@ -86,5 +87,27 @@ public class CircleManager : MonoBehaviour
     {
         Debug.Log("全障害物が無効化されました。ここで演出や音などを追加できます。");
         // TODO: エフェクト・SE・UI演出などを追加
+    }
+
+    public void ExpandCircle(float scaleMultiplier)
+    {
+        // 自身（親）のスケール拡大
+        transform.localScale *= scaleMultiplier;
+
+        //すでに出ている障害物も拡大
+        foreach (GameObject obj in obstacles)
+        {
+            if (obj != null)
+            {
+                obj.transform.localScale *= scaleMultiplier;
+        
+                // Colliderのサイズ変更
+                Collider col = obj.GetComponent<Collider>();
+                if (col is SphereCollider sc)
+                {
+                    sc.radius *= scaleMultiplier;
+                }
+            }
+        }
     }
 }

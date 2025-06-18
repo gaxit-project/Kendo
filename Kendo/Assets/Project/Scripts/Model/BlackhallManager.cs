@@ -3,9 +3,28 @@ using System.Collections;
 
 public class BlackhallManager : MonoBehaviour
 {
+    [Header("SuckOption")]
     [SerializeField] private string mobTag = "Mob";
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private float suckDuration = 1.5f; // 吸い込みにかかる時間
+
+    [Header("ExpandOption")]
+    [SerializeField] private CircleManager circleManager;
+    [SerializeField] private Vector3 initialScale;
+    [SerializeField] private int DestroyedEnemy;
+    [SerializeField] private int NumExpand = 1; // 一定数で拡大
+    [SerializeField] private float scaleMultiplier = 1.2f;
+    [SerializeField] private GameObject barrier;
+
+    private void Awake()
+    {
+        initialScale = transform.localScale;
+    }
+
+    private void Start()
+    {
+        transform.localScale = initialScale;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -56,6 +75,13 @@ public class BlackhallManager : MonoBehaviour
         // 最後に破壊＋ガチャ処ri
         Destroy(mob);
         GachaManager.Instance.Gacha();
+        DestroyedEnemy++;
+
+        if (DestroyedEnemy == NumExpand)
+        {
+            ExpandBlackHoleAndBarrier();
+            DestroyedEnemy = 0;
+        }
     }
 
     private IEnumerator SuckAndKillPlayer(GameObject player)
@@ -94,5 +120,28 @@ public class BlackhallManager : MonoBehaviour
 
         // プレイヤー死亡処理
         PlayerHP.Instance.KillPlayer(); // GameOver画面などに移行
+    }
+
+    private void ExpandBlackHoleAndBarrier()
+    {
+        transform.localScale *= scaleMultiplier;
+
+        if (barrier != null)
+        {
+            barrier.transform.localScale *= scaleMultiplier;
+
+            // Colliderのサイズ調整
+            SphereCollider sc = barrier.GetComponent<SphereCollider>();
+            if (sc != null)
+            {
+                sc.radius *= scaleMultiplier;
+            }
+        }
+
+        // CircleManager側の障壁オブジェクト群も拡大
+        if (circleManager != null)
+        {
+            circleManager.ExpandCircle(scaleMultiplier);
+        }
     }
 }
