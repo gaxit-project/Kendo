@@ -103,7 +103,7 @@ public class InGameManager : MonoBehaviour
     public void OnConfigButtonClick()
     {
         SoundSE.Instance?.Play("Enter");
-        canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
         SceneLoader.LoadConfig();
     }
     
