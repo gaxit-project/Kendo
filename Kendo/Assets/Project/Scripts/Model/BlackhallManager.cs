@@ -8,13 +8,22 @@ public class BlackhallManager : MonoBehaviour
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private float suckDuration = 1.5f; // 吸い込みにかかる時間
 
+
     [Header("ExpandOption")]
-    [SerializeField] private CircleManager circleManager;
+    /*[SerializeField] private CircleManager circleManager;
     [SerializeField] private Vector3 initialScale;
     [SerializeField] private int DestroyedEnemy;
     [SerializeField] private int NumExpand = 1; // 一定数で拡大
     [SerializeField] private float scaleMultiplier = 1.2f;
     [SerializeField] private GameObject barrier;
+    */
+    [SerializeField] private Vector3 initialScale = new Vector3(1f, 1f, 1f);
+    [SerializeField] private float expandRatePerSecond = 0.1f;  // 時間ごとの拡大率
+    [SerializeField] private float shrinkFactor = 0.9f;         // 吸い込みごとの縮小率（例：90%）
+    //[SerializeField] private GameObject barrier;
+
+    //[SerializeField] private CircleManager circleManager;
+
 
     private void Awake()
     {
@@ -26,13 +35,43 @@ public class BlackhallManager : MonoBehaviour
         transform.localScale = initialScale;
     }
 
+    private void Update()
+    {
+        // 毎秒少しずつ大きくする
+        Vector3 scale = transform.localScale;
+        scale.x += expandRatePerSecond * Time.deltaTime;
+        scale.z += expandRatePerSecond * Time.deltaTime;
+        scale.y = initialScale.y; // 高さは維持
+        transform.localScale = scale;
+
+        //circleManager?.UpdateCircleScale(transform.localScale);
+
+
+        // スケールの下限（最小値はinitialScaleすなわち初期値）
+        transform.localScale = new Vector3(
+        Mathf.Max(transform.localScale.x, initialScale.x),
+        initialScale.y,
+        Mathf.Max(transform.localScale.z, initialScale.z)
+        );
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(mobTag))
         {
-            //Destroy(other.gameObject);
-            //GachaManager.Instance.Gacha();
-            StartCoroutine(SuckAndDestroy(other.gameObject));
+            var mobController = other.GetComponent<MobController>();
+            if (mobController != null && mobController.GetIsKnockback())
+            {
+                // ノックバック中 → 吸い込み＋破壊＋ガチャ＋縮小
+                StartCoroutine(SuckAndDestroy(other.gameObject));
+            }
+            else
+            {
+                // ノックバック中でない → 吸い込み＋破壊のみ
+                StartCoroutine(SuckAndDestroyOnly(other.gameObject));
+            }
+            //StartCoroutine(SuckAndDestroy(other.gameObject));
         }
         else if (other.CompareTag(playerTag))
         {
@@ -75,14 +114,53 @@ public class BlackhallManager : MonoBehaviour
         // 最後に破壊＋ガチャ処ri
         Destroy(mob);
         GachaManager.Instance.Gacha();
-        DestroyedEnemy++;
+        
+        // ブラックホールを少し縮小
+        Vector3 newScale = transform.localScale;
+        newScale.x = Mathf.Max(newScale.x * shrinkFactor, initialScale.x);
+        newScale.z = Mathf.Max(newScale.z * shrinkFactor, initialScale.z);
+        newScale.y = initialScale.y; 
+        transform.localScale = newScale;
 
-        if (DestroyedEnemy == NumExpand)
-        {
-            ExpandBlackHoleAndBarrier();
-            DestroyedEnemy = 0;
-        }
+        //circleManager?.UpdateCircleScale(newScale);
+
+        //ここにスコアかさん
+        ScoreManager.Instance?.AddKill();
     }
+
+    //ノックバック中じゃないときは吸い込まれて破壊するだけ
+    private IEnumerator SuckAndDestroyOnly(GameObject mob)
+    {
+        SoundSE.Instance?.Play("warp");
+
+        Rigidbody rb = mob.GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
+        Vector3 startPos = mob.transform.position;
+        Vector3 endPos = transform.position;
+        Vector3 startScale = mob.transform.localScale;
+        Vector3 endScale = startScale * 0.5f;
+        float timer = 0f;
+        float rotationSpeed = 180f;
+
+        while (timer < suckDuration)
+        {
+            if (mob == null) yield break;
+
+            timer += Time.deltaTime;
+            float t = timer / suckDuration;
+
+            mob.transform.position = Vector3.Lerp(startPos, endPos, t);
+            mob.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+            mob.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            yield return null;
+        }
+
+        // 破壊のみ（ガチャや縮小なし）
+        Destroy(mob);
+    }
+
+
 
     private IEnumerator SuckAndKillPlayer(GameObject player)
     {
@@ -121,7 +199,7 @@ public class BlackhallManager : MonoBehaviour
         // プレイヤー死亡処理
         PlayerHP.Instance.KillPlayer(); // GameOver画面などに移行
     }
-
+    /*
     private void ExpandBlackHoleAndBarrier()
     {
         transform.localScale *= scaleMultiplier;
@@ -144,4 +222,5 @@ public class BlackhallManager : MonoBehaviour
             circleManager.ExpandCircle(scaleMultiplier);
         }
     }
+    */
 }

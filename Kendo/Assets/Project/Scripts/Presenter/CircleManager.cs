@@ -48,6 +48,7 @@ public class CircleManager : MonoBehaviour
             Vector3 spawnPosition = new Vector3(0, -8, 0);
             GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
             obj.transform.localScale = initialCircleScale;
+            obj.AddComponent<ObstacleScaleMemory>();
             obstacles.Add(obj);
         }
     }
@@ -89,7 +90,7 @@ public class CircleManager : MonoBehaviour
         // TODO: エフェクト・SE・UI演出などを追加
     }
 
-    public void ExpandCircle(float scaleMultiplier)
+    /*public void ExpandCircle(float scaleMultiplier)
     {
         // 自身（親）のスケール拡大
         transform.localScale *= scaleMultiplier;
@@ -110,4 +111,29 @@ public class CircleManager : MonoBehaviour
             }
         }
     }
+    */
+
+    public void UpdateCircleScale(Vector3 blackHoleScale)
+    {
+        float scaleRatio = blackHoleScale.x / 1f; // 初期ブラックホールが 1f の場合
+
+        foreach (GameObject obj in obstacles)
+        {
+            if (obj == null) continue;
+
+            var memory = obj.GetComponent<ObstacleScaleMemory>();
+            if (memory != null)
+            {
+                obj.transform.localScale = memory.baseScale * scaleRatio;
+
+                Collider col = obj.GetComponent<Collider>();
+                if (col is SphereCollider sc)
+                {
+                    sc.radius = 1f * scaleRatio; // 必要なら調整
+                }
+            }
+        }
+    }
+
+
 }
