@@ -36,7 +36,7 @@ public class CircleManager : MonoBehaviour
         obstacles.Clear();
 
         int count = 16;
-        float angleStep = 22.5f;
+        float angleStep = 360f / count;
 
         for (int i = 0; i < count; i++)
         {
@@ -48,7 +48,6 @@ public class CircleManager : MonoBehaviour
             Vector3 spawnPosition = new Vector3(0, -8, 0);
             GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
             obj.transform.localScale = initialCircleScale;
-            obj.AddComponent<ObstacleScaleMemory>();
             obstacles.Add(obj);
         }
     }
@@ -83,57 +82,31 @@ public class CircleManager : MonoBehaviour
         checkingDeactivation = false;
     }
 
-    // 拡張ポイント：障害物がすべて無効化されたときに実行される処理
+    // 障害物がすべて無効化されたときに実行される処理
     private void OnAllObstaclesDeactivated()
     {
         Debug.Log("全障害物が無効化されました。ここで演出や音などを追加できます。");
-        // TODO: エフェクト・SE・UI演出などを追加
+        // TODO: エフェクト・SE・UI演出などを追加してもいい
     }
-
-    /*public void ExpandCircle(float scaleMultiplier)
-    {
-        // 自身（親）のスケール拡大
-        transform.localScale *= scaleMultiplier;
-
-        //すでに出ている障害物も拡大
-        foreach (GameObject obj in obstacles)
-        {
-            if (obj != null)
-            {
-                obj.transform.localScale *= scaleMultiplier;
-        
-                // Colliderのサイズ変更
-                Collider col = obj.GetComponent<Collider>();
-                if (col is SphereCollider sc)
-                {
-                    sc.radius *= scaleMultiplier;
-                }
-            }
-        }
-    }
-    */
 
     public void UpdateCircleScale(Vector3 blackHoleScale)
     {
-        float scaleRatio = blackHoleScale.x / 1f; // 初期ブラックホールが 1f の場合
+        float scaleRatio = blackHoleScale.x / 18f; // 初期スケールが (1,1,1) の前提
 
         foreach (GameObject obj in obstacles)
         {
             if (obj == null) continue;
 
-            var memory = obj.GetComponent<ObstacleScaleMemory>();
-            if (memory != null)
-            {
-                obj.transform.localScale = memory.baseScale * scaleRatio;
+            obj.transform.localScale = initialCircleScale * scaleRatio;
 
-                Collider col = obj.GetComponent<Collider>();
-                if (col is SphereCollider sc)
-                {
-                    sc.radius = 1f * scaleRatio; // 必要なら調整
-                }
+            Collider col = obj.GetComponent<Collider>();
+            if (col is SphereCollider sc)
+            {
+                sc.radius = 1f * scaleRatio; // 必要に応じて半径初期値に合わせて調整
             }
         }
     }
+
 
 
 }

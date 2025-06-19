@@ -10,19 +10,10 @@ public class BlackhallManager : MonoBehaviour
 
 
     [Header("ExpandOption")]
-    /*[SerializeField] private CircleManager circleManager;
-    [SerializeField] private Vector3 initialScale;
-    [SerializeField] private int DestroyedEnemy;
-    [SerializeField] private int NumExpand = 1; // 一定数で拡大
-    [SerializeField] private float scaleMultiplier = 1.2f;
-    [SerializeField] private GameObject barrier;
-    */
     [SerializeField] private Vector3 initialScale = new Vector3(1f, 1f, 1f);
     [SerializeField] private float expandRatePerSecond = 0.1f;  // 時間ごとの拡大率
     [SerializeField] private float shrinkFactor = 0.9f;         // 吸い込みごとの縮小率（例：90%）
-    //[SerializeField] private GameObject barrier;
-
-    //[SerializeField] private CircleManager circleManager;
+    [SerializeField] private CircleManager circleManager;
 
 
     private void Awake()
@@ -41,11 +32,8 @@ public class BlackhallManager : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x += expandRatePerSecond * Time.deltaTime;
         scale.z += expandRatePerSecond * Time.deltaTime;
-        scale.y = initialScale.y; // 高さは維持
+        scale.y = initialScale.y;
         transform.localScale = scale;
-
-        //circleManager?.UpdateCircleScale(transform.localScale);
-
 
         // スケールの下限（最小値はinitialScaleすなわち初期値）
         transform.localScale = new Vector3(
@@ -53,6 +41,9 @@ public class BlackhallManager : MonoBehaviour
         initialScale.y,
         Mathf.Max(transform.localScale.z, initialScale.z)
         );
+
+        // CircleManager にスケールを送る
+        circleManager?.UpdateCircleScale(transform.localScale);
     }
 
 
@@ -71,13 +62,10 @@ public class BlackhallManager : MonoBehaviour
                 // ノックバック中でない → 吸い込み＋破壊のみ
                 StartCoroutine(SuckAndDestroyOnly(other.gameObject));
             }
-            //StartCoroutine(SuckAndDestroy(other.gameObject));
         }
         else if (other.CompareTag(playerTag))
         {
-            //PlayerHP.Instance.KillPlayer();
             StartCoroutine(SuckAndKillPlayer(other.gameObject));
-
         }
     }
     private IEnumerator SuckAndDestroy(GameObject mob)
@@ -121,9 +109,8 @@ public class BlackhallManager : MonoBehaviour
         newScale.z = Mathf.Max(newScale.z * shrinkFactor, initialScale.z);
         newScale.y = initialScale.y; 
         transform.localScale = newScale;
-
-        //circleManager?.UpdateCircleScale(newScale);
-
+        //障害物に送る
+        circleManager?.UpdateCircleScale(newScale);
         //ここにスコアかさん
         ScoreManager.Instance?.AddKill();
     }
@@ -159,8 +146,6 @@ public class BlackhallManager : MonoBehaviour
         // 破壊のみ（ガチャや縮小なし）
         Destroy(mob);
     }
-
-
 
     private IEnumerator SuckAndKillPlayer(GameObject player)
     {
@@ -199,28 +184,4 @@ public class BlackhallManager : MonoBehaviour
         // プレイヤー死亡処理
         PlayerHP.Instance.KillPlayer(); // GameOver画面などに移行
     }
-    /*
-    private void ExpandBlackHoleAndBarrier()
-    {
-        transform.localScale *= scaleMultiplier;
-
-        if (barrier != null)
-        {
-            barrier.transform.localScale *= scaleMultiplier;
-
-            // Colliderのサイズ調整
-            SphereCollider sc = barrier.GetComponent<SphereCollider>();
-            if (sc != null)
-            {
-                sc.radius *= scaleMultiplier;
-            }
-        }
-
-        // CircleManager側の障壁オブジェクト群も拡大
-        if (circleManager != null)
-        {
-            circleManager.ExpandCircle(scaleMultiplier);
-        }
-    }
-    */
 }
