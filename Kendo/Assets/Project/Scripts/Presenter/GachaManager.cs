@@ -7,13 +7,19 @@ public class GachaManager : MonoBehaviour
 {
     public static GachaManager Instance { get; private set; }
 
+    [Header("Gacha")]
     [SerializeField] private Image gachaImage;                  //ガチャのImageコンポーネント
     [SerializeField] private Sprite[] rollingSprites;           //各種アイテム画像
     [SerializeField] private float rollInterval = 0.1f;         //ガチャの回転間隔
     [SerializeField] private float totalRollTime = 2.0f;        //ガチャの回転時間
     [SerializeField] private float resultDisplayTime = 2.0f;    //結果表示時間
-
     private bool isRolling = false;
+
+    [Header("Triple7")]
+    [SerializeField] private int max7Num = 3;           // 7を揃える数．3以外は想定してません．
+    [SerializeField] private GameObject[] sevenImages;  // 7のオブジェクト
+
+    private int Triple7Cnt = 0;
 
     private void Awake()
     {
@@ -23,6 +29,12 @@ public class GachaManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // 7の画像非アクティブ
+        foreach (GameObject obj in sevenImages)
+        {
+            obj.SetActive(false);
+        }
     }
 
     //Mobがブラックホールに吸い込まれたら呼び出す
@@ -71,6 +83,12 @@ public class GachaManager : MonoBehaviour
             case 2:
                 speed();
                 break;
+            case 3:
+                ExtendMap();
+                break;
+            case 4:
+                triple7();
+                break;
         }
 
         yield return new WaitForSeconds(resultDisplayTime);
@@ -80,9 +98,9 @@ public class GachaManager : MonoBehaviour
     }
 
 
-    //効果発動用メソッド
+    // 効果発動用メソッド
     
-    //ハート追加
+    // ハート追加
     private void health()
     {
         int hp;
@@ -92,14 +110,14 @@ public class GachaManager : MonoBehaviour
         Debug.Log("HP回復：" + hp);
     }
 
-    //ボム発動
+    // ボム発動
     private void bomb()
     {
         PlayerBom.Instance.GachaBom();
         Debug.Log("ボム発動");
     }
 
-    //スピードアップ
+    // スピードアップ
     private void speed()
     {
         player.Instance.ChangeSpeed();
@@ -113,5 +131,32 @@ public class GachaManager : MonoBehaviour
     {
         MapPresenter.Instance.ExpandMap();
         Debug.Log("Map拡大");
+    }
+
+    // トリプル7
+    private void triple7()
+    {
+        if (Triple7Cnt >= max7Num)
+        {
+            return;
+        }
+
+        if (sevenImages[Triple7Cnt] != null)
+        {
+            sevenImages[Triple7Cnt].SetActive(true);
+        }
+
+        Triple7Cnt++;
+
+        // 3つ揃ったら壁消滅
+        if (Triple7Cnt == max7Num)
+        {
+            BreakableObstacle[] walls = FindObjectsByType<BreakableObstacle>(FindObjectsSortMode.None);
+
+            foreach (BreakableObstacle wall in walls)
+            {
+                wall.gameObject.SetActive(false);
+            }
+        }
     }
 }

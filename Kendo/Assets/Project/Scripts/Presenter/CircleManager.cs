@@ -107,6 +107,4 @@ public class CircleManager : MonoBehaviour
         }
     }
 
-
-
 }
