@@ -106,7 +106,6 @@ MonoBehaviour:
   maxHits: 3
   hitMaterials:
   - {fileID: 2100000, guid: 2bf0604b6b78b694495a027349556ca2, type: 2}
-  - {fileID: 2100000, guid: dae2d9047372a8d4cab29cc145e76fd0, type: 2}
   - {fileID: 2100000, guid: 050f405cb37644c43bc3f4cbf0143860, type: 2}
   targetChildName: Cube
 --- !u!1 &6307556167432922661

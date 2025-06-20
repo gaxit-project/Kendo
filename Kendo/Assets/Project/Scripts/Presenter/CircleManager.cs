@@ -91,7 +91,7 @@ public class CircleManager : MonoBehaviour
 
     public void UpdateCircleScale(Vector3 blackHoleScale)
     {
-        float scaleRatio = blackHoleScale.x / 18f; // 初期スケールが (1,1,1) の前提
+        float scaleRatio = blackHoleScale.x / 18f;
 
         foreach (GameObject obj in obstacles)
         {

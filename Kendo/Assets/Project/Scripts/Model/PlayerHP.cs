@@ -47,6 +47,7 @@ public class PlayerHP : MonoBehaviour
     {
         currentHP = 0;
         Debug.Log($"HP: {currentHP}");
+        ScoreManager.Instance?.StopTimeCount();
         GameOver();
     }
 
@@ -65,6 +66,9 @@ public class PlayerHP : MonoBehaviour
         Debug.Log("プレイヤー死亡処理開始");
         GameObject effect = null;
         Renderer effectRenderer = null;
+
+        // スコアの時間加算を止める
+        ScoreManager.Instance?.StopTimeCount();
 
         // プレイヤー移動停止（移動スクリプト無効化）
         var movementScript = player.Instance;

@@ -19,6 +19,8 @@ public class ScoreManager : MonoBehaviour
     private float elapsedTime = 0f;
     private int killCount = 0;
 
+    private bool isCountingTime = true;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,8 +33,11 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        elapsedTime += Time.deltaTime;
-        UpdateUI();
+        if (isCountingTime)
+        {
+            elapsedTime += Time.deltaTime;
+            UpdateUI();
+        }
     }
 
     public void AddKill()
@@ -62,6 +67,12 @@ public class ScoreManager : MonoBehaviour
         PlayerPrefs.SetInt("TotalScore", GetTotalScore());
         PlayerPrefs.Save();
     }
+    //スコア加算を止める
+    public void StopTimeCount()
+    {
+        isCountingTime = false;
+    }
+
 
     private IEnumerator ShowScorePopup()
     {
