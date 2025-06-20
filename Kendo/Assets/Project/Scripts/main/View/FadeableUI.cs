@@ -1,60 +1,77 @@
 using UnityEngine;
-using UnityEngine.UI; // Graphicクラスを利用するために必要
+using UnityEngine.UI;
 
 /// <summary>
-/// UIオブジェクト (Image, RawImage, Panel等) にアタッチし、ディザリングによるフェードを制御します。
-/// Graphicコンポーネントを持つオブジェクトで動作します。
+/// UIオブジェクトをマネージャーに登録し、CameraPresenterからの命令に応じてマテリアルのプロパティを滑らかに変化させます。
 /// </summary>
-[RequireComponent(typeof(Graphic))] // RendererではなくGraphicを要求
+[RequireComponent(typeof(Graphic))]
 public class FadeableUI : MonoBehaviour
 {
+    [Header("マテリアル設定")]
+    [Tooltip("フェードさせるベースのマテリアル（ディザ抜きシェーダーを使ったもの）")]
+    [SerializeField] private Material _baseMaterial;
+
     [Header("フェード設定")]
-    [Tooltip("半透明時のディザしきい値")]
-    [SerializeField] [Range(0f, 1f)] private float fadedThreshold = 0.6f;
-    [Tooltip("不透明時のディザしきい値")]
-    [SerializeField] [Range(0f, 1f)] private float solidThreshold = 0f;
+    [Tooltip("半透明時のディザしきい値（0.0でほぼ透明、1.0で不透明）")]
+    [Range(0f, 1f)]
+    [SerializeField] private float fadedThreshold = 0.3f;
+
     [Tooltip("フェード変化の速さ")]
-    [SerializeField] private float fadeSpeed = 5f;
+    [SerializeField] private float fadeSpeed = 20f;
 
-    private Graphic _graphic;           // UIの描画コンポーネント (Image, Textなど)
-    private Material _materialInstance; // このUI専用のマテリアルインスタンス
+    private Graphic _graphic;
+    private Material _materialInstance;
 
+    private const float SOLID_THRESHOLD = 1.0f;
     private float _currentTargetThreshold;
     private float _currentThreshold;
 
-    // パフォーマンス向上のため、プロパティ名をIDに変換してキャッシュ
     private static readonly int DitherThreshold = Shader.PropertyToID("_DitherThreshold");
 
+    // --- マネージャーへの登録/解除 ---
+    private void OnEnable()
+    {
+        // このUIが有効になった時、マネージャーのリストに自分自身を追加する
+        if (!FadeableUIManager.Instances.Contains(this))
+        {
+            FadeableUIManager.Instances.Add(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        // このUIが無効になったり、破棄された時、マネージャーのリストから自分自身を削除する
+        if (FadeableUIManager.Instances.Contains(this))
+        {
+            FadeableUIManager.Instances.Remove(this);
+        }
+    }
+
+    // --- 初期化処理 ---
     void Awake()
     {
-        // ImageやTextなどのGraphicコンポーネントを取得
         _graphic = GetComponent<Graphic>();
-        
-        // このUI要素のマテリアルが、他のUIと共有されていない独立したインスタンスであることを保証する
-        // これをしないと、同じマテリアルを使っている全てのUIが同時に半透明になってしまう
-        if (_graphic.material != null)
+
+        if (_baseMaterial == null)
         {
-            _materialInstance = new Material(_graphic.material);
-            _graphic.material = _materialInstance;
-        }
-        else
-        {
-            Debug.LogError("FadeableUIを使用するには、対象のUIコンポーネント(Imageなど)にマテリアルが設定されている必要があります。", this);
+            Debug.LogError("FadeableUIにベースマテリアルが設定されていません！", this);
             enabled = false;
             return;
         }
-        
-        // 初期状態を不透明に設定
-        _currentThreshold = solidThreshold;
-        _currentTargetThreshold = solidThreshold;
+
+        _materialInstance = new Material(_baseMaterial);
+        _graphic.material = _materialInstance;
+
+        _currentThreshold = SOLID_THRESHOLD;
+        _currentTargetThreshold = SOLID_THRESHOLD;
         _materialInstance.SetFloat(DitherThreshold, _currentThreshold);
     }
 
+    // --- プロパティ更新処理 ---
     void Update()
     {
         if (_materialInstance == null) return;
-        
-        // 現在のしきい値が目標値と異なっていれば、滑らかに変化させる
+
         if (!Mathf.Approximately(_currentThreshold, _currentTargetThreshold))
         {
             _currentThreshold = Mathf.Lerp(_currentThreshold, _currentTargetThreshold, Time.deltaTime * fadeSpeed);
@@ -62,19 +79,14 @@ public class FadeableUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// UIを半透明状態にフェードさせます。
-    /// </summary>
+    // --- 外部からの命令を受け付けるメソッド ---
     public void FadeOut()
     {
         _currentTargetThreshold = fadedThreshold;
     }
 
-    /// <summary>
-    /// UIを不透明状態に戻します。
-    /// </summary>
     public void FadeIn()
     {
-        _currentTargetThreshold = solidThreshold;
+        _currentTargetThreshold = SOLID_THRESHOLD;
     }
 }

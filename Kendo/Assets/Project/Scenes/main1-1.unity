@@ -155,101 +155,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &213444694
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 213444695}
-  - component: {fileID: 213444697}
-  - component: {fileID: 213444696}
-  - component: {fileID: 213444698}
-  m_Layer: 5
-  m_Name: Kill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &213444695
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213444694}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2003146039}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -807.7, y: 423.7}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &213444696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213444694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 64c796eb681173449b1751c2af543331, type: 3}
-    m_FontSize: 60
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 6
-    m_MaxSize: 60
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: 000
---- !u!222 &213444697
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213444694}
-  m_CullTransparentMesh: 1
---- !u!114 &213444698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213444694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
 --- !u!1 &213706785
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,9 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &254493397
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,101 +505,6 @@ MonoBehaviour:
   - {fileID: 1765022628}
   - {fileID: 1611327930}
   - {fileID: 921240082}
---- !u!1 &473391528
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 473391529}
-  - component: {fileID: 473391531}
-  - component: {fileID: 473391530}
-  - component: {fileID: 473391532}
-  m_Layer: 5
-  m_Name: Score
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &473391529
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473391528}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2003146039}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -626.3, y: 491.9}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &473391530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473391528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 64c796eb681173449b1751c2af543331, type: 3}
-    m_FontSize: 60
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 300
-    m_Alignment: 2
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: 00000000000
---- !u!222 &473391531
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473391528}
-  m_CullTransparentMesh: 1
---- !u!114 &473391532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473391528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
 --- !u!1 &487327926
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,9 +634,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1001 &602616522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1120,11 +930,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5796719913864241500, guid: 84e11c48f2a3ef64786d8003017853a5, type: 3}
   m_PrefabInstance: {fileID: 635448332}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &655274140 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6075425175226249287, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
-  m_PrefabInstance: {fileID: 988917413}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &671246073
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,8 +980,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!114 &671246076
 MonoBehaviour:
@@ -1467,8 +1272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!114 &839094507
 MonoBehaviour:
@@ -1734,8 +1539,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!1 &956208945
 GameObject:
@@ -1825,9 +1630,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,7 +1827,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2884565923875132770, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
   m_PrefabInstance: {fileID: 988917413}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655274140}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c63bd1c5419e2e44fbfaadf38cc601d7, type: 3}
@@ -2039,6 +1844,7 @@ GameObject:
   - component: {fileID: 1061957383}
   - component: {fileID: 1061957385}
   - component: {fileID: 1061957384}
+  - component: {fileID: 1061957386}
   m_Layer: 5
   m_Name: waku
   m_TagString: Untagged
@@ -2103,6 +1909,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1061957382}
   m_CullTransparentMesh: 1
+--- !u!114 &1061957386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061957382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &1062883310
 GameObject:
   m_ObjectHideFlags: 0
@@ -2507,9 +2328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &1294453750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2603,8 +2424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!114 &1369869538
 MonoBehaviour:
@@ -2759,11 +2580,11 @@ MonoBehaviour:
   rollInterval: 0.1
   totalRollTime: 2
   resultDisplayTime: 2
+  max7Num: 3
   sevenImages:
   - {fileID: 518359227}
   - {fileID: 635448334}
   - {fileID: 602616524}
-  circleManager: {fileID: 655274140}
 --- !u!1001 &1462656171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2876,6 +2697,7 @@ GameObject:
   - component: {fileID: 1478791439}
   - component: {fileID: 1478791441}
   - component: {fileID: 1478791440}
+  - component: {fileID: 1478791442}
   m_Layer: 5
   m_Name: x
   m_TagString: Untagged
@@ -2940,6 +2762,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478791438}
   m_CullTransparentMesh: 1
+--- !u!114 &1478791442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478791438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &1611327928
 GameObject:
   m_ObjectHideFlags: 0
@@ -3028,8 +2865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!224 &1640623935 stripped
 RectTransform:
@@ -3129,8 +2966,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!1 &1788654671
 GameObject:
@@ -3220,9 +3057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &1839094753
 GameObject:
   m_ObjectHideFlags: 0
@@ -3311,9 +3148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &1853848702 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7675189486630332187, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
@@ -3439,8 +3276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 0}
   fadedThreshold: 0.6
-  solidThreshold: 0
   fadeSpeed: 5
 --- !u!1 &1968951829
 GameObject:
@@ -3531,9 +3368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  fadeSpeed: 20
 --- !u!1 &1987958802
 GameObject:
   m_ObjectHideFlags: 0
@@ -3683,8 +3520,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 384327549}
-  - {fileID: 473391529}
-  - {fileID: 213444695}
   - {fileID: 1294453751}
   - {fileID: 47677550}
   - {fileID: 1922337223}
@@ -3865,9 +3700,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedThreshold: 0.6
-  solidThreshold: 0
-  fadeSpeed: 5
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.3
+  fadeSpeed: 20
 --- !u!1 &2027190447
 GameObject:
   m_ObjectHideFlags: 0

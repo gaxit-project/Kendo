@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DitherFadeMaterial
-  m_Shader: {fileID: 4800000, guid: 5857fdc1f10b1a548babd430e8abfd18, type: 3}
+  m_Name: 1
+  m_Shader: {fileID: 4800000, guid: a9ef962dd10fa124f88553a48e76e21c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

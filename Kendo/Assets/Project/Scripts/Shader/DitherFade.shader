@@ -1,79 +1,108 @@
 Shader "Custom/DitherFade"
 {
+    // --- ƒCƒ“ƒXƒyƒNƒ^[‚É•\¦‚³‚ê‚éƒvƒƒpƒeƒB‚ğ’è‹` ---
     Properties
     {
-        // Imageã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å—ã‘å–ã‚‹ãŸã‚ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã€‚ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼ã«ã¯ã»ã¼è¡¨ç¤ºã•ã‚Œã¾ã›ã‚“ã€‚
+        // Unity‚ÌUI(Image‚È‚Ç)‚©‚çƒeƒNƒXƒ`ƒƒî•ñ‚ğó‚¯æ‚é‚½‚ß‚Ì•W€“I‚ÈƒvƒƒpƒeƒB
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        // ãƒ‡ã‚£ã‚¶ãƒªãƒ³ã‚°ã®ã—ãã„å€¤ã‚’èª¿æ•´ã™ã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+        // C#ƒXƒNƒŠƒvƒg‚©‚ç‘€ì‚·‚é‚½‚ß‚ÌAƒfƒBƒUƒŠƒ“ƒO‚Ìè‡’li“§–¾“xj‚ğ’²®‚·‚éƒvƒƒpƒeƒB
         [Range(0.0, 1.0)]
         _DitherThreshold ("Dither Threshold", Float) = 0.5
     }
+
+    // --- ƒVƒF[ƒ_[–{‘Ì ---
     SubShader
     {
-        // UIç”¨ã®ã‚¿ã‚°è¨­å®š
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
-        LOD 100
+        // --- ƒŒƒ“ƒ_ƒŠƒ“ƒO•û–@‚ÉŠÖ‚·‚éİ’è ---
+        Tags
+        {
+            "Queue"="Transparent"      // •`‰æ‡˜‚ğ“§–¾ƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Äˆµ‚¤
+            "RenderType"="Transparent" // Unity‚É‚±‚ÌƒVƒF[ƒ_[‚ª“§‰ßˆ—‚ğs‚¤‚à‚Ì‚Å‚ ‚é‚Æ“`‚¦‚é
+            "IgnoreProjector"="True"   // ƒvƒƒWƒFƒNƒ^[i“Áê‚Èƒ‰ƒCƒeƒBƒ“ƒOj‚Ì‰e‹¿‚ğó‚¯‚È‚¢‚æ‚¤‚É‚·‚é
+        }
 
+        // --- •`‰æƒpƒX ---
         Pass
         {
-            Blend SrcAlpha OneMinusSrcAlpha // é€šå¸¸ã®UIã¨åŒã˜ã‚¢ãƒ«ãƒ•ã‚¡ãƒ–ãƒ¬ãƒ³ãƒ‡ã‚£ãƒ³ã‚°
-            Cull Off
-            ZWrite Off
+            // --- ƒŒƒ“ƒ_[ƒXƒe[ƒg‚Ìİ’è ---
+            Blend SrcAlpha OneMinusSrcAlpha // ’Êí‚ÌUI‚Åg‚í‚ê‚éA‚²‚­ˆê”Ê“I‚ÈƒAƒ‹ƒtƒ@ƒuƒŒƒ“ƒfƒBƒ“ƒOİ’è
+            Cull Off                       // ƒ|ƒŠƒSƒ“‚Ì— –Ê‚ğ•`‰æ‚·‚éiUI‚Å‚Í’ÊíOffj
+            ZWrite Off                     // [“xƒoƒbƒtƒ@‚Ö‚Ì‘‚«‚İ‚ğ‚µ‚È‚¢iUI‚Å‚Í’ÊíOffj
 
+            // --- ‚±‚±‚©‚ç‚ªƒVƒF[ƒ_[ƒvƒƒOƒ‰ƒ€–{‘Ì ---
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+            // g—p‚·‚éƒVƒF[ƒ_[ŠÖ”‚ğ’è‹`
+            #pragma vertex vert   // ’¸“_ƒVƒF[ƒ_[‚Æ‚µ‚ÄvertŠÖ”‚ğg—p
+            #pragma fragment frag // ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚Æ‚µ‚ÄfragŠÖ”‚ğg—p
             
+            // Unity‚Ì•W€“I‚ÈƒVƒF[ƒ_[•Ï”‚âŠÖ”‚ğ’è‹`‚µ‚½ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
             #include "UnityCG.cginc"
 
+            // --- \‘¢‘Ì‚Ì’è‹` ---
+
+            // ’¸“_ƒVƒF[ƒ_[‚Ö‚Ì“ü—Íƒf[ƒ^\‘¢
             struct appdata
             {
-                float4 vertex   : POSITION;
-                float4 color    : COLOR;      // â˜… Imageã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®Colorãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’å—ã‘å–ã‚‹
-                float2 uv       : TEXCOORD0;
+                float4 vertex   : POSITION;  // ’¸“_À•W
+                float4 color    : COLOR;     // ImageƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌColorƒvƒƒpƒeƒB
+                float2 uv       : TEXCOORD0; // ƒeƒNƒXƒ`ƒƒ‚ÌUVÀ•W
             };
 
+            // ’¸“_ƒVƒF[ƒ_[‚©‚çƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚Ö“n‚·ƒf[ƒ^\‘¢
             struct v2f
             {
-                float4 vertex   : SV_POSITION;
-                float4 color    : COLOR;      // â˜… ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸é ‚ç‚¹ã‚«ãƒ©ãƒ¼ã‚’æ¸¡ã™
-                float2 uv       : TEXCOORD0;
-                float4 screenPos: TEXCOORD1;
+                float4 vertex   : SV_POSITION; // ƒXƒNƒŠ[ƒ“ã‚Ì’¸“_À•W
+                float4 color    : COLOR;       // •âŠÔ‚³‚ê‚½’¸“_ƒJƒ‰[
+                float2 uv       : TEXCOORD0;   // •âŠÔ‚³‚ê‚½UVÀ•W
+                float4 screenPos: TEXCOORD1;   // ƒfƒBƒUƒŠƒ“ƒOŒvZ—p‚ÌƒXƒNƒŠ[ƒ“À•W
             };
 
-            sampler2D _MainTex;
-            float _DitherThreshold;
+            // --- ƒOƒ[ƒoƒ‹•Ï” ---
+            sampler2D _MainTex;       // Properties‚Å’è‹`‚µ‚½ƒeƒNƒXƒ`ƒƒ
+            float _DitherThreshold;   // Properties‚Å’è‹`‚µ‚½ƒfƒBƒU‚Ìè‡’l
 
+            // --- ’¸“_ƒVƒF[ƒ_[ ---
+            // ƒƒbƒVƒ…‚ÌŠe’¸“_‚É‘Î‚µ‚ÄŒÄ‚Î‚ê‚éŠÖ”
             v2f vert (appdata v)
             {
-                v2f o;
+                v2f o; // o—Í—p‚Ì\‘¢‘Ì‚ğ€”õ
+                // ’¸“_À•W‚ğ3D‹óŠÔ‚©‚çƒXƒNƒŠ[ƒ“ã‚Ì2DÀ•W‚É•ÏŠ·
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                // ƒfƒBƒUƒŠƒ“ƒOŒvZ—p‚ÉAƒXƒNƒŠ[ƒ“À•W‚ğ•Ê“rŒvZ‚µ‚Ä•Û
                 o.screenPos = ComputeScreenPos(o.vertex);
                 
+                // UVÀ•W‚ÆƒJƒ‰[‚ğƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚É‚»‚Ì‚Ü‚Ü“n‚·
                 o.uv = v.uv;
-                o.color = v.color; // â˜… é ‚ç‚¹ã‚«ãƒ©ãƒ¼ã‚’ãã®ã¾ã¾ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸
+                o.color = v.color;
                 return o;
             }
             
-            // Interleaved Gradient Noise ã‚’è¨ˆç®—ã™ã‚‹é–¢æ•°
+            //  Interleaved Gradient NoiseŠÖ” 
+            // ƒXƒNƒŠ[ƒ“À•W‚ğŒ³‚ÉA‚•i¿‚ÈƒmƒCƒY’l‚ğ¶¬‚·‚é
             float interleavedGradientNoise(float2 screenPos)
             {
                 float magic = 0.06711056 * screenPos.x + 0.00583715 * screenPos.y;
                 return frac(52.9829189 * frac(magic));
             }
 
+            // --- ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[ ---
+            // ƒXƒNƒŠ[ƒ“ã‚ÌŠeƒsƒNƒZƒ‹‚É‘Î‚µ‚ÄŒÄ‚Î‚ê‚éŠÖ”
             fixed4 frag (v2f i) : SV_TARGET
             {
-                // --- ãƒ‡ã‚£ã‚¶ãƒªãƒ³ã‚°å‡¦ç†ï¼ˆå¤‰æ›´ãªã—ï¼‰ ---
-                float2 screenUV = i.screenPos.xy / i.screenPos.w;
-                float2 screenPixelPos = screenUV * _ScreenParams.xy;
-                float noise = interleavedGradientNoise(screenPixelPos);
-                clip(noise - _DitherThreshold);
-
-                // --- â˜…è‰²ã®è¨ˆç®—æ–¹æ³•ã‚’ä¿®æ­£ ---
-                // Imageã®ãƒ†ã‚¯ã‚¹ãƒãƒ£è‰²ã¨ã€Imageã®Colorãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(i.color)ã‚’ä¹—ç®—ã™ã‚‹
-                // ã“ã‚Œã«ã‚ˆã‚Šã€Unityã®æ¨™æº–UIã¨åŒã˜è‰²ã®ä»˜ãæ–¹ã«ãªã‚Šã¾ã™ã€‚
+                // Image‚Éİ’è‚³‚ê‚½ƒeƒNƒXƒ`ƒƒ‚ÌF‚ÆAColorƒvƒƒpƒeƒB‚ÌF‚ğæZ‚·‚é
                 fixed4 finalColor = tex2D(_MainTex, i.uv) * i.color;
+                
+                // ƒmƒCƒY’l‚ğŒvZ
+                // ƒXƒNƒŠ[ƒ“À•W‚ğæ“¾
+                float2 screenPixelPos = i.screenPos.xy / i.screenPos.w * _ScreenParams.xy;
+                // ƒmƒCƒYŠÖ”‚ğŒÄ‚Ño‚µA0.0`1.0‚Ì”ÍˆÍ‚ÌƒmƒCƒY’l‚ğæ“¾
+                float noise = interleavedGradientNoise(screenPixelPos);
+
+                // ‘å‚«‚¯‚ê‚ÎA‚±‚ÌƒsƒNƒZƒ‹‚Í•\¦(alpha=1.0)A‚»‚¤‚Å‚È‚¯‚ê‚Î”ñ•\¦(alpha=0.0)
+                float ditherAlpha = _DitherThreshold > noise ? 1.0 : 0.0;
+
+                // ŒvZ‚µ‚½ƒfƒBƒU‚ÌƒAƒ‹ƒtƒ@’l‚ğæZ‚·‚é
+                finalColor.a *= ditherAlpha;
                 
                 return finalColor;
             }

@@ -103,6 +103,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7387ee115e9e4b544b189cef95b2de19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mass: 0.1
+  restitution: 1
+  drag: 0
+  stopThreshold: 0.1
+  maxBounceCount: 2
+  wallCheckRadius: 1
+  wallCheckDistance: 0.5
 --- !u!54 &138768045180058632
 Rigidbody:
   m_ObjectHideFlags: 0
