@@ -14,7 +14,7 @@ public class ResultManager : MonoBehaviour
     {
         targetScore = PlayerPrefs.GetInt("TotalScore", 0);
         currentDisplayScore = 0f;
-        scoreText.text = "Score: 0";
+        scoreText.text = "Score : 0";
         SoundSE.Instance?.Play("Count");
     }
 
@@ -25,7 +25,7 @@ public class ResultManager : MonoBehaviour
             timer += Time.deltaTime;
             float progress = Mathf.Clamp01(timer / countUpDuration);
             currentDisplayScore = Mathf.Lerp(0, targetScore, progress);
-            scoreText.text = $"Score: {Mathf.FloorToInt(currentDisplayScore)}";
+            scoreText.text = $"Score : {Mathf.FloorToInt(currentDisplayScore)}";
         }
     }
 }
