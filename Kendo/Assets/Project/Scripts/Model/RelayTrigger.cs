@@ -1,0 +1,23 @@
+using UnityEngine;
+
+public class RelayTrigger : MonoBehaviour
+{
+    private BreakCircle parent;
+
+    private void Start()
+    {
+        parent = GetComponentInParent<BreakCircle>();
+        if (parent == null)
+        {
+            Debug.LogWarning("êeÇ… BreakCircle Ç™å©Ç¬Ç©ÇËÇ‹ÇπÇÒ");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (parent != null)
+        {
+            parent.OnHitRelayFromChild(other);
+        }
+    }
+}
