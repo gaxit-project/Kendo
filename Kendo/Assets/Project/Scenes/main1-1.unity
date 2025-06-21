@@ -2118,7 +2118,7 @@ MonoBehaviour:
   playerTag: Player
   suckDuration: 1.5
   initialScale: {x: 0, y: 0, z: 0}
-  expandRatePerSecond: 0.01
+  expandRatePerSecond: 0.3
   shrinkFactor: 0.9
   circleManager: {fileID: 988917414}
 --- !u!1 &1213091444 stripped
