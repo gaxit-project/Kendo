@@ -1827,7 +1827,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2884565923875132770, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
   m_PrefabInstance: {fileID: 988917413}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1474199699}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c63bd1c5419e2e44fbfaadf38cc601d7, type: 3}
@@ -2585,6 +2585,7 @@ MonoBehaviour:
   - {fileID: 518359227}
   - {fileID: 635448334}
   - {fileID: 602616524}
+  circlemanager: {fileID: 1474199699}
 --- !u!1001 &1462656171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2686,6 +2687,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 722494f41297ced43bff0b521d3aac0b, type: 3}
+--- !u!1 &1474199699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6075425175226249287, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
+  m_PrefabInstance: {fileID: 988917413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1478791438
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class GachaManager : MonoBehaviour
     [Header("Triple7")]
     [SerializeField] private int max7Num = 3;           // 7を揃える数．3以外は想定してません．
     [SerializeField] private GameObject[] sevenImages;  // 7のオブジェクト
+    [SerializeField] private GameObject circlemanager;  // CircleManagerオブジェクト
 
     private int Triple7Cnt = 0;
 
@@ -156,6 +157,7 @@ public class GachaManager : MonoBehaviour
             foreach (BreakableObstacle wall in walls)
             {
                 wall.gameObject.SetActive(false);
+                circlemanager.SetActive(false);
             }
         }
     }
