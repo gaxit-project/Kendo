@@ -12,8 +12,10 @@ public class BlackhallManager : MonoBehaviour
     [Header("ExpandOption")]
     [SerializeField] private Vector3 initialScale = new Vector3(1f, 1f, 1f);
     [SerializeField] private float expandRatePerSecond = 0.1f;  // ŠÔ‚²‚Æ‚ÌŠg‘å—¦
+    [SerializeField] private float expandRatePerMinute = 0.1f;  // 1•ª‚²‚Æ‚ÌŠg‘å—¦‚ÌŠg‘å—¦
     [SerializeField] private float shrinkFactor = 0.9f;         // ‹z‚¢‚İ‚²‚Æ‚Ìk¬—¦i—áF90%j
     [SerializeField] private CircleManager circleManager;
+    private float CntTime = 0f;
 
 
     private void Awake()
@@ -28,6 +30,14 @@ public class BlackhallManager : MonoBehaviour
 
     private void Update()
     {
+        CntTime += Time.deltaTime;
+
+        if (CntTime > 60f)
+        {
+            expandRatePerSecond += expandRatePerMinute;
+            CntTime = 0f;
+        }
+
         // –ˆ•b­‚µ‚¸‚Â‘å‚«‚­‚·‚é
         Vector3 scale = transform.localScale;
         scale.x += expandRatePerSecond * Time.deltaTime;
