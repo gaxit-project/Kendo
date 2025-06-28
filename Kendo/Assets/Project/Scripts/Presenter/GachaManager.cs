@@ -8,7 +8,7 @@ public class GachaManager : MonoBehaviour
     public static GachaManager Instance { get; private set; }
 
     [Header("Gacha")]
-    [SerializeField] private Image gachaImage;                  //ガチャのImageコンポーネント
+    [SerializeField] private Image gachaImage;                  //ガチャのImage
     [SerializeField] private Sprite[] rollingSprites;           //各種アイテム画像
     [SerializeField] private float rollInterval = 0.1f;         //ガチャの回転間隔
     [SerializeField] private float totalRollTime = 2.0f;        //ガチャの回転時間
@@ -38,6 +38,9 @@ public class GachaManager : MonoBehaviour
         {
             obj.SetActive(false);
         }
+
+        // ガチャImage非アクティブ
+        gachaImage.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -51,6 +54,7 @@ public class GachaManager : MonoBehaviour
         if (!isRolling)
         {
             StartCoroutine(GachaStart());
+            gachaImage.gameObject.SetActive(true);
             Debug.Log("ガチャスタート！");
         }
         else
