@@ -52,9 +52,31 @@ MonoBehaviour:
   - name: Bom
     clip: {fileID: 8300000, guid: 7f065fc8c31cb0a4db17e98abc32c22b, type: 3}
   - name: Explosion
-    clip: {fileID: 8300000, guid: 23f94973f5f88ca49804bfb3d80abf19, type: 3}
+    clip: {fileID: 8300000, guid: f7221e1960a602247bf12e61380bcdee, type: 3}
   - name: warp
-    clip: {fileID: 8300000, guid: c21ee91e08a564e4a855ef796e62de12, type: 3}
+    clip: {fileID: 8300000, guid: 00448579dd5bd3e4fb40d63e7812ec20, type: 3}
+  - name: Count
+    clip: {fileID: 8300000, guid: fcc4aec03392fb048b15c3ced268caab, type: 3}
+  - name: Damage
+    clip: {fileID: 8300000, guid: 8cf16751700f65f45ad3bf0c2f21547a, type: 3}
+  - name: Select
+    clip: {fileID: 8300000, guid: 1c8372fb60081094e989efd693ad7182, type: 3}
+  - name: Enter
+    clip: {fileID: 8300000, guid: a22f977b34ff1e64097282cfdf8338f7, type: 3}
+  - name: Cancel
+    clip: {fileID: 8300000, guid: ff858dec4e52e554caea3fcf677a3e94, type: 3}
+  - name: BomTime
+    clip: {fileID: 8300000, guid: 13597dc3fb8426e49bdc3c0244e08451, type: 3}
+  - name: Elect
+    clip: {fileID: 8300000, guid: 0001bf50545e17141804137887deba05, type: 3}
+  - name: Hit
+    clip: {fileID: 8300000, guid: f0d901574458022429132f0633ecd3ea, type: 3}
+  - name: NoAmmo
+    clip: {fileID: 8300000, guid: 4a69a43d4ca2144458252026db47d214, type: 3}
+  - name: reloadStart
+    clip: {fileID: 8300000, guid: 2ff00c787948ad04a9ae1d89eef3add2, type: 3}
+  - name: reloadEnd
+    clip: {fileID: 8300000, guid: 530f343a1782e8e4fa3f10041a75148c, type: 3}
 --- !u!82 &1911262532735681534
 AudioSource:
   m_ObjectHideFlags: 0

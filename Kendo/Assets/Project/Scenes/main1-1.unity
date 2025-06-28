@@ -194,7 +194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96501e069a848504093916a5002ff858, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40f0c2867d48ab643b791074f169f334, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!114 &760200816
@@ -1613,7 +1613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!1 &956208945
@@ -2401,7 +2401,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96501e069a848504093916a5002ff858, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40f0c2867d48ab643b791074f169f334, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2968,7 +2968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!224 &1640623935 stripped
@@ -3069,7 +3069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!1 &1770590154
@@ -3122,7 +3122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!114 &1770590157
@@ -3229,7 +3229,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96501e069a848504093916a5002ff858, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40f0c2867d48ab643b791074f169f334, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

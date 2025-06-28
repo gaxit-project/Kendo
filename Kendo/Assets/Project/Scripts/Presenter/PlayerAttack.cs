@@ -62,9 +62,6 @@ public class PlayerAttack : MonoBehaviour
                 return;
             }
 
-            // 残弾数があるなら発射
-            // 残弾数がないならリロード(2秒ほど?)
-
 
             if(0 < currentAmmo)
             {
@@ -84,7 +81,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                // リロード中なら弾を撃てない(カスッと音を鳴らす)
+                SoundSE.Instance?.Play("NoAmmo");
             }
         }
     }
@@ -108,7 +105,7 @@ public class PlayerAttack : MonoBehaviour
     {
         _isReloading = true;
         Debug.Log("リロード開始...");
-        SoundSE.Instance?.Play("Reload"); // リロード開始音
+        SoundSE.Instance?.Play("reloadStart");
 
         // 指定した時間だけ処理を待つ
         yield return new WaitForSeconds(reloadTime);
@@ -118,6 +115,7 @@ public class PlayerAttack : MonoBehaviour
         _isReloading = false;
 
         Debug.Log("リロード完了！");
-        
+        SoundSE.Instance?.Play("reloadEnd");
+
     }
 }
