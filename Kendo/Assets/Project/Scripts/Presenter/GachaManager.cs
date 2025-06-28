@@ -81,7 +81,6 @@ public class GachaManager : MonoBehaviour
         {
             index = Random.Range(0, rollingSprites.Length);
         }
-        index = 4;
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
 

@@ -2667,9 +2667,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gachaImage: {fileID: 956208947}
   rollingSprites:
-  - {fileID: 21300000, guid: 96501e069a848504093916a5002ff858, type: 3}
-  - {fileID: 21300000, guid: a5e3c8d7d8345464da451e9a051e3275, type: 3}
-  - {fileID: 21300000, guid: 61db86d24e8cbeb49b5e2798cda3dcf1, type: 3}
+  - {fileID: 21300000, guid: 40f0c2867d48ab643b791074f169f334, type: 3}
+  - {fileID: 21300000, guid: da5dc9001d849cf47accec680f4139a8, type: 3}
+  - {fileID: 21300000, guid: e15c3b1363a25e743b40873eda822ae2, type: 3}
   - {fileID: 21300000, guid: 84e7084e89333d847a82916db1ca1051, type: 3}
   - {fileID: 21300000, guid: e055fddfd0626314b8d53693f04cf955, type: 3}
   rollInterval: 0.1
@@ -2681,7 +2681,8 @@ MonoBehaviour:
   - {fileID: 635448334}
   - {fileID: 602616524}
   circlemanager: {fileID: 1474199699}
-  destroyEffectPrefab: {fileID: 0}
+  destroyEffectPrefab: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
+  WallDeactiveTime: 60
 --- !u!1001 &1462656171
 PrefabInstance:
   m_ObjectHideFlags: 0
