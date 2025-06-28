@@ -8,9 +8,9 @@ public class PlayerBom : MonoBehaviour
     public static bool bom;
 
     [SerializeField] private int maxBomCount = 3;
-    private int currentBomCount = 1;
+    private int currentBomCount = 0;
 
-    [SerializeField] private float bomDuration = 5f; // ƒ{ƒ€‚ÌŒø‰ÊŠÔi•bj
+    [SerializeField] private float bomDuration = 5f; // ãƒœãƒ ã®åŠ¹æœæ™‚é–“ï¼ˆç§’ï¼‰
 
     public static PlayerBom Instance { get; private set; }
 
@@ -45,7 +45,7 @@ public class PlayerBom : MonoBehaviour
             //SE
             SoundSE.Instance?.Play("BomTime");
 
-            // ˆê’èŠÔŒã‚Éƒ{ƒ€Œø‰Ê‰ğœ
+            // ä¸€å®šæ™‚é–“å¾Œã«ãƒœãƒ åŠ¹æœè§£é™¤
             StartCoroutine(BomCooldown());
         }
     }
@@ -55,7 +55,7 @@ public class PlayerBom : MonoBehaviour
         bom = false;
     }
 
-    // ŠO•”‚©‚çƒ{ƒ€‚ğ’Ç‰Á‚·‚é—p
+    // å¤–éƒ¨ã‹ã‚‰ãƒœãƒ ã‚’è¿½åŠ ã™ã‚‹ç”¨
     public void AddBom()
     {
         if (currentBomCount < maxBomCount)
@@ -63,19 +63,19 @@ public class PlayerBom : MonoBehaviour
             currentBomCount++;
         }
     }
-    // ŠO•”QÆ—p‚ÌBomŒÂ”
+    // å¤–éƒ¨å‚ç…§ç”¨ã®Bomå€‹æ•°
     public int GetBomCount()
     {
         return currentBomCount;
     }
 
-    // UI“™‚Ì•\¦ƒŠƒtƒŒƒbƒVƒ…
+    // UIç­‰ã®è¡¨ç¤ºãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
     public int GetMaxBomCount()
     {
         return maxBomCount;
     }
 
-    //ƒKƒ`ƒƒŒ‹‰Ê‚Åƒ{ƒ€‚ªo‚½ê‡‚É‘¦‹N“®‚·‚é—p
+    //ã‚¬ãƒãƒ£çµæœã§ãƒœãƒ ãŒå‡ºãŸå ´åˆã«å³èµ·å‹•ã™ã‚‹ç”¨
     public void GachaBom()
     {
         bom = true;
@@ -83,7 +83,7 @@ public class PlayerBom : MonoBehaviour
         //SE
         SoundSE.Instance?.Play("BomTime");
 
-        // ˆê’èŠÔŒã‚Éƒ{ƒ€Œø‰Ê‰ğœ
+        // ä¸€å®šæ™‚é–“å¾Œã«ãƒœãƒ åŠ¹æœè§£é™¤
         StartCoroutine(BomCooldown());
     }
 }

@@ -33,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
 
 
         _attackAction.action.performed += OnAttack;
-        // ƒCƒxƒ“ƒg‚ÉAƒRƒ‹[ƒ`ƒ“‚ğŠJn‚·‚éƒƒ\ƒbƒh‚ğ“o˜^iw“Çj
+        // ã‚¤ãƒ™ãƒ³ãƒˆã«ã€ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’é–‹å§‹ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ç™»éŒ²ï¼ˆè³¼èª­ï¼‰
         OnReloadRequired += HandleReload;
     }
 
@@ -45,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
     private void OnDestroy()
     {
         _attackAction.action.performed -= OnAttack;
-        // ƒIƒuƒWƒFƒNƒg”jŠü‚ÉƒCƒxƒ“ƒg‚Ì“o˜^‚ğ‰ğœ
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„æ™‚ã«ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²ã‚’è§£é™¤
         OnReloadRequired -= HandleReload;
     }
 
@@ -74,7 +74,7 @@ public class PlayerAttack : MonoBehaviour
 
                 currentAmmo--;
 
-                if (currentAmmo >= 0)
+                if (currentAmmo <= 0)
                 {
                     OnReloadRequired?.Invoke();
                 }
@@ -87,11 +87,11 @@ public class PlayerAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// OnReloadRequiredƒCƒxƒ“ƒg‚É‰“š‚µ‚ÄAƒŠƒ[ƒhƒRƒ‹[ƒ`ƒ“‚ğŠJn‚·‚é
+    /// OnReloadRequiredã‚¤ãƒ™ãƒ³ãƒˆã«å¿œç­”ã—ã¦ã€ãƒªãƒ­ãƒ¼ãƒ‰ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’é–‹å§‹ã™ã‚‹
     /// </summary>
     private void HandleReload()
     {
-        // ˜A‘±‚ÅŒÄ‚Î‚ê‚Ä‚à‘åä•v‚È‚æ‚¤‚ÉAƒŠƒ[ƒh’†‚Å‚È‚¯‚ê‚ÎŠJn‚·‚é
+        // é€£ç¶šã§å‘¼ã°ã‚Œã¦ã‚‚å¤§ä¸ˆå¤«ãªã‚ˆã†ã«ã€ãƒªãƒ­ãƒ¼ãƒ‰ä¸­ã§ãªã‘ã‚Œã°é–‹å§‹ã™ã‚‹
         if (!_isReloading)
         {
             StartCoroutine(RelodeAmmo());
@@ -99,22 +99,22 @@ public class PlayerAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒŠƒ[ƒhˆ—‚ğs‚¤ƒRƒ‹[ƒ`ƒ“
+    /// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†ã‚’è¡Œã†ã‚³ãƒ«ãƒ¼ãƒãƒ³
     /// </summary>
     private IEnumerator RelodeAmmo()
     {
         _isReloading = true;
-        Debug.Log("ƒŠƒ[ƒhŠJn...");
+        Debug.Log("ãƒªãƒ­ãƒ¼ãƒ‰é–‹å§‹...");
         SoundSE.Instance?.Play("reloadStart");
 
-        // w’è‚µ‚½ŠÔ‚¾‚¯ˆ—‚ğ‘Ò‚Â
+        // æŒ‡å®šã—ãŸæ™‚é–“ã ã‘å‡¦ç†ã‚’å¾…ã¤
         yield return new WaitForSeconds(reloadTime);
 
-        // ’e‚ğ•â[
+        // å¼¾ã‚’è£œå……
         currentAmmo = maxAmmo;
         _isReloading = false;
 
-        Debug.Log("ƒŠƒ[ƒhŠ®—¹I");
+        Debug.Log("ãƒªãƒ­ãƒ¼ãƒ‰å®Œäº†ï¼");
         SoundSE.Instance?.Play("reloadEnd");
 
     }
