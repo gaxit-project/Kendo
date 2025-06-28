@@ -16,9 +16,10 @@ public class GachaManager : MonoBehaviour
     private bool isRolling = false;
 
     [Header("Triple7")]
-    [SerializeField] private int max7Num = 3;           // 7を揃える数．3以外は想定してません．
-    [SerializeField] private GameObject[] sevenImages;  // 7のオブジェクト
-    [SerializeField] private GameObject circlemanager;  // CircleManagerオブジェクト
+    [SerializeField] private int max7Num = 3;                   // 7を揃える数．3以外は想定してません．
+    [SerializeField] private GameObject[] sevenImages;          // 7のオブジェクト
+    [SerializeField] private GameObject circlemanager;          // CircleManagerオブジェクト
+    [SerializeField] private GameObject destroyEffectPrefab;    // エフェクトのプレハブ
 
     private int Triple7Cnt = 0;
 
@@ -69,6 +70,7 @@ public class GachaManager : MonoBehaviour
 
         // ランダムなアイテムを表示
         index = Random.Range(0, rollingSprites.Length);
+        index = 4;
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
 
@@ -137,6 +139,8 @@ public class GachaManager : MonoBehaviour
     // トリプル7
     private void triple7()
     {
+        SoundSE.Instance?.Play("Explosion");
+
         if (Triple7Cnt >= max7Num)
         {
             return;
@@ -156,6 +160,16 @@ public class GachaManager : MonoBehaviour
 
             foreach (BreakableObstacle wall in walls)
             {
+                if (destroyEffectPrefab != null)
+                {
+                    Transform child = wall.transform.Find("Cube");
+                    Vector3 effectPos = child.position;
+                    Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
+                    GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
+                    effect.transform.localScale *= 2f;
+                    Destroy(effect, 1f);
+                }
+
                 wall.gameObject.SetActive(false);
                 circlemanager.SetActive(false);
             }

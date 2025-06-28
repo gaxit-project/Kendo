@@ -230,5 +230,4 @@ public class MobManager : MonoBehaviour
         }
         mobPool.Enqueue(mob);
     }
-
 }
