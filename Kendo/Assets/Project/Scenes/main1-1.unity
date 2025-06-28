@@ -1616,97 +1616,6 @@ MonoBehaviour:
   _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
---- !u!1 &956208945
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 956208946}
-  - component: {fileID: 956208948}
-  - component: {fileID: 956208947}
-  - component: {fileID: 956208949}
-  m_Layer: 5
-  m_Name: Slot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &956208946
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956208945}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1968951830}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &956208947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956208945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: e20df2da91f0feb4baf2968baea4345d, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &956208948
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956208945}
-  m_CullTransparentMesh: 1
---- !u!114 &956208949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956208945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
-  fadedThreshold: 0.3
-  fadeSpeed: 20
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,6 +2123,7 @@ MonoBehaviour:
   suckDuration: 1.5
   initialScale: {x: 0, y: 0, z: 0}
   expandRatePerSecond: 0.3
+  expandRatePerMinute: 0.1
   shrinkFactor: 0.9
   circleManager: {fileID: 988917414}
 --- !u!1 &1213091444 stripped
@@ -2665,7 +2575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21eecb4a49a07cc4f84084d7d1c6fe43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gachaImage: {fileID: 956208947}
+  gachaImage: {fileID: 0}
   rollingSprites:
   - {fileID: 21300000, guid: 40f0c2867d48ab643b791074f169f334, type: 3}
   - {fileID: 21300000, guid: da5dc9001d849cf47accec680f4139a8, type: 3}
@@ -3503,8 +3413,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 956208946}
+  m_Children: []
   m_Father: {fileID: 869565995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
