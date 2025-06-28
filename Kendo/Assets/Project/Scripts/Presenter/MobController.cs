@@ -1,8 +1,101 @@
-﻿using System.Collections;
+﻿using System; // TimeSpanのために追加
+using System.Threading; // CancellationTokenのために追加
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+
+#region Attack State Pattern Classes (攻撃ステートパターンのためのクラス群)
+
+/// <summary>
+/// 攻撃ステートの振る舞いを定義する抽象基底クラス
+/// </summary>
+public abstract class AttackState
+{
+    protected float burstInterval = 0.4f; // 連射間隔
+
+    /// <summary>
+    /// 攻撃を実行する非同期メソッド
+    /// </summary>
+    /// <param name="mob">攻撃を実行するMob本体</param>
+    /// <param name="cancellationToken">攻撃を中断するためのトークン</param>
+    public abstract UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken);
+}
+
+/// <summary>
+/// 単発攻撃ステート
+/// </summary>
+public class SingleShotState : AttackState
+{
+    public override async UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken)
+    {
+        // ノックバック中、またはオブジェクトが破棄された場合は即時終了
+        if (mob.GetIsKnockback() || cancellationToken.IsCancellationRequested) return;
+
+        mob.PerformShot();
+        // UniTaskでは待機処理が不要な場合は書かなくてOK
+        await UniTask.CompletedTask;
+    }
+}
+
+/// <summary>
+/// 2連射攻撃ステート
+/// </summary>
+public class DoubleShotState : AttackState
+{
+    public override async UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            if (mob.GetIsKnockback() || cancellationToken.IsCancellationRequested) return;
+            mob.PerformShot();
+            // UniTask.Delayを使用して非同期で待機する
+            await UniTask.Delay(TimeSpan.FromSeconds(burstInterval), cancellationToken: cancellationToken);
+        }
+    }
+}
+
+/// <summary>
+/// 3連射攻撃ステート
+/// </summary>
+public class TripleShotState : AttackState
+{
+    public override async UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken)
+    {
+        
+        if (mob.GetIsKnockback() || cancellationToken.IsCancellationRequested) return;
+        mob.FanShot();
+        await UniTask.Delay(TimeSpan.FromSeconds(burstInterval), cancellationToken: cancellationToken);
+    }
+}
+
+/// <summary>
+/// 1回限りの特殊攻撃ステート
+/// </summary>
+public class SpecialAttackState : AttackState
+{
+    public override async UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken)
+    {
+        if (mob.GetIsKnockback() || cancellationToken.IsCancellationRequested) return;
+        mob.SuperShot();
+        await UniTask.Delay(TimeSpan.FromSeconds(0.1f), cancellationToken: cancellationToken);
+        
+        // 実行後、通常の攻撃パターンに戻す
+        mob.RevertToNormalAttackState();
+    }
+}
+
+
+#endregion
+
 
 public class MobController : MonoBehaviour
 {
+    [Header("mobパラメータ")]
+    [SerializeField, Tooltip("攻撃頻度"), Header("攻撃間隔")]
+    private float attackSpan = 4.0f;
+
+
+
+
     [Header("物理パラメータ")]
     [SerializeField, Tooltip("Mobの質量"), Header("質量")]
     private float mass = 1.0f;
@@ -31,8 +124,16 @@ public class MobController : MonoBehaviour
 
     // 外部コンポーネント/オブジェクトへの参照
     private GameObject player;
-    private Coroutine attackCoroutine;
+    // private Coroutine attackCoroutine; // UniTask化に伴い不要に
     private MaterialChanger materialChanger;
+    
+
+    private AttackState _currentAttackState; // 現在の攻撃ステート
+    private int _attackPhase = 0; // 現在の攻撃フェーズ（ステートの重複設定を防止）
+    private bool _hasPerformedSpecialAttack = false; // 特殊攻撃を一度実行したかのフラグ
+
+
+
 
     private void Awake()
     {
@@ -40,6 +141,14 @@ public class MobController : MonoBehaviour
         currentVelocity = Vector3.zero;
         player = GameObject.FindGameObjectWithTag("Player");
         materialChanger = GetComponent<MaterialChanger>();
+        
+
+        
+        // 初期ステートを設定
+        _currentAttackState = new SingleShotState();
+        _attackPhase = 1;
+
+
     }
 
     private void Update()
@@ -53,6 +162,12 @@ public class MobController : MonoBehaviour
         // ノックバック中でなければ通常の行動（向き変更や攻撃）
         if (!isKnockback)
         {
+            
+            // 経過時間に応じて攻撃ステートを更新
+            UpdateAttackStateBasedOnTime();
+            
+
+
             // プレイヤーを常に向く
             if (player != null && !PlayerBom.bom)
             {
@@ -65,13 +180,13 @@ public class MobController : MonoBehaviour
             if (!PlayerBom.bom)
             {
                 time += Time.deltaTime;
-                if (time >= 3f && player != null)
+                if (time >= attackSpan && player != null)
                 {
-                    if (attackCoroutine != null)
-                    {
-                        StopCoroutine(attackCoroutine);
-                    }
-                    StartCoroutine(FireStraightWithDelay());
+                    
+                    // コルーチンではなく、現在のステートの攻撃メソッドをUniTaskで実行
+                    // .Forget()で実行を待ち合わせず、次のフレームに進む（撃ちっぱなし）
+                    _currentAttackState.ExecuteAttack(this, this.GetCancellationTokenOnDestroy()).Forget();
+                    
                     time = 0f;
                 }
             }
@@ -105,6 +220,93 @@ public class MobController : MonoBehaviour
             }
         }
     }
+    
+    
+    /// <summary>
+    /// 経過時間に基づいて攻撃ステートを更新する
+    /// </summary>
+    private void UpdateAttackStateBasedOnTime()
+    {
+        float timer = ScoreManager.Instance.GetMinutes()*60 + ScoreManager.Instance.GetSeconds();
+        
+        // 5分経過 かつ 特殊攻撃をまだ実行していない場合
+        /*
+        if (timer > 20f && !_hasPerformedSpecialAttack)
+        {
+            _currentAttackState = new SpecialAttackState();
+            _hasPerformedSpecialAttack = true; // 一度実行したらフラグを立てる
+        }
+        */
+        // 特殊攻撃状態から通常状態に戻った後は、このロジックはスキップ
+        if (_currentAttackState is SpecialAttackState) return;
+
+        // 3分経過
+        if (timer > 180f && _attackPhase < 3)
+        {
+            _currentAttackState = new TripleShotState();
+            _attackPhase = 3;
+        }
+        // 1分経過
+        else if (timer > 60f && _attackPhase < 2)
+        {
+            _currentAttackState = new DoubleShotState();
+            _attackPhase = 2;
+        }
+    }
+
+    /// <summary>
+    /// 弾を発射する処理（各ステートから呼ばれるヘルパーメソッド）
+    /// </summary>
+    public void PerformShot()
+    {
+        BulletManager.Instance.SpawnBullet(transform.position, transform.forward.normalized * 8f);
+        SoundSE.Instance?.Play("Shot");
+    }
+    
+    public void FanShot()
+    {
+        
+        int fanBulletCount = 5;
+        float fanTotalAngle = 90f;
+        float fanBulletSpeed = 8f;
+        
+        // Mobの正面が、基準となるVector3.rightから何度ズレているかを計算
+        float centerAngle = Vector3.SignedAngle(Vector3.right, transform.forward, Vector3.up);
+
+        // ShootFanメソッドに渡す「開始角度」を計算
+        float startAngle = centerAngle - (fanTotalAngle / 2f);
+
+        // BulletPatterns.ShootFan に計算した引数を渡して呼び出す
+        BulletPatterns.ShootFan(
+            transform.position,      // 第1引数: Vector3 spawnPos
+            startAngle,         // 第2引数: float startAngle
+            fanTotalAngle,      // 第3引数: float totalAngle
+            fanBulletCount,     // 第4引数: int count
+            fanBulletSpeed      // 第5引数: float speed
+        );
+            
+        SoundSE.Instance?.Play("Shot");
+    }
+    
+    public void SuperShot()
+    {
+        BulletPatterns.ShootRandomSpread(transform.position, 8f,20);
+        
+        BulletManager.Instance.SpawnBullet(transform.position, transform.forward.normalized * 8f);
+        SoundSE.Instance?.Play("Shot");
+    }
+
+    /// <summary>
+    /// 特殊攻撃などが終わった後、現在の時間に応じた通常の攻撃状態に戻す
+    /// </summary>
+    public void RevertToNormalAttackState()
+    {
+        // _attackPhaseを0にリセットして、UpdateAttackStateBasedOnTimeに判定をやり直させる
+        _attackPhase = 0; 
+        UpdateAttackStateBasedOnTime();
+    }
+    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -210,12 +412,8 @@ public class MobController : MonoBehaviour
         isKnockback = true;
         bounceCount = 0;
         materialChanger?.SetKnockbackMaterial();
-
-        if (attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-            attackCoroutine = null;
-        }
+        
+        // attackCoroutineの管理は不要になったため削除
     }
 
     private void StopKnockback()
@@ -253,25 +451,8 @@ public class MobController : MonoBehaviour
         return false;
     }
 
-    // 3連弾攻撃コルーチン
-    private IEnumerator FireStraightWithDelay()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            // isKnockback状態になったら攻撃を即時中断する
-            if (isKnockback)
-            {
-                attackCoroutine = null;
-                yield break;
-            }
-
-            BulletManager.Instance.SpawnBullet(transform.position, transform.forward.normalized * 8f);
-            SoundSE.Instance?.Play("Shot");
-            yield return new WaitForSeconds(0.4f);
-        }
-        attackCoroutine = null;
-    }
-
+    // FireStraightWithDelay()コルーチンは不要になったため削除
+    
     // 外部から状態を取得するためのメソッド
     public bool GetIsKnockback() => isKnockback;
     public Vector3 GetKnockbackVelocity() => currentVelocity;
