@@ -31,7 +31,7 @@ public class CircleManager : MonoBehaviour
         }
     }
 
-    private void SpawnObstacles()
+    public void SpawnObstacles()
     {
         obstacles.Clear();
 

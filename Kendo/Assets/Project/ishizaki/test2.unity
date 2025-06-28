@@ -2587,6 +2587,7 @@ MonoBehaviour:
   - {fileID: 602616524}
   circlemanager: {fileID: 1474199699}
   destroyEffectPrefab: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
+  WallDeactiveTime: 5
 --- !u!1001 &1462656171
 PrefabInstance:
   m_ObjectHideFlags: 0

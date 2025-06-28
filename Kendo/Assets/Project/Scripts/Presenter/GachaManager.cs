@@ -20,8 +20,9 @@ public class GachaManager : MonoBehaviour
     [SerializeField] private GameObject[] sevenImages;          // 7のオブジェクト
     [SerializeField] private GameObject circlemanager;          // CircleManagerオブジェクト
     [SerializeField] private GameObject destroyEffectPrefab;    // エフェクトのプレハブ
-
+    [SerializeField] private float WallDeactiveTime = 60f;         // 障壁の消去時間
     private int Triple7Cnt = 0;
+    private bool isWallDeactive = false;
 
     private void Awake()
     {
@@ -37,6 +38,11 @@ public class GachaManager : MonoBehaviour
         {
             obj.SetActive(false);
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     //Mobがブラックホールに吸い込まれたら呼び出す
@@ -69,7 +75,12 @@ public class GachaManager : MonoBehaviour
         }
 
         // ランダムなアイテムを表示
+        // トリプル7の障壁消去発動中はトリプル7がでないようにする
         index = Random.Range(0, rollingSprites.Length);
+        while (isWallDeactive && index == 4)
+        {
+            index = Random.Range(0, rollingSprites.Length);
+        }
         index = 4;
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
@@ -139,13 +150,6 @@ public class GachaManager : MonoBehaviour
     // トリプル7
     private void triple7()
     {
-        SoundSE.Instance?.Play("Explosion");
-
-        if (Triple7Cnt >= max7Num)
-        {
-            return;
-        }
-
         if (sevenImages[Triple7Cnt] != null)
         {
             sevenImages[Triple7Cnt].SetActive(true);
@@ -156,23 +160,45 @@ public class GachaManager : MonoBehaviour
         // 3つ揃ったら壁消滅
         if (Triple7Cnt == max7Num)
         {
-            BreakableObstacle[] walls = FindObjectsByType<BreakableObstacle>(FindObjectsSortMode.None);
+            isWallDeactive = true;
 
-            foreach (BreakableObstacle wall in walls)
-            {
-                if (destroyEffectPrefab != null)
-                {
-                    Transform child = wall.transform.Find("Cube");
-                    Vector3 effectPos = child.position;
-                    Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
-                    GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
-                    effect.transform.localScale *= 2f;
-                    Destroy(effect, 1f);
-                }
-
-                wall.gameObject.SetActive(false);
-                circlemanager.SetActive(false);
-            }
+            StartCoroutine(WallBreak());
         }
+    }
+
+    IEnumerator WallBreak()
+    {
+        BreakableObstacle[] walls = FindObjectsByType<BreakableObstacle>(FindObjectsSortMode.None);
+
+        foreach (BreakableObstacle wall in walls)
+        {
+            SoundSE.Instance?.Play("Explosion");
+
+            if (destroyEffectPrefab != null)
+            {
+                Transform child = wall.transform.Find("Cube");
+                Vector3 effectPos = child.position;
+                Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
+                GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
+                effect.transform.localScale *= 2f;
+                Destroy(effect, 1f);
+            }
+
+            wall.gameObject.SetActive(false);
+        }
+        circlemanager.SetActive(false);
+
+        yield return new WaitForSeconds(WallDeactiveTime);
+
+        circlemanager.SetActive(true);
+        circlemanager.GetComponent<CircleManager>().SpawnObstacles();
+
+        foreach (GameObject image in sevenImages)
+        {
+            image.SetActive(false);
+        }
+        Triple7Cnt = 0;
+
+        isWallDeactive = false;
     }
 }
