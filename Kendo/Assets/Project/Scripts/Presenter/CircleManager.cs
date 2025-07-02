@@ -7,7 +7,7 @@ public class CircleManager : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField, Range(0f, 1f)] private float spawnChance = 0.8f;
     [SerializeField] private float rotateSpeed = 30f;
-    [SerializeField] private Vector3 initialCircleScale = new Vector3(1500f, 1500f, 172f);
+    [SerializeField] private Vector3 initialCircleScale = new Vector3(20f, 20f, 20f);
 
     private float currentSpeed = 0f;
     private List<GameObject> obstacles = new List<GameObject>();
@@ -44,7 +44,7 @@ public class CircleManager : MonoBehaviour
                 continue;
 
             float angle = i * angleStep;
-            Quaternion rotation = Quaternion.Euler(90, angle, 0);
+            Quaternion rotation = Quaternion.Euler(0, angle, 0);
             Vector3 spawnPosition = new Vector3(0, -8, 0);
             GameObject obj = Instantiate(obstaclePrefab, spawnPosition, rotation);
             obj.transform.localScale = initialCircleScale;
@@ -91,6 +91,7 @@ public class CircleManager : MonoBehaviour
 
     public void UpdateCircleScale(Vector3 blackHoleScale)
     {
+        
         float scaleRatio = blackHoleScale.x / 18f;
 
         foreach (GameObject obj in obstacles)
@@ -105,5 +106,6 @@ public class CircleManager : MonoBehaviour
                 sc.radius = 1f * scaleRatio; // ïKóvÇ…âûÇ∂Çƒîºåaèâä˙ílÇ…çáÇÌÇπÇƒí≤êÆ
             }
         }
+        
     }
 }
