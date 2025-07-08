@@ -1755,7 +1755,7 @@ PrefabInstance:
     - target: {fileID: 2884565923875132770, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
       propertyPath: obstaclePrefab
       value: 
-      objectReference: {fileID: 6533512446004895657, guid: 363fe060b36cc0946b546f1c0d088314, type: 3}
+      objectReference: {fileID: 1022093205015392424, guid: 3291e2c6b581d9047990a4d8e78bd0a1, type: 3}
     - target: {fileID: 2884565923875132770, guid: f2863a5308e88e84faeeabcdb989406c, type: 3}
       propertyPath: initialCircleScale.x
       value: 15
