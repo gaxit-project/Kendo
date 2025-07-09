@@ -32,8 +32,8 @@ public class PlayerHP : MonoBehaviour
     {
         if (isDead) return;
         currentHP--;
-        Debug.Log($"������� HP: {currentHP}");
-
+        Debug.Log($"くらった HP: {currentHP}");
+        SoundSE.Instance?.Play("Damage");
         if (currentHP <= 0)
         {
             isDead = true;
