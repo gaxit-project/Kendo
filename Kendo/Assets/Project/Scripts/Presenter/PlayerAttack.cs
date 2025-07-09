@@ -7,20 +7,41 @@ public class PlayerAttack : MonoBehaviour
 {
     public static PlayerAttack Instance { get; private set; }
 
+    [Header("Attack Settings")]
     [SerializeField] private InputActionReference _attackAction;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
+
+    [Header("Ammo Settings")]
     [SerializeField] private int maxAmmo;
-    [SerializeField] private int currentAmmo;
     [SerializeField] private float reloadTime;
-
-    public event Action OnReloadRequired;
+    
+    private int currentAmmo;
     private bool _isReloading = false;
+    
+    // --- ↓UI通知用のイベントを追加↓ ---
+    /// <summary>
+    /// ゲーム開始時にUIを初期化するために発火 (最大弾数を渡す)
+    /// </summary>
+    public event Action<int> OnAmmoInitialized;
+    
+    /// <summary>
+    /// 弾を発射した時に発火 (残りの弾数を渡す)
+    /// </summary>
+    public event Action<int> OnShotFired;
+    
+    /// <summary>
+    /// リロードが1発分進むたびに発火 (リロードされた弾のインデックスを渡す)
+    /// </summary>
+    public event Action<int> OnReloadProgress;
+    
+    /// <summary>
+    /// リロードが完了した時に発火
+    /// </summary>
+    public event Action OnReloadComplete;
+    // --- ↑UI通知用のイベントを追加↑ ---
 
-    public int GetCurrentAmmo()
-    {
-        return currentAmmo;
-    }
+    public int GetCurrentAmmo() => currentAmmo;
 
     private void Awake()
     {
@@ -31,22 +52,19 @@ public class PlayerAttack : MonoBehaviour
         }
         Instance = this;
 
-
         _attackAction.action.performed += OnAttack;
-        // イベントに、コルーチンを開始するメソッドを登録（購読）
-        OnReloadRequired += HandleReload;
     }
 
     private void Start()
     {
         currentAmmo = maxAmmo;
+        // UIの初期化イベントを発火
+        OnAmmoInitialized?.Invoke(maxAmmo);
     }
 
     private void OnDestroy()
     {
         _attackAction.action.performed -= OnAttack;
-        // オブジェクト破棄時にイベントの登録を解除
-        OnReloadRequired -= HandleReload;
     }
 
     private void OnEnable() => _attackAction.action.Enable();
@@ -54,6 +72,13 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
+        // リロード中は何もしない
+        if (_isReloading)
+        {
+            SoundSE.Instance?.Play("NoAmmo");
+            return;
+        }
+        
         if (Time.timeScale != 0)
         {
             if (projectilePrefab == null || firePoint == null)
@@ -62,60 +87,68 @@ public class PlayerAttack : MonoBehaviour
                 return;
             }
 
-
-            if(0 < currentAmmo)
+            if (currentAmmo > 0)
             {
-                // 
-
                 GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
                 projectile.GetComponent<Projectile>().Initialize(transform.forward);
-                //SE
                 SoundSE.Instance?.Play("Shot");
 
                 currentAmmo--;
+                
+                // UIへ発射を通知
+                OnShotFired?.Invoke(currentAmmo);
 
                 if (currentAmmo <= 0)
                 {
-                    OnReloadRequired?.Invoke();
+                    HandleReload();
                 }
             }
             else
             {
+                // 弾が0の時に撃とうとしたらリロード開始
+                HandleReload();
                 SoundSE.Instance?.Play("NoAmmo");
             }
         }
     }
-
-    /// <summary>
-    /// OnReloadRequiredイベントに応答して、リロードコルーチンを開始する
-    /// </summary>
+    
     private void HandleReload()
     {
-        // 連続で呼ばれても大丈夫なように、リロード中でなければ開始する
         if (!_isReloading)
         {
-            StartCoroutine(RelodeAmmo());
+            StartCoroutine(ReloadAmmoCoroutine());
         }
     }
 
     /// <summary>
-    /// リロード処理を行うコルーチン
+    /// リロード処理を行うコルーチン (1発ずつ処理するように変更)
     /// </summary>
-    private IEnumerator RelodeAmmo()
+    private IEnumerator ReloadAmmoCoroutine()
     {
         _isReloading = true;
         Debug.Log("リロード開始...");
         SoundSE.Instance?.Play("reloadStart");
 
-        // 指定した時間だけ処理を待つ
-        yield return new WaitForSeconds(reloadTime);
+        // 1発あたりのリロード時間を計算
+        float timePerBullet = reloadTime / maxAmmo;
 
-        // 弾を補充
+        // 1発ずつ弾を込めるループ
+        for (int i = 0; i < maxAmmo; i++)
+        {
+            yield return new WaitForSeconds(timePerBullet);
+            
+            // UIへリロードの進捗を通知
+            OnReloadProgress?.Invoke(i);
+        }
+
+        // 弾を完全に補充
         currentAmmo = maxAmmo;
         _isReloading = false;
 
+        // UIへリロード完了を通知
+        OnReloadComplete?.Invoke();
+        
         Debug.Log("リロード完了！");
         SoundSE.Instance?.Play("reloadEnd");
-
     }
 }

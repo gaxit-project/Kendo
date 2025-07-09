@@ -580,7 +580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e20df2da91f0feb4baf2968baea4345d, type: 2}
-  m_Color: {r: 0.07075471, g: 0.62241477, b: 1, a: 1}
+  m_Color: {r: 0.035294127, g: 0.37829992, b: 0.7058824, a: 0.23529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -924,7 +924,7 @@ GameObject:
   - component: {fileID: 671246074}
   - component: {fileID: 671246077}
   - component: {fileID: 671246076}
-  - component: {fileID: 671246075}
+  - component: {fileID: 671246078}
   m_Layer: 5
   m_Name: ScoreText
   m_TagString: Untagged
@@ -951,21 +951,6 @@ RectTransform:
   m_AnchoredPosition: {x: -748.8, y: 479}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &671246075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671246073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
-  fadedThreshold: 0.6
-  fadeSpeed: 5
 --- !u!114 &671246076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1050,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671246073}
   m_CullTransparentMesh: 1
+--- !u!114 &671246078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671246073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
+  fadedThreshold: 0.6
+  fadeSpeed: 5
 --- !u!224 &694237865 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159329798666692928, guid: 6b8441b834276ff44bda69d7b33261e3, type: 3}
@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!114 &839094507
@@ -2536,7 +2536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802414fa2e816ca4ba82eb092fda0b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 1fad901bcf7a3464ab107807ba20f6de, type: 2}
   fadedThreshold: 0.6
   fadeSpeed: 5
 --- !u!114 &1369869538
@@ -3874,7 +3874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e20df2da91f0feb4baf2968baea4345d, type: 2}
-  m_Color: {r: 0.07075471, g: 0.62241477, b: 1, a: 1}
+  m_Color: {r: 0.035294127, g: 0.37829992, b: 0.7058824, a: 0.23529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4119,7 +4119,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5371795644545483581, guid: ffc8e5e2316345a478e889f104537556, type: 3}
   firePoint: {fileID: 487327927}
   maxAmmo: 5
-  currentAmmo: 5
   reloadTime: 3
 --- !u!114 &2061841336
 MonoBehaviour:
