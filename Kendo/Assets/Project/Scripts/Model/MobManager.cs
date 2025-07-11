@@ -1,24 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
-using Main.Presenter;
 using UnityEngine;
+using InGame.Model;
+using Main.Presenter;
+using Cysharp.Threading.Tasks;
 
 public class MobManager : MonoBehaviour
 {
     public static MobManager Instance { get; private set; }
 
+    [Header("Mobのプレハブ")]
     [SerializeField] private GameObject mobPrefab;
+    [Header("Mobの最大生成数")]
     [SerializeField] private int poolSize = 100;
-    [SerializeField] private float spawnInterval = 2f;
+    [Header("Mobの生成間隔")]
+    [SerializeField] private float spawnInterval = 6f;
+    
+    [Header("Mobの形態時間(秒)")]
+    [SerializeField] private float mobStateInterval1 = 60f;
+    [SerializeField] private float mobStateInterval2 = 180f;
+    [SerializeField] private float mobStateInterval3 = 300f;
+    [SerializeField] private float mobStateInterval4 = 480f;
+    
+    
     [SerializeField] private Transform playerTransform; // Y座標の基準として使用
 
     [SerializeField] private GameObject destroyEffectPrefab;
     
     [SerializeField] private MapPresenter mapPresenter;
-    [SerializeField] private Camera mainCamera; // スポーン判定に使用するカメラ
+    private Camera mainCamera; // スポーン判定に使用するカメラ
 
     private Queue<GameObject> mobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
+    
+    private float timer = 0f; // この変数はUpdateロジック移行に伴い、現在は未使用
+
+    // 各Mobの攻撃タイマーを管理するDictionary
+    private Dictionary<GameObject, float> _attackTimers = new Dictionary<GameObject, float>();
+
+    #region アクセスメソッド
+
+    public float GetMobStateInterval1() => mobStateInterval1;
+    public float GetMobStateInterval2() => mobStateInterval2;
+    public float GetMobStateInterval3() => mobStateInterval3;
+    public float GetMobStateInterval4() => mobStateInterval4;
+    
+    #endregion
 
     // マップの境界
     private float minX, maxX, minZ, maxZ;
@@ -67,6 +94,84 @@ public class MobManager : MonoBehaviour
         StartCoroutine(SpawnMobsRoutine());
     }
 
+    private void Update()
+    {
+        float gameTimer = ScoreManager.Instance.GetMinutes() * 60 + ScoreManager.Instance.GetSeconds();
+        if (gameTimer > mobStateInterval2)
+        {
+            spawnInterval = 3f;
+        }
+        else if (gameTimer > mobStateInterval1)
+        {
+            spawnInterval = 4f;
+        }
+        
+        // 稼働中のMobリストを逆順にループ（途中でリストから削除されても安全なように）
+        for (int i = activeMobs.Count - 1; i >= 0; i--)
+        {
+            GameObject mobGo = activeMobs[i];
+            if (mobGo == null || !mobGo.activeInHierarchy) continue;
+            
+            MobController mobController = mobGo.GetComponent<MobController>();
+            PhysicsModel physicsModel = mobController.GetPhysicsModel();
+            IEnemyModel enemyModel = mobController.GetEnemyModel();
+            
+            if (physicsModel.GetIsKnockback())
+            {
+                // --- ノックバック中のロジック ---
+                if (physicsModel.GetCurrentVelocity().magnitude < enemyModel.GetStopThreshold())
+                {
+                    mobController.StopKnockback();
+                }
+                else
+                {
+                    // 速度と抵抗に基づいて位置を更新
+                    mobGo.transform.position += physicsModel.GetCurrentVelocity() * Time.deltaTime;
+                    physicsModel.UpdateVelocityWithDrag(enemyModel.GetDrag());
+
+                    // 壁との反射チェック
+                    if (mobController.IsHitWall(out Vector3 wallNormal))
+                    {
+                        mobGo.transform.position += wallNormal * 0.05f; // 壁へのめり込み防止
+                        physicsModel.SetCurrentVelocity(Vector3.Reflect(physicsModel.GetCurrentVelocity(), wallNormal) * enemyModel.GetRestitution());
+                        physicsModel.IncrementBounceCount();
+                        SoundSE.Instance?.Play("Elect");
+
+                        if (physicsModel.GetBounceCount() >= enemyModel.GetMaxBounceCount())
+                        {
+                            ReleaseMob(mobGo);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // --- 通常時の行動 ---
+                enemyModel.UpdateAttackState(gameTimer);
+
+                if (playerTransform != null && !PlayerBom.bom)
+                {
+                    // プレイヤーの方向を向く
+                    Vector3 lookPos = playerTransform.position;
+                    lookPos.y = mobGo.transform.position.y;
+                    mobGo.transform.LookAt(lookPos);
+                    
+                    // 攻撃タイマーを更新
+                    float currentAttackTime = _attackTimers[mobGo];
+                    currentAttackTime += Time.deltaTime;
+                    _attackTimers[mobGo] = currentAttackTime;
+
+                    // 攻撃間隔に達したら攻撃実行
+                    if (currentAttackTime >= enemyModel.GetAttackSpan())
+                    {
+                        enemyModel.ExecuteAttack(mobController, mobGo.GetCancellationTokenOnDestroy()).Forget();
+                        _attackTimers[mobGo] = 0f; // タイマーリセット
+                    }
+                }
+            }
+        }
+    }
+
     private void InitializeMobPool()
     {
         for (int i = 0; i < poolSize; i++)
@@ -74,6 +179,8 @@ public class MobManager : MonoBehaviour
             GameObject mob = Instantiate(mobPrefab);
             mob.SetActive(false);
             mobPool.Enqueue(mob);
+            // 生成時にタイマー管理用のエントリも追加
+            _attackTimers.Add(mob, 0f);
         }
     }
 
@@ -95,8 +202,9 @@ public class MobManager : MonoBehaviour
             minZ = -currentMapHalfSize;
             maxZ = currentMapHalfSize;
         }
-        catch (System.NullReferenceException ex)
+        catch (System.NullReferenceException)
         {
+            Debug.LogWarning("MapPresenterからマップサイズの取得に失敗。Fallback値を使用します。");
             minX = -defaultMapBoundarySize;
             maxX = defaultMapBoundarySize;
             minZ = -defaultMapBoundarySize;
@@ -116,7 +224,7 @@ public class MobManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 【変更箇所】モブを「マップ内」「カメラ外」「重なり無し」の条件でスポーンさせます。
+    /// モブを「マップ内」「カメラ外」「重なり無し」の条件でスポーン
     /// </summary>
     private void SpawnMob()
     {
@@ -155,7 +263,8 @@ public class MobManager : MonoBehaviour
                 mob.transform.position = spawnPos;
                 mob.SetActive(true);
                 activeMobs.Add(mob);
-                return; // Mobをスポーンしたらループを抜ける
+                _attackTimers[mob] = 0f; // スポーン時に攻撃タイマーをリセット
+                return;
             }
         }
     }
@@ -179,7 +288,7 @@ public class MobManager : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(position, checkRadius);
         foreach (var col in colliders)
         {
-            // プレイヤー、壁、または他のMobなど、スポーン時に重なりを避けたいタグを指定
+            // スポーン時に重なりを避けたいタグを指定
             if (col.CompareTag("Player") || col.CompareTag("Wall") || col.CompareTag("Roulette") || col.CompareTag("Mob")) // "Mob"タグも追加検討
             {
                 return true; // 重なっている
