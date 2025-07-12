@@ -80,7 +80,7 @@ public class BlackhallManager : MonoBehaviour
     }
     private IEnumerator SuckAndDestroy(GameObject mob)
     {
-        SoundSE.Instance?.Play("warp");
+        SoundSE.Instance?.Play("Blackhall");
 
         // Rigidbodyや移動を無効化
         Rigidbody rb = mob.GetComponent<Rigidbody>();
@@ -128,7 +128,7 @@ public class BlackhallManager : MonoBehaviour
     //ノックバック中じゃないときは吸い込まれて破壊するだけ
     private IEnumerator SuckAndDestroyOnly(GameObject mob)
     {
-        SoundSE.Instance?.Play("warp");
+        SoundSE.Instance?.Play("Blackhall");
 
         Rigidbody rb = mob.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
@@ -159,7 +159,7 @@ public class BlackhallManager : MonoBehaviour
 
     private IEnumerator SuckAndKillPlayer(GameObject player)
     {
-        SoundSE.Instance?.Play("warp");
+        SoundSE.Instance?.Play("Blackhall");
 
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
