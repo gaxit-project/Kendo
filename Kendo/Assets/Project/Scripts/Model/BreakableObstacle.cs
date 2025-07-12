@@ -28,6 +28,16 @@ public class BreakableObstacle : MonoBehaviour
         }
     }
 
+    //ŠO‚©‚çŒÄ‚Ño‚µ‚Ä‰ó‚·
+    public void ForceBreak()
+    {
+        currentHits = maxHits;
+        UpdateStageAppearance();
+        gameObject.SetActive(false);
+        Debug.Log("777‚Å•Ç‰ó‚·");
+    }
+
+
     private void UpdateStageAppearance()
     {
         for (int i = 0; i < stages.Length; i++)

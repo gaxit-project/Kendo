@@ -98,7 +98,7 @@ public class GachaManager : MonoBehaviour
                 bomb();
                 break;
             case 2:
-                speed();
+                speed();;
                 break;
             case 3:
                 ExtendMap();
@@ -180,15 +180,16 @@ public class GachaManager : MonoBehaviour
             if (destroyEffectPrefab != null)
             {
                 Transform child = wall.transform.Find("Cube");
-                Vector3 effectPos = child.position;
+                Vector3 effectPos = child != null ? child.position : wall.transform.position;
                 Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
                 GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
                 effect.transform.localScale *= 2f;
                 Destroy(effect, 1f);
             }
 
-            wall.gameObject.SetActive(false);
+            wall.ForceBreak(); // ← ここを wall.gameObject.SetActive(false) の代わりに
         }
+
         circlemanager.SetActive(false);
 
         yield return new WaitForSeconds(WallDeactiveTime);
@@ -204,4 +205,5 @@ public class GachaManager : MonoBehaviour
 
         isWallDeactive = false;
     }
+
 }
