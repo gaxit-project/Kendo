@@ -32,8 +32,8 @@ public class PlayerHP : MonoBehaviour
     {
         if (isDead) return;
         currentHP--;
-        Debug.Log($"������� HP: {currentHP}");
-
+        Debug.Log($"くらった HP: {currentHP}");
+        SoundSE.Instance?.Play("Damage");
         if (currentHP <= 0)
         {
             isDead = true;
@@ -56,7 +56,7 @@ public class PlayerHP : MonoBehaviour
         Debug.Log("gameover");
         SoundBGM.Instance.Stop();
         ScoreManager.Instance?.SaveScoreToPlayerPrefs();
-        //SceneManager.LoadScene("Result"); // �Q�[���I�[�o�[���Ƀ��U���g��
+        //SceneManager.LoadScene("Result"); 
         FadeManager.Instance.FadeOutAndLoad("Result");
 
     }

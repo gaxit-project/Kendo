@@ -18,8 +18,21 @@ public class ScoreManager : MonoBehaviour
 
     private float elapsedTime = 0f;
     private int killCount = 0;
+    
+    private int minutes;
+    private int seconds;
 
     private bool isCountingTime = true;
+
+    public int GetMinutes()
+    {
+        return minutes;
+    }
+
+    public int GetSeconds()
+    {
+        return seconds;
+    }
 
     private void Awake()
     {
@@ -29,6 +42,8 @@ public class ScoreManager : MonoBehaviour
             return;
         }
         Instance = this;
+        minutes = 0;
+        seconds = 0;
     }
 
     private void Update()
@@ -50,8 +65,8 @@ public class ScoreManager : MonoBehaviour
     {
         int totalScore = Mathf.FloorToInt(elapsedTime * timeMultiplier + killCount * killMultiplier);
         int totalSeconds = Mathf.FloorToInt(elapsedTime);
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
+        minutes = totalSeconds / 60;
+        seconds = totalSeconds % 60;
 
         // .textプロパティの使い方は同じ
         timeText.text = $"{minutes:D2}:{seconds:D2}";

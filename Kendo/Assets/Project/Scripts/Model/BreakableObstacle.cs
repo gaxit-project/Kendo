@@ -2,33 +2,14 @@ using UnityEngine;
 
 public class BreakableObstacle : MonoBehaviour
 {
-    [SerializeField] private int maxHits = 3;
-    [SerializeField] private Material[] hitMaterials; // Cube に設定するマテリアル
-    [SerializeField] private string targetChildName = "Cube"; // マテリアルを変更したい子オブジェクト名
+    [SerializeField] private int maxHits = 2;
+    [SerializeField] private GameObject[] stages; // ヒットごとに表示する GameObject を格納（例: 2個）
 
     private int currentHits = 0;
-    private Renderer targetRenderer;
 
-    private void Awake()
+    private void Start()
     {
-        Transform targetChild = transform.Find(targetChildName);
-        if (targetChild != null)
-        {
-            targetRenderer = targetChild.GetComponent<Renderer>();
-            if (targetRenderer != null && hitMaterials.Length > 0)
-            {
-                Debug.Log("Renderer found and material set.");
-                targetRenderer.material = hitMaterials[0];
-            }
-            else
-            {
-                Debug.LogWarning("Renderer not found on child.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"Child with name '{targetChildName}' not found.");
-        }
+        UpdateStageAppearance();
     }
 
     public void Hit()
@@ -36,14 +17,23 @@ public class BreakableObstacle : MonoBehaviour
         currentHits++;
         Debug.Log($"BreakableObstacle hit! count: {currentHits}");
 
-        if (targetRenderer != null && currentHits < hitMaterials.Length)
-        {
-            targetRenderer.material = hitMaterials[currentHits];
-        }
-
         if (currentHits >= maxHits)
         {
-            gameObject.SetActive(false);
+            Debug.Log("BreakableObstacle destroyed.");
+            gameObject.SetActive(false); // 障害物ごと消える
+        }
+        else
+        {
+            UpdateStageAppearance(); // 次の見た目に切り替え
+        }
+    }
+
+    private void UpdateStageAppearance()
+    {
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (stages[i] != null)
+                stages[i].SetActive(i == currentHits);
         }
     }
 }

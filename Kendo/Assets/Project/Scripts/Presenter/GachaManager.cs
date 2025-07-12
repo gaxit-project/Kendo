@@ -8,7 +8,7 @@ public class GachaManager : MonoBehaviour
     public static GachaManager Instance { get; private set; }
 
     [Header("Gacha")]
-    [SerializeField] private Image gachaImage;                  //ガチャのImageコンポーネント
+    [SerializeField] private Image gachaImage;                  //ガチャのImage
     [SerializeField] private Sprite[] rollingSprites;           //各種アイテム画像
     [SerializeField] private float rollInterval = 0.1f;         //ガチャの回転間隔
     [SerializeField] private float totalRollTime = 2.0f;        //ガチャの回転時間
@@ -16,10 +16,13 @@ public class GachaManager : MonoBehaviour
     private bool isRolling = false;
 
     [Header("Triple7")]
-    [SerializeField] private int max7Num = 3;           // 7を揃える数．3以外は想定してません．
-    [SerializeField] private GameObject[] sevenImages;  // 7のオブジェクト
-
+    [SerializeField] private int max7Num = 3;                   // 7を揃える数．3以外は想定してません．
+    [SerializeField] private GameObject[] sevenImages;          // 7のオブジェクト
+    [SerializeField] private GameObject circlemanager;          // CircleManagerオブジェクト
+    [SerializeField] private GameObject destroyEffectPrefab;    // エフェクトのプレハブ
+    [SerializeField] private float WallDeactiveTime = 60f;         // 障壁の消去時間
     private int Triple7Cnt = 0;
+    private bool isWallDeactive = false;
 
     private void Awake()
     {
@@ -35,6 +38,14 @@ public class GachaManager : MonoBehaviour
         {
             obj.SetActive(false);
         }
+
+        // ガチャImage非アクティブ
+        gachaImage.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        
     }
 
     //Mobがブラックホールに吸い込まれたら呼び出す
@@ -43,6 +54,7 @@ public class GachaManager : MonoBehaviour
         if (!isRolling)
         {
             StartCoroutine(GachaStart());
+            gachaImage.gameObject.SetActive(true);
             Debug.Log("ガチャスタート！");
         }
         else
@@ -67,7 +79,12 @@ public class GachaManager : MonoBehaviour
         }
 
         // ランダムなアイテムを表示
+        // トリプル7の障壁消去発動中はトリプル7がでないようにする
         index = Random.Range(0, rollingSprites.Length);
+        while (isWallDeactive && index == 4)
+        {
+            index = Random.Range(0, rollingSprites.Length);
+        }
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
 
@@ -136,11 +153,6 @@ public class GachaManager : MonoBehaviour
     // トリプル7
     private void triple7()
     {
-        if (Triple7Cnt >= max7Num)
-        {
-            return;
-        }
-
         if (sevenImages[Triple7Cnt] != null)
         {
             sevenImages[Triple7Cnt].SetActive(true);
@@ -151,12 +163,45 @@ public class GachaManager : MonoBehaviour
         // 3つ揃ったら壁消滅
         if (Triple7Cnt == max7Num)
         {
-            BreakableObstacle[] walls = FindObjectsByType<BreakableObstacle>(FindObjectsSortMode.None);
+            isWallDeactive = true;
 
-            foreach (BreakableObstacle wall in walls)
-            {
-                wall.gameObject.SetActive(false);
-            }
+            StartCoroutine(WallBreak());
         }
+    }
+
+    IEnumerator WallBreak()
+    {
+        BreakableObstacle[] walls = FindObjectsByType<BreakableObstacle>(FindObjectsSortMode.None);
+
+        foreach (BreakableObstacle wall in walls)
+        {
+            SoundSE.Instance?.Play("Explosion");
+
+            if (destroyEffectPrefab != null)
+            {
+                Transform child = wall.transform.Find("Cube");
+                Vector3 effectPos = child.position;
+                Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
+                GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
+                effect.transform.localScale *= 2f;
+                Destroy(effect, 1f);
+            }
+
+            wall.gameObject.SetActive(false);
+        }
+        circlemanager.SetActive(false);
+
+        yield return new WaitForSeconds(WallDeactiveTime);
+
+        circlemanager.SetActive(true);
+        circlemanager.GetComponent<CircleManager>().SpawnObstacles();
+
+        foreach (GameObject image in sevenImages)
+        {
+            image.SetActive(false);
+        }
+        Triple7Cnt = 0;
+
+        isWallDeactive = false;
     }
 }

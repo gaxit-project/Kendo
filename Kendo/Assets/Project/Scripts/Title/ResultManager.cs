@@ -25,7 +25,16 @@ public class ResultManager : MonoBehaviour
             timer += Time.deltaTime;
             float progress = Mathf.Clamp01(timer / countUpDuration);
             currentDisplayScore = Mathf.Lerp(0, targetScore, progress);
-            scoreText.text = $"Score : {Mathf.FloorToInt(currentDisplayScore)}";
+
+            int displayInt = Mathf.FloorToInt(currentDisplayScore);
+            string scoreStr = displayInt == 0 ? "" : displayInt.ToString();
+
+            int totalWidth = 6; // ç≈ëÂåÖêî
+            string paddedScore = scoreStr.PadLeft(totalWidth, ' '); // ç∂ãlÇﬂ
+
+            scoreText.text = $"Score : {paddedScore}";
         }
     }
+
+
 }
