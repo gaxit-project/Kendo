@@ -23,7 +23,7 @@ public class MobController : MonoBehaviour
     [SerializeField, Tooltip("壁での最大反射回数")]
     private int maxBounceCount = 2;
     [SerializeField, Tooltip("壁との当たり判定に使うSphereCastの半径")]
-    private float wallCheckRadius = 1f;
+    private float wallCheckRadius = 1.2f;
     [SerializeField, Tooltip("壁との当たり判定の距離")]
     private float wallCheckDistance = 0.5f;
 
@@ -51,6 +51,7 @@ public class MobController : MonoBehaviour
         // オブジェクトプールで再利用されることを想定し、有効化時にモデルをリセット
         _physicsModel = new PhysicsModel();
         _enemyModel = new EnemyModel(attackSpan, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance);
+        _materialChanger?.ResetToNormalMaterial();
     }
     
     private void OnTriggerEnter(Collider other)

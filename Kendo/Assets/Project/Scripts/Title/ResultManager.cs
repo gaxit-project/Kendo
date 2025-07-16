@@ -4,7 +4,7 @@ using TMPro;
 public class ResultManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private float countUpDuration = 3f; // ƒJƒEƒ“ƒgƒAƒbƒv‚É‚©‚¯‚éŠÔi•bj
+    [SerializeField] private float countUpDuration = 3f; // ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—ã«ã‹ã‘ã‚‹æ™‚é–“ï¼ˆç§’ï¼‰
 
     private int targetScore;
     private float currentDisplayScore = 0f;
@@ -29,12 +29,10 @@ public class ResultManager : MonoBehaviour
             int displayInt = Mathf.FloorToInt(currentDisplayScore);
             string scoreStr = displayInt == 0 ? "" : displayInt.ToString();
 
-            int totalWidth = 6; // Å‘åŒ…”
-            string paddedScore = scoreStr.PadLeft(totalWidth, ' '); // ¶‹l‚ß
+            int totalWidth = 6; // æœ€å¤§æ¡æ•°
+            string paddedScore = scoreStr.PadLeft(totalWidth, ' '); // å·¦è©°ã‚
 
             scoreText.text = $"Score : {paddedScore}";
         }
     }
-
-
 }
