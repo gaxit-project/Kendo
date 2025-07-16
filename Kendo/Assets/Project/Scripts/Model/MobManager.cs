@@ -261,6 +261,7 @@ public class MobManager : MonoBehaviour
                 // すべての条件をクリアしたらMobを配置
                 GameObject mob = mobPool.Dequeue();
                 mob.transform.position = spawnPos;
+                mob.transform.localScale = mobPrefab.transform.localScale;
                 mob.SetActive(true);
                 activeMobs.Add(mob);
                 _attackTimers[mob] = 0f; // スポーン時に攻撃タイマーをリセット

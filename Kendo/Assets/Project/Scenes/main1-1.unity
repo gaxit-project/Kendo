@@ -5020,7 +5020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7285111048897910005, guid: 8848419501d381641b85c40f38ae95c4, type: 3}
       propertyPath: poolSize
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7285111048897910005, guid: 8848419501d381641b85c40f38ae95c4, type: 3}
       propertyPath: mapPresenter

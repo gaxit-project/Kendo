@@ -6,14 +6,14 @@ public class BlackhallManager : MonoBehaviour
     [Header("SuckOption")]
     [SerializeField] private string mobTag = "Mob";
     [SerializeField] private string playerTag = "Player";
-    [SerializeField] private float suckDuration = 1.5f; // ‹z‚¢‚İ‚É‚©‚©‚éŠÔ
+    [SerializeField] private float suckDuration = 1.5f; // å¸ã„è¾¼ã¿ã«ã‹ã‹ã‚‹æ™‚é–“
 
 
     [Header("ExpandOption")]
     [SerializeField] private Vector3 initialScale = new Vector3(1f, 1f, 1f);
-    [SerializeField] private float expandRatePerSecond = 0.1f;  // ŠÔ‚²‚Æ‚ÌŠg‘å—¦
-    [SerializeField] private float expandRatePerMinute = 0.1f;  // 1•ª‚²‚Æ‚ÌŠg‘å—¦‚ÌŠg‘å—¦
-    [SerializeField] private float shrinkFactor = 0.9f;         // ‹z‚¢‚İ‚²‚Æ‚Ìk¬—¦i—áF90%j
+    [SerializeField] private float expandRatePerSecond = 0.1f;  // æ™‚é–“ã”ã¨ã®æ‹¡å¤§ç‡
+    [SerializeField] private float expandRatePerMinute = 0.1f;  // 1åˆ†ã”ã¨ã®æ‹¡å¤§ç‡ã®æ‹¡å¤§ç‡
+    [SerializeField] private float shrinkFactor = 0.9f;         // å¸ã„è¾¼ã¿ã”ã¨ã®ç¸®å°ç‡ï¼ˆä¾‹ï¼š90%ï¼‰
     [SerializeField] private CircleManager circleManager;
     private float CntTime = 0f;
 
@@ -38,21 +38,21 @@ public class BlackhallManager : MonoBehaviour
             CntTime = 0f;
         }
 
-        // –ˆ•b­‚µ‚¸‚Â‘å‚«‚­‚·‚é
+        // æ¯ç§’å°‘ã—ãšã¤å¤§ããã™ã‚‹
         Vector3 scale = transform.localScale;
         scale.x += expandRatePerSecond * Time.deltaTime;
         scale.z += expandRatePerSecond * Time.deltaTime;
         scale.y = initialScale.y;
         transform.localScale = scale;
 
-        // ƒXƒP[ƒ‹‚Ì‰ºŒÀiÅ¬’l‚ÍinitialScale‚·‚È‚í‚¿‰Šú’lj
+        // ã‚¹ã‚±ãƒ¼ãƒ«ã®ä¸‹é™ï¼ˆæœ€å°å€¤ã¯initialScaleã™ãªã‚ã¡åˆæœŸå€¤ï¼‰
         transform.localScale = new Vector3(
         Mathf.Max(transform.localScale.x, initialScale.x),
         initialScale.y,
         Mathf.Max(transform.localScale.z, initialScale.z)
         );
 
-        // CircleManager ‚ÉƒXƒP[ƒ‹‚ğ‘—‚é
+        // CircleManager ã«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’é€ã‚‹
         circleManager?.UpdateCircleScale(transform.localScale);
     }
 
@@ -64,12 +64,12 @@ public class BlackhallManager : MonoBehaviour
             var mobController = other.GetComponent<MobController>();
             if (mobController != null && mobController.GetIsKnockback())
             {
-                // ƒmƒbƒNƒoƒbƒN’† ¨ ‹z‚¢‚İ{”j‰ó{ƒKƒ`ƒƒ{k¬
+                // ãƒãƒƒã‚¯ãƒãƒƒã‚¯ä¸­ â†’ å¸ã„è¾¼ã¿ï¼‹ç ´å£Šï¼‹ã‚¬ãƒãƒ£ï¼‹ç¸®å°
                 StartCoroutine(SuckAndDestroy(other.gameObject));
             }
             else
             {
-                // ƒmƒbƒNƒoƒbƒN’†‚Å‚È‚¢ ¨ ‹z‚¢‚İ{”j‰ó‚Ì‚İ
+                // ãƒãƒƒã‚¯ãƒãƒƒã‚¯ä¸­ã§ãªã„ â†’ å¸ã„è¾¼ã¿ï¼‹ç ´å£Šã®ã¿
                 StartCoroutine(SuckAndDestroyOnly(other.gameObject));
             }
         }
@@ -82,20 +82,20 @@ public class BlackhallManager : MonoBehaviour
     {
         SoundSE.Instance?.Play("Blackhall");
 
-        // Rigidbody‚âˆÚ“®‚ğ–³Œø‰»
+        // Rigidbodyã‚„ç§»å‹•ã‚’ç„¡åŠ¹åŒ–
         Rigidbody rb = mob.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
 
-        // ŠJnˆÊ’u‚ÆŠÔ‚Ì‹L˜^
+        // é–‹å§‹ä½ç½®ã¨æ™‚é–“ã®è¨˜éŒ²
         Vector3 startPos = mob.transform.position;
-        Vector3 endPos = transform.position; // ƒuƒ‰ƒbƒNƒz[ƒ‹’†S
+        Vector3 endPos = transform.position; // ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«ä¸­å¿ƒ
         Vector3 startScale = mob.transform.localScale;
-        Vector3 endScale = startScale * 0.5f; // ÅI“I‚É0.5”{‚É
+        Vector3 endScale = startScale * 0.5f; // æœ€çµ‚çš„ã«0.5å€ã«
         float timer = 0f;
-        float rotationSpeed = 180f; // 1•b‚Å360“x
+        float rotationSpeed = 180f; // 1ç§’ã§360åº¦
 
 
-        // ‹z‚¢‚Ü‚ê‚é‚æ‚¤‚É™X‚ÉˆÚ“®
+        // å¸ã„è¾¼ã¾ã‚Œã‚‹ã‚ˆã†ã«å¾ã€…ã«ç§»å‹•
         while (timer < suckDuration)
         {
             if (mob == null) yield break;
@@ -109,23 +109,21 @@ public class BlackhallManager : MonoBehaviour
             yield return null;
         }
 
-        // ÅŒã‚É”j‰ó{ƒKƒ`ƒƒˆri
-        Destroy(mob);
+        // æœ€å¾Œã«ç ´å£Šï¼‹ã‚¬ãƒãƒ£å‡¦ri
+        MobManager.Instance.ReleaseMob(mob);
         GachaManager.Instance.Gacha();
         
-        // ƒuƒ‰ƒbƒNƒz[ƒ‹‚ğ­‚µk¬
+        // ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«ã‚’å°‘ã—ç¸®å°
         Vector3 newScale = transform.localScale;
         newScale.x = Mathf.Max(newScale.x * shrinkFactor, initialScale.x);
         newScale.z = Mathf.Max(newScale.z * shrinkFactor, initialScale.z);
         newScale.y = initialScale.y; 
         transform.localScale = newScale;
-        //áŠQ•¨‚É‘—‚é
+        //éšœå®³ç‰©ã«é€ã‚‹
         circleManager?.UpdateCircleScale(newScale);
-        //‚±‚±‚ÉƒXƒRƒA‚©‚³‚ñ
-        ScoreManager.Instance?.AddKill();
     }
 
-    //ƒmƒbƒNƒoƒbƒN’†‚¶‚á‚È‚¢‚Æ‚«‚Í‹z‚¢‚Ü‚ê‚Ä”j‰ó‚·‚é‚¾‚¯
+    //ãƒãƒƒã‚¯ãƒãƒƒã‚¯ä¸­ã˜ã‚ƒãªã„ã¨ãã¯å¸ã„è¾¼ã¾ã‚Œã¦ç ´å£Šã™ã‚‹ã ã‘
     private IEnumerator SuckAndDestroyOnly(GameObject mob)
     {
         SoundSE.Instance?.Play("Blackhall");
@@ -153,8 +151,8 @@ public class BlackhallManager : MonoBehaviour
             yield return null;
         }
 
-        // ”j‰ó‚Ì‚İiƒKƒ`ƒƒ‚âk¬‚È‚µj
-        Destroy(mob);
+        // ç ´å£Šã®ã¿ï¼ˆã‚¬ãƒãƒ£ã‚„ç¸®å°ãªã—ï¼‰
+        MobManager.Instance.ReleaseMobWithoutScore(mob);
     }
 
     private IEnumerator SuckAndKillPlayer(GameObject player)
@@ -164,7 +162,7 @@ public class BlackhallManager : MonoBehaviour
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
 
-        // PlayerMovement‚âƒRƒ“ƒgƒ[ƒ‹ƒXƒNƒŠƒvƒg‚ğ’â~
+        // PlayerMovementã‚„ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’åœæ­¢
         MonoBehaviour[] components = player.GetComponents<MonoBehaviour>();
         foreach (var comp in components)
         {
@@ -191,7 +189,7 @@ public class BlackhallManager : MonoBehaviour
             yield return null;
         }
 
-        // ƒvƒŒƒCƒ„[€–Sˆ—
-        PlayerHP.Instance.KillPlayer(); // GameOver‰æ–Ê‚È‚Ç‚ÉˆÚs
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ­»äº¡å‡¦ç†
+        PlayerHP.Instance.KillPlayer(); // GameOverç”»é¢ãªã©ã«ç§»è¡Œ
     }
 }
