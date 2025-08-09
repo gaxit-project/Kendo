@@ -21,33 +21,43 @@ namespace InGame.Model
         private AttackState _currentAttackState;
         private int _attackPhase;
 
-        public EnemyModel(float attackSpan, float mass, float restitution, float drag, float stopThreshold, int maxBounceCount, float wallCheckRadius, float wallCheckDistance)
-        {
-            _attackSpan = attackSpan;
-            _mass = mass;
-            _restitution = restitution;
-            _drag = drag;
-            _stopThreshold = stopThreshold;
-            _maxBounceCount = maxBounceCount;
-            _wallCheckRadius = wallCheckRadius;
-            _wallCheckDistance = wallCheckDistance;
-            
-            _currentAttackState = new SingleShotState();
-            _attackPhase = 1;
-            _hasPerformedSpecialAttack = false;
-        }
+        
 
-        // アクセサメソッド
+        #region アクセスメソッド
+
         public float GetAttackSpan() => _attackSpan;
-        public float GetMass() => _mass;
-        public float GetRestitution() => _restitution;
-        public float GetDrag() => _drag;
-        public float GetStopThreshold() => _stopThreshold;
-        public int GetMaxBounceCount() => _maxBounceCount;
-        public float GetWallCheckRadius() => _wallCheckRadius;
-        public float GetWallCheckDistance() => _wallCheckDistance;
-        public bool GetHasPerformedSpecialAttack() => _hasPerformedSpecialAttack;
-        public void SetHasPerformedSpecialAttack(bool value) => _hasPerformedSpecialAttack = value;
+                public float GetMass() => _mass;
+                public float GetRestitution() => _restitution;
+                public float GetDrag() => _drag;
+                public float GetStopThreshold() => _stopThreshold;
+                public int GetMaxBounceCount() => _maxBounceCount;
+                public float GetWallCheckRadius() => _wallCheckRadius;
+                public float GetWallCheckDistance() => _wallCheckDistance;
+                public bool GetHasPerformedSpecialAttack() => _hasPerformedSpecialAttack;
+                public void SetHasPerformedSpecialAttack(bool value) => _hasPerformedSpecialAttack = value;
+
+        #endregion
+
+        #region 初期化・コンストラクタ
+
+        public EnemyModel(float attackSpan, float mass, float restitution, float drag, float stopThreshold, int maxBounceCount, float wallCheckRadius, float wallCheckDistance)
+                {
+                    _attackSpan = attackSpan;
+                    _mass = mass;
+                    _restitution = restitution;
+                    _drag = drag;
+                    _stopThreshold = stopThreshold;
+                    _maxBounceCount = maxBounceCount;
+                    _wallCheckRadius = wallCheckRadius;
+                    _wallCheckDistance = wallCheckDistance;
+                    
+                    _currentAttackState = new SingleShotState();
+                    _attackPhase = 1;
+                    _hasPerformedSpecialAttack = false;
+                }
+
+        #endregion
+        
         
         // 攻撃ロジック
         public void UpdateAttackState(float timer)

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Billboard.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/BlackhallManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/BreakCircle.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/MobManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/CircleManager.cs" charset="Shift_JIS" />
