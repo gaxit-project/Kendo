@@ -56,6 +56,7 @@ public class GachaManager : MonoBehaviour
             StartCoroutine(GachaStart());
             gachaImage.gameObject.SetActive(true);
             Debug.Log("ガチャスタート！");
+            SoundSE.Instance?.Play("Slot");
         }
         else
         {
@@ -87,6 +88,7 @@ public class GachaManager : MonoBehaviour
         }
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
+        SoundSE.Instance?.Play("SlotResult");
 
         //効果発動
         switch (index)
