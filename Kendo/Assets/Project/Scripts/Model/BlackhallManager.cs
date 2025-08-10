@@ -5,6 +5,7 @@ public class BlackhallManager : MonoBehaviour
 {
     [Header("SuckOption")]
     [SerializeField] private string mobTag = "Mob";
+    [SerializeField] private string tacklemobTag = "TackleMob";
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private float suckDuration = 1.5f; // 吸い込みにかかる時間
 
@@ -59,6 +60,12 @@ public class BlackhallManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // TackleMobの場合はノックバックなしでもガチャ発動&縮小あり
+        if (other.CompareTag(tacklemobTag))
+        {
+            // 吸い込み＋破壊＋ガチャ＋縮小
+            StartCoroutine(SuckAndDestroy(other.gameObject));
+        }
         if (other.CompareTag(mobTag))
         {
             var mobController = other.GetComponent<MobController>();

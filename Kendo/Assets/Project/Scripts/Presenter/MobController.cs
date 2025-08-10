@@ -120,7 +120,7 @@ public class MobController : MonoBehaviour
         }
 
         // 他のMobとの衝突
-        if (other.CompareTag("Mob"))
+        if (other.CompareTag("Mob") || other.CompareTag("TackleMob"))
         {
             // 衝突計算が二重に行われるのを防ぐため、ユニークなIDが小さい方でだけ処理を実行
             if (gameObject.GetInstanceID() < other.gameObject.GetInstanceID())

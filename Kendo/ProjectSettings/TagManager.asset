@@ -8,6 +8,7 @@ TagManager:
   - Mob
   - Wall
   - Roulette
+  - TackleMob
   layers:
   - Default
   - TransparentFX

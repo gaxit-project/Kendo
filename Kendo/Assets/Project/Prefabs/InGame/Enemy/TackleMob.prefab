@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5938307755875801607}
   m_Layer: 0
   m_Name: TackleMob
-  m_TagString: Mob
+  m_TagString: TackleMob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

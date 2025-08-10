@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Mob"))
+        if (other.CompareTag("Mob") || other.CompareTag("TackleMob"))
         {
             MobController mob = other.GetComponent<MobController>();
             if (mob != null)
