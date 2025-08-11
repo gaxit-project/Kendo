@@ -218,7 +218,7 @@ public class player : MonoBehaviour
     {
         if (isInvincible) return; // 無敵中は返す
 
-        if (other.CompareTag("Mob") || other.CompareTag("Bullet"))
+        if (other.CompareTag("Mob") || other.CompareTag("TackleMob") || other.CompareTag("Bullet"))
         {
             StartCoroutine(InvincibleCoroutine());
             PlayerHP.Instance?.TakeDamage();
@@ -355,7 +355,9 @@ public class player : MonoBehaviour
         }
     }
 
-
-
-
+    //トリプル7の無敵用
+    public void SetInvincible(bool Bool)
+    {
+        isInvincible = Bool;
+    }
 }

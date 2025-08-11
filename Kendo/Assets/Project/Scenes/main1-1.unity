@@ -2226,6 +2226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobTag: Mob
+  tacklemobTag: TackleMob
   playerTag: Player
   suckDuration: 1.5
   initialScale: {x: 0, y: 0, z: 0}
@@ -2700,6 +2701,16 @@ MonoBehaviour:
   circlemanager: {fileID: 1474199699}
   destroyEffectPrefab: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
   WallDeactiveTime: 60
+  switchInterval: 0.1
+  rainbowSprites:
+  - {fileID: 21300000, guid: e055fddfd0626314b8d53693f04cf955, type: 3}
+  - {fileID: 21300000, guid: 31c2d037aae71284ea457159a6c554de, type: 3}
+  - {fileID: 21300000, guid: 203561322ad4efa42a9f47b934cc8275, type: 3}
+  - {fileID: 21300000, guid: 36e489425c7f5b94eba482f218689daf, type: 3}
+  - {fileID: 21300000, guid: c7f6db75fae80cd4aad3dd45bac092a5, type: 3}
+  - {fileID: 21300000, guid: f54647749853b3042b55b0c2d725c197, type: 3}
+  - {fileID: 21300000, guid: a555aaccb60e1bf47af9f09b1b31cf75, type: 3}
+  InvincibleTime: 30
 --- !u!1001 &1462656171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4334,6 +4345,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7514546196786314307, guid: 84e11c48f2a3ef64786d8003017853a5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e055fddfd0626314b8d53693f04cf955, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
