@@ -1841,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.size
-      value: 18
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[16].clip
@@ -1858,6 +1858,38 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[17].name
       value: SlotResult
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[18].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 40578c9a32b74bf4297165505b16f7be, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[18].name
+      value: Recovery
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[19].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1efc34b941355824e8380c45bca5ae6f, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[19].name
+      value: SpeedUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[20].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a14188a0708e5fd4b9591ee176dcafd5, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[20].name
+      value: Expansion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[21].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4ad3a73ded2b38d48b7bde4fd692024b, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[21].name
+      value: 777
       objectReference: {fileID: 0}
     - target: {fileID: 7447850714824617423, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: m_Name
