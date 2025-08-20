@@ -152,7 +152,16 @@ public class player : MonoBehaviour
         }
         else
         {
-            rend.material.mainTexture = idleTexture;
+            // 無敵時間中は金テクスチャにする
+            if (GachaManager.Instance.isInvincible)
+            {
+                rend.material.mainTexture = invincibleIdleTexture;
+            }
+            else
+            {
+                rend.material.mainTexture = idleTexture;
+            }
+            
             timer = 0f;
             textureIndex = 0;
         }
@@ -371,18 +380,5 @@ public class player : MonoBehaviour
     public void SetInvincible(bool Bool)
     {
         isInvincible = Bool;
-    }
-
-    // トリプル7の無敵テクスチャ変更
-    public void SetInvincibleTexture(bool Bool)
-    {
-        if (Bool)
-        {
-            rend.material.mainTexture = invincibleIdleTexture;
-        }
-        else
-        {
-            rend.material.mainTexture = idleTexture;
-        }
     }
 }

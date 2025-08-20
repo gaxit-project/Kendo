@@ -86,7 +86,6 @@ public class GachaManager : MonoBehaviour
         // ランダムなアイテムを表示
         // トリプル7の無敵中はトリプル7がでないようにする
         index = Random.Range(0, rollingSprites.Length);
-        index = (Random.Range(0, 2) == 0) ? 0 : 4;
         while (isInvincible && index == 4)
         {
             index = Random.Range(0, rollingSprites.Length);
@@ -219,6 +218,7 @@ public class GachaManager : MonoBehaviour
         foreach (GameObject obj in sevenImages)
         {
             obj.SetActive(false);
+            Debug.Log("トリプル7非アクティブ");
         }
 
         Triple7Cnt = 0;
@@ -226,6 +226,7 @@ public class GachaManager : MonoBehaviour
         isInvincible = false;
         SoundBGM.Instance.Stop();
         SoundBGM.Instance.Play("InGame");
+        Debug.Log("無敵状態終わり" + isInvincible);
     }
 
 
