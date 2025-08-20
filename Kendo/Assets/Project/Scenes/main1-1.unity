@@ -337,6 +337,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _aimAction: {fileID: -5630151704836100654, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   _aimSpeed: 10
+  _aimInput: {x: 0, y: 0}
+  _rectTransform: {fileID: 0}
+  _parentRectTransform: {fileID: 0}
 --- !u!1001 &281450481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2686,7 +2689,7 @@ MonoBehaviour:
   gachaImage: {fileID: 1081508702}
   rollingSprites:
   - {fileID: 21300000, guid: 62dc44ea738d3c440b98113791ba7d40, type: 3}
-  - {fileID: 21300000, guid: dc8552e4c6dbc1341b0cc4bf748b4be3, type: 3}
+  - {fileID: 21300000, guid: ba5d57f45d8d89d4db70e7af10f35059, type: 3}
   - {fileID: 21300000, guid: e15c3b1363a25e743b40873eda822ae2, type: 3}
   - {fileID: 21300000, guid: 23ff804691d43e541a2a7dbe938ba33c, type: 3}
   - {fileID: 21300000, guid: 2f7a7a35618cf664695edf1ebc416d03, type: 3}
@@ -3709,7 +3712,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cc1e54b04b87e246a2dcdbc63fdc71f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 0}
   offset: 5
+  camera: {fileID: 0}
 --- !u!1 &2003146038
 GameObject:
   m_ObjectHideFlags: 0
