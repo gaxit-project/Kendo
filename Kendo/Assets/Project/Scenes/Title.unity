@@ -1844,6 +1844,10 @@ PrefabInstance:
       value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4dfbfd7ea9887ed4d871c8c80f7b5c60, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[16].clip
       value: 
       objectReference: {fileID: 8300000, guid: 15a4be90f4cb07046bc2fc0c0528b18b, type: 3}
@@ -1862,7 +1866,7 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[18].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 40578c9a32b74bf4297165505b16f7be, type: 3}
+      objectReference: {fileID: 8300000, guid: 47ba924b3934a6f4aa00662f3af4a8d6, type: 3}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[18].name
       value: Recovery
@@ -1870,7 +1874,7 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[19].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 1efc34b941355824e8380c45bca5ae6f, type: 3}
+      objectReference: {fileID: 8300000, guid: 79387cd1f1a05594fbab082372b32a46, type: 3}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[19].name
       value: SpeedUp
@@ -1878,7 +1882,7 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[20].clip
       value: 
-      objectReference: {fileID: 8300000, guid: a14188a0708e5fd4b9591ee176dcafd5, type: 3}
+      objectReference: {fileID: 8300000, guid: 439b3c9429395124ab706d6b371636c3, type: 3}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[20].name
       value: Expansion
