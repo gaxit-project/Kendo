@@ -18,6 +18,8 @@ public interface IEnemyModel
 
     // 処理メソッド
     void UpdateAttackState(float timer);
+    
+    
     UniTask ExecuteAttack(MobController mob, CancellationToken cancellationToken);
     void PerformShot(Transform mobTransform);
     void FanShot(Transform mobTransform);

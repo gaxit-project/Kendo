@@ -3,9 +3,21 @@ using InGame.Model;
 
 public class MobController : MonoBehaviour
 {
+    [Header("Mob種別")]
+    [SerializeField] private EnemyType type = EnemyType.Ranged;
+    
     [Header("mobパラメータ")]
     [SerializeField, Tooltip("攻撃頻度"), Header("攻撃間隔")]
     private float attackSpan = 4.0f;
+
+
+    [Header("突進型パラメータ")]
+    [Tooltip("突進の威力")]
+    [SerializeField] private float tackleForce = 20.0f;
+    [Tooltip("プレイヤーを検知する距離")]
+    [SerializeField] private float detectionRadius = 15.0f;
+    [Tooltip("プレイヤーを検知する視野角")]
+    [SerializeField] [Range(0f, 360f)] private float detectionAngle = 90.0f;
     
     [Header("物理パラメータ")]
     [SerializeField, Tooltip("Mobの質量"), Header("質量")]
@@ -23,9 +35,11 @@ public class MobController : MonoBehaviour
     [SerializeField, Tooltip("壁での最大反射回数")]
     private int maxBounceCount = 2;
     [SerializeField, Tooltip("壁との当たり判定に使うSphereCastの半径")]
-    private float wallCheckRadius = 1f;
+    private float wallCheckRadius = 1.2f;
     [SerializeField, Tooltip("壁との当たり判定の距離")]
     private float wallCheckDistance = 0.5f;
+    
+    private Rigidbody _rb;
 
     // モデルのインスタンス
     private PhysicsModel _physicsModel;
@@ -37,12 +51,36 @@ public class MobController : MonoBehaviour
     // MobManagerから各モデルへアクセスするための公開メソッド
     public PhysicsModel GetPhysicsModel() => _physicsModel;
     public IEnemyModel GetEnemyModel() => _enemyModel;
+    
+    public enum EnemyType
+    {
+        Ranged, // 遠距離攻撃型
+        Tackle  // 突進型
+    }
+    
+    #region アクセサメソッド
+
+    public EnemyType GetEnemyType()
+    {
+        return type;
+    }
+    
+    #endregion
 
     private void Awake()
     {
         _physicsModel = new PhysicsModel();
-        // インスペクターの値をコンストラクタに渡してEnemyModelを生成
-        _enemyModel = new EnemyModel(attackSpan, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance);
+        _rb = GetComponent<Rigidbody>();
+        // 種類に応じて生成するモデルを切り替える
+        if (type == EnemyType.Ranged)
+        {
+            _enemyModel = new EnemyModel(attackSpan, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance);
+        }
+        else // (type == EnemyType.Tackle)
+        {
+            // 突進型はattackSpanを使わないが、他のパラメータは共通で利用
+            _enemyModel = new TackleEnemyModel(attackSpan, tackleForce, detectionAngle, detectionRadius, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance, GetComponent<MobController>());
+        }
         _materialChanger = GetComponent<MaterialChanger>();
     }
 
@@ -50,11 +88,30 @@ public class MobController : MonoBehaviour
     {
         // オブジェクトプールで再利用されることを想定し、有効化時にモデルをリセット
         _physicsModel = new PhysicsModel();
-        _enemyModel = new EnemyModel(attackSpan, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance);
+        if (type == EnemyType.Ranged)
+        {
+            _enemyModel = new EnemyModel(attackSpan, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance);
+        }
+        else // (type == EnemyType.Tackle)
+        {
+            _enemyModel = new TackleEnemyModel(attackSpan, tackleForce, detectionAngle, detectionRadius, mass, restitution, drag, stopThreshold, maxBounceCount, wallCheckRadius, wallCheckDistance, GetComponent<MobController>());
+        }
+        _materialChanger?.ResetToNormalMaterial();
     }
     
     private void OnTriggerEnter(Collider other)
     {
+        if (type == EnemyType.Tackle && !_physicsModel.GetIsKnockback() && other.CompareTag("Player"))
+        {
+            // プレイヤーにダメージを与える処理などをここに記述
+            // 例: other.GetComponent<PlayerHealth>()?.TakeDamage(10);
+            Debug.Log("Playerにタックルがヒット！");
+
+            // 自分自身は消滅する
+            MobManager.Instance.ReleaseMobWithoutScore(gameObject);
+            return;
+        }
+        
         // ノックバック中でない状態で壁に触れたら即死
         if (!_physicsModel.GetIsKnockback() && other.CompareTag("Wall"))
         {
@@ -63,7 +120,7 @@ public class MobController : MonoBehaviour
         }
 
         // 他のMobとの衝突
-        if (other.CompareTag("Mob"))
+        if (other.CompareTag("Mob") || other.CompareTag("TackleMob"))
         {
             // 衝突計算が二重に行われるのを防ぐため、ユニークなIDが小さい方でだけ処理を実行
             if (gameObject.GetInstanceID() < other.gameObject.GetInstanceID())
@@ -76,6 +133,26 @@ public class MobController : MonoBehaviour
             }
         }
     }
+    
+    
+    
+    /// <summary>
+    /// TackleEnemyModelから呼び出され、突進を実行する
+    /// </summary>
+    public void PerformTackle(float force)
+    {
+        // 物理モデルに初速を与えることで突進させる
+        //StartKnockback(); // ノックバック状態にして物理演算を有効にする
+        
+        //Vector3 direction = transform.forward; // 攻撃時点での正面方向
+        //_physicsModel.SetCurrentVelocity(direction * force);
+        
+        _rb.AddForce(transform.forward * tackleForce);
+        
+        //SoundSE.Instance?.Play("Hit"); // 適切な効果音に変更推奨
+    }
+    
+    
 
     /// <summary>
     /// Projectileと衝突した際の処理 (Projectile.csから呼び出される)

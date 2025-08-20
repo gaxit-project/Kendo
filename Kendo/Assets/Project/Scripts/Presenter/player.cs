@@ -16,7 +16,9 @@ public class player : MonoBehaviour
     [SerializeField] private float switchInterval = 0.3f;
     private float timer = 0f;
     [SerializeField] private Texture idleTexture;
+    [SerializeField] private Texture invincibleIdleTexture;
     [SerializeField] private Texture[] textures;
+    [SerializeField] private Texture[] invincibletextures;
     private int textureIndex = 0;
 
     //無敵用
@@ -130,7 +132,17 @@ public class player : MonoBehaviour
             {
                 // テクスチャを交互に切り替える
                 textureIndex = 1 - textureIndex;
-                rend.material.mainTexture = textures[textureIndex];
+
+                // 無敵時間中は金テクスチャにする
+                if (GachaManager.Instance.isInvincible)
+                {
+                    rend.material.mainTexture = invincibletextures[textureIndex];
+                }
+                else
+                {
+                    rend.material.mainTexture = textures[textureIndex];
+                }
+
                 timer = 0f;
             }
 
@@ -218,7 +230,7 @@ public class player : MonoBehaviour
     {
         if (isInvincible) return; // 無敵中は返す
 
-        if (other.CompareTag("Mob") || other.CompareTag("Bullet"))
+        if (other.CompareTag("Mob") || other.CompareTag("TackleMob") || other.CompareTag("Bullet"))
         {
             StartCoroutine(InvincibleCoroutine());
             PlayerHP.Instance?.TakeDamage();
@@ -355,7 +367,22 @@ public class player : MonoBehaviour
         }
     }
 
+    // トリプル7の無敵用
+    public void SetInvincible(bool Bool)
+    {
+        isInvincible = Bool;
+    }
 
-
-
+    // トリプル7の無敵テクスチャ変更
+    public void SetInvincibleTexture(bool Bool)
+    {
+        if (Bool)
+        {
+            rend.material.mainTexture = invincibleIdleTexture;
+        }
+        else
+        {
+            rend.material.mainTexture = idleTexture;
+        }
+    }
 }

@@ -1,20 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using InGame.Model;
 using Main.Presenter;
 using Cysharp.Threading.Tasks;
+using Random = UnityEngine.Random;
 
 public class MobManager : MonoBehaviour
 {
     public static MobManager Instance { get; private set; }
+    
+    [Header("遠距離Mob設定")]
+    [SerializeField] private GameObject rangedMobPrefab;
+    [SerializeField] private int rangedPoolSize = 100;
+    [SerializeField] private float rangedSpawnInterval = 5f;
 
-    [Header("Mobのプレハブ")]
-    [SerializeField] private GameObject mobPrefab;
-    [Header("Mobの最大生成数")]
-    [SerializeField] private int poolSize = 100;
-    [Header("Mobの生成間隔")]
-    [SerializeField] private float spawnInterval = 6f;
+    [Header("突進Mob設定")]
+    [SerializeField] private GameObject tackleMobPrefab;
+    [SerializeField] private int tacklePoolSize = 50;
+    [SerializeField] private float tackleSpawnInterval = 8f;
     
     [Header("Mobの形態時間(秒)")]
     [SerializeField] private float mobStateInterval1 = 60f;
@@ -30,13 +35,17 @@ public class MobManager : MonoBehaviour
     [SerializeField] private MapPresenter mapPresenter;
     private Camera mainCamera; // スポーン判定に使用するカメラ
 
-    private Queue<GameObject> mobPool = new Queue<GameObject>();
+    
+    private Queue<GameObject> _rangedMobPool = new Queue<GameObject>();
+    private Queue<GameObject> _tackleMobPool = new Queue<GameObject>();
     private List<GameObject> activeMobs = new List<GameObject>();
     
     private float timer = 0f; // この変数はUpdateロジック移行に伴い、現在は未使用
 
     // 各Mobの攻撃タイマーを管理するDictionary
     private Dictionary<GameObject, float> _attackTimers = new Dictionary<GameObject, float>();
+    
+    private Dictionary<IEnemyModel, MobController> _modelToControllerMap = new Dictionary<IEnemyModel, MobController>();
 
     #region アクセスメソッド
 
@@ -91,7 +100,8 @@ public class MobManager : MonoBehaviour
                 MapPresenter.OnMapPresenterReady += SetupMapBoundaries;
             }
         }
-        StartCoroutine(SpawnMobsRoutine());
+        SpawnRangedMobsLoop().Forget();
+        SpawnTackleMobsLoop().Forget();
     }
 
     private void Update()
@@ -99,11 +109,13 @@ public class MobManager : MonoBehaviour
         float gameTimer = ScoreManager.Instance.GetMinutes() * 60 + ScoreManager.Instance.GetSeconds();
         if (gameTimer > mobStateInterval2)
         {
-            spawnInterval = 3f;
+            rangedSpawnInterval = 3f;
+            tackleSpawnInterval = 3f;
         }
         else if (gameTimer > mobStateInterval1)
         {
-            spawnInterval = 4f;
+            rangedSpawnInterval = 4f;
+            tackleSpawnInterval = 4f;
         }
         
         // 稼働中のMobリストを逆順にループ（途中でリストから削除されても安全なように）
@@ -154,7 +166,11 @@ public class MobManager : MonoBehaviour
                     // プレイヤーの方向を向く
                     Vector3 lookPos = playerTransform.position;
                     lookPos.y = mobGo.transform.position.y;
-                    mobGo.transform.LookAt(lookPos);
+                    if (mobGo.GetComponent<MobController>().GetEnemyType() == MobController.EnemyType.Ranged)
+                    {
+                        mobGo.transform.LookAt(lookPos);
+                    }
+                    
                     
                     // 攻撃タイマーを更新
                     float currentAttackTime = _attackTimers[mobGo];
@@ -172,15 +188,26 @@ public class MobManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// オブジェクトプールの初期化
+    /// </summary>
     private void InitializeMobPool()
     {
-        for (int i = 0; i < poolSize; i++)
+        // 遠距離Mobのプール
+        for (int i = 0; i < rangedPoolSize; i++)
         {
-            GameObject mob = Instantiate(mobPrefab);
+            GameObject mob = Instantiate(rangedMobPrefab);
             mob.SetActive(false);
-            mobPool.Enqueue(mob);
-            // 生成時にタイマー管理用のエントリも追加
+            _rangedMobPool.Enqueue(mob);
             _attackTimers.Add(mob, 0f);
+        }
+        // 突進Mobのプール
+        for (int i = 0; i < tacklePoolSize; i++)
+        {
+            GameObject mob = Instantiate(tackleMobPrefab);
+            mob.SetActive(false);
+            _tackleMobPool.Enqueue(mob);
+            _attackTimers.Add(mob, 0f); // 攻撃はしないが、Dictionaryのキーとして登録は必要
         }
     }
 
@@ -214,32 +241,62 @@ public class MobManager : MonoBehaviour
         MapPresenter.OnMapPresenterReady -= SetupMapBoundaries;
     }
 
-    private IEnumerator SpawnMobsRoutine()
+    
+    /// <summary>
+    /// 遠距離Mobを一定間隔で生成し続ける非同期ループ
+    /// </summary>
+    private async UniTask SpawnRangedMobsLoop()
     {
-        while (true)
+        // このオブジェクトが破棄されたときにループを停止するためのキャンセルトークンを取得
+        var ct = this.GetCancellationTokenOnDestroy();
+
+        while (true) // 無限ループ
         {
-            yield return new WaitForSeconds(spawnInterval);
-            SpawnMob();
+            // 指定した秒数だけ待機する。ctを渡すことで、待機中にオブジェクトが破棄されても安全に停止する
+            await UniTask.Delay(TimeSpan.FromSeconds(rangedSpawnInterval), cancellationToken: ct);
+            
+            // ループがキャンセルされていなければMobを生成
+            if (ct.IsCancellationRequested) break;
+            
+            SpawnMob(_rangedMobPool, rangedMobPrefab);
         }
     }
+
+    /// <summary>
+    /// 突進Mobを一定間隔で生成し続ける非同期ループ
+    /// </summary>
+    private async UniTask SpawnTackleMobsLoop()
+    {
+        var ct = this.GetCancellationTokenOnDestroy();
+
+        while (true)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(tackleSpawnInterval), cancellationToken: ct);
+            
+            if (ct.IsCancellationRequested) break;
+            
+            SpawnMob(_tackleMobPool, tackleMobPrefab);
+        }
+    }
+    
     
     /// <summary>
     /// モブを「マップ内」「カメラ外」「重なり無し」の条件でスポーン
     /// </summary>
-    private void SpawnMob()
+    private void SpawnMob(Queue<GameObject> pool, GameObject prefab)
     {
-        if (mobPool.Count > 0 && mainCamera != null)
+        if (pool.Count > 0 && mainCamera != null)
         {
             const int maxAttempts = 10; // スポーン位置探査の最大試行回数
 
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                // 1. マップ境界内でランダムな位置を生成
+                // マップ境界内でランダムな位置を生成
                 float randomX = Random.Range(minX, maxX);
                 float randomZ = Random.Range(minZ, maxZ);
                 Vector3 spawnPos = new Vector3(randomX, playerTransform.position.y, randomZ);
 
-                // 2. カメラの視野外か判定
+                // カメラの視野外か判定
                 Vector3 viewportPoint = mainCamera.WorldToViewportPoint(spawnPos);
                 // ビューポート座標のXとYが0-1の範囲内にある場合、カメラの視野内と判定
                 // (viewportPoint.z > 0 はカメラの前方にあることを確認する条件)
@@ -252,15 +309,26 @@ public class MobManager : MonoBehaviour
                     continue; // カメラ内なので再試行
                 }
 
-                // 3. 他の重要オブジェクトと重なっていないか確認
+                // 他の重要オブジェクトと重なっていないか確認
                 if (IsOverlappingWithCriticalObjects(spawnPos))
                 {
                     continue;
                 }
 
                 // すべての条件をクリアしたらMobを配置
-                GameObject mob = mobPool.Dequeue();
+                GameObject mob = pool.Dequeue();
+                
+                var mobController = mob.GetComponent<MobController>();
+                var enemyModel = mobController.GetEnemyModel();
+        
+                // マップに追加
+                _modelToControllerMap.Add(enemyModel, mobController);
+                
                 mob.transform.position = spawnPos;
+                mob.transform.localScale = prefab.transform.localScale;
+                
+                mob.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                
                 mob.SetActive(true);
                 activeMobs.Add(mob);
                 _attackTimers[mob] = 0f; // スポーン時に攻撃タイマーをリセット
@@ -316,7 +384,34 @@ public class MobManager : MonoBehaviour
         {
             activeMobs.Remove(mob);
         }
-        mobPool.Enqueue(mob);
+        
+        
+        MobController controller = mob.GetComponent<MobController>();
+        if (controller != null)
+        {
+            
+            var enemyModel = controller.GetEnemyModel();
+            if (enemyModel != null && _modelToControllerMap.ContainsKey(enemyModel))
+            {
+                _modelToControllerMap.Remove(enemyModel);
+            }
+            
+            if (controller.GetEnemyType() == MobController.EnemyType.Ranged)
+            {
+                _rangedMobPool.Enqueue(mob);
+            }
+            else // (controller.type == MobController.EnemyType.Tackle)
+            {
+                _tackleMobPool.Enqueue(mob);
+            }
+        }
+        else
+        {
+            // フォールバック（万が一MobControllerが取得できない場合）
+            // プレハブ名などで判定も可能ですが、ここでは片方のプールに仮で戻します
+            Debug.LogWarning($"MobControllerが見つかりませんでした: {mob.name}");
+            _rangedMobPool.Enqueue(mob); 
+        }
     }
     
     public void ReleaseMobWithoutScore(GameObject mob)
@@ -337,6 +432,48 @@ public class MobManager : MonoBehaviour
         {
             activeMobs.Remove(mob);
         }
-        mobPool.Enqueue(mob);
+        
+        MobController controller = mob.GetComponent<MobController>();
+        if (controller != null)
+        {
+            var enemyModel = controller.GetEnemyModel();
+            if (enemyModel != null && _modelToControllerMap.ContainsKey(enemyModel))
+            {
+                _modelToControllerMap.Remove(enemyModel);
+            } 
+            
+            if (controller.GetEnemyType() == MobController.EnemyType.Ranged)
+            {
+                _rangedMobPool.Enqueue(mob);
+            }
+            else // (controller.type == MobController.EnemyType.Tackle)
+            {
+                _tackleMobPool.Enqueue(mob);
+            }
+        }
+        else
+        {
+            // フォールバック（万が一MobControllerが取得できない場合）
+            // プレハブ名などで判定も可能ですが、ここでは片方のプールに仮で戻します
+            Debug.LogWarning($"MobControllerが見つかりませんでした: {mob.name}");
+            _rangedMobPool.Enqueue(mob); 
+        }
+    }
+    
+    /// <summary>
+    /// モデルから対応するMobControllerインスタンスを取得する
+    /// </summary>
+    public MobController GetActiveMobControllerByModel(IEnemyModel model)
+    {
+        _modelToControllerMap.TryGetValue(model, out var controller);
+        return controller;
+    }
+    
+    /// <summary>
+    /// プレイヤーのTransformを取得する
+    /// </summary>
+    public Transform GetPlayerTransform()
+    {
+        return playerTransform;
     }
 }

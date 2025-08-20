@@ -1839,6 +1839,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.size
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4dfbfd7ea9887ed4d871c8c80f7b5c60, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[16].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 15a4be90f4cb07046bc2fc0c0528b18b, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[16].name
+      value: Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[17].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: e078e68a11466e74282f7b1a19d380e0, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[17].name
+      value: SlotResult
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[18].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 47ba924b3934a6f4aa00662f3af4a8d6, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[18].name
+      value: Recovery
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[19].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 79387cd1f1a05594fbab082372b32a46, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[19].name
+      value: SpeedUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[20].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 439b3c9429395124ab706d6b371636c3, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[20].name
+      value: Expansion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[21].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4ad3a73ded2b38d48b7bde4fd692024b, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[21].name
+      value: 777
+      objectReference: {fileID: 0}
     - target: {fileID: 7447850714824617423, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: m_Name
       value: SEManager
@@ -1980,6 +2036,18 @@ PrefabInstance:
     - target: {fileID: 3203588119377604264, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
       propertyPath: m_Name
       value: BGMManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355049877133827104, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
+      propertyPath: bgmList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355049877133827104, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
+      propertyPath: bgmList.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3819350df64717a47baedb9fa9b4966d, type: 3}
+    - target: {fileID: 7355049877133827104, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
+      propertyPath: bgmList.Array.data[2].name
+      value: 777
       objectReference: {fileID: 0}
     - target: {fileID: 7713994417544322715, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
       propertyPath: m_LocalPosition.x

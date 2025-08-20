@@ -47,5 +47,17 @@ MonoBehaviour:
   mobPrefab: {fileID: 1682392547248133583, guid: 80179036dbc95594db7c1d7bf6a11c2c, type: 3}
   poolSize: 100
   spawnInterval: 2
-  spawnRadius: 20
+  rangedMobPrefab: {fileID: 1682392547248133583, guid: 80179036dbc95594db7c1d7bf6a11c2c, type: 3}
+  rangedPoolSize: 100
+  rangedSpawnInterval: 5
+  tackleMobPrefab: {fileID: 2937975028416527248, guid: 0bffe42b724a25444a72ab91a16f3a14, type: 3}
+  tacklePoolSize: 30
+  tackleSpawnInterval: 4
+  mobStateInterval1: 60
+  mobStateInterval2: 180
+  mobStateInterval3: 300
+  mobStateInterval4: 480
   playerTransform: {fileID: 0}
+  destroyEffectPrefab: {fileID: 5456955624160395970, guid: fce08b537c03f6b4a85f9e45c698b641, type: 3}
+  mapPresenter: {fileID: 0}
+  defaultMapBoundarySize: 40

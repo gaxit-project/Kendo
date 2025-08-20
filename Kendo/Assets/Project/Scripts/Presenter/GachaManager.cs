@@ -20,9 +20,18 @@ public class GachaManager : MonoBehaviour
     [SerializeField] private GameObject[] sevenImages;          // 7のオブジェクト
     [SerializeField] private GameObject circlemanager;          // CircleManagerオブジェクト
     [SerializeField] private GameObject destroyEffectPrefab;    // エフェクトのプレハブ
-    [SerializeField] private float WallDeactiveTime = 60f;         // 障壁の消去時間
+    [SerializeField] private float WallDeactiveTime = 60f;      // 障壁の消去時間
     private int Triple7Cnt = 0;
     private bool isWallDeactive = false;
+
+    //無敵時間用
+    private Image[] img = new Image[3];
+    [SerializeField] private float switchInterval = 0.3f;
+    [SerializeField] private Sprite[] rainbowSprites;
+    [SerializeField] private float InvincibleTime = 30f;
+    private int rainbowIndex = 0;
+    public bool isInvincible = false;
+
 
     private void Awake()
     {
@@ -43,11 +52,6 @@ public class GachaManager : MonoBehaviour
         gachaImage.gameObject.SetActive(false);
     }
 
-    private void Update()
-    {
-        
-    }
-
     //Mobがブラックホールに吸い込まれたら呼び出す
     public void Gacha()
     {
@@ -56,6 +60,7 @@ public class GachaManager : MonoBehaviour
             StartCoroutine(GachaStart());
             gachaImage.gameObject.SetActive(true);
             Debug.Log("ガチャスタート！");
+            SoundSE.Instance?.Play("Slot");
         }
         else
         {
@@ -79,14 +84,16 @@ public class GachaManager : MonoBehaviour
         }
 
         // ランダムなアイテムを表示
-        // トリプル7の障壁消去発動中はトリプル7がでないようにする
+        // トリプル7の無敵中はトリプル7がでないようにする
         index = Random.Range(0, rollingSprites.Length);
-        while (isWallDeactive && index == 4)
+        index = (Random.Range(0, 2) == 0) ? 0 : 4;
+        while (isInvincible && index == 4)
         {
             index = Random.Range(0, rollingSprites.Length);
         }
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
+        //SoundSE.Instance?.Play("SlotResult");
 
         //効果発動
         switch (index)
@@ -114,7 +121,7 @@ public class GachaManager : MonoBehaviour
         isRolling = false;
     }
 
-
+    
     // 効果発動用メソッド
     
     // ハート追加
@@ -125,6 +132,7 @@ public class GachaManager : MonoBehaviour
         PlayerHP.Instance.RecoverHP();
         hp = PlayerHP.Instance?.GetCurrentHP() ?? 0;
         Debug.Log("HP回復：" + hp);
+        SoundSE.Instance?.Play("Recovery");
     }
 
     // ボム発動
@@ -139,6 +147,7 @@ public class GachaManager : MonoBehaviour
     {
         player.Instance.ChangeSpeed();
         Debug.Log("スピードアップ");
+        SoundSE.Instance?.Play("SpeedUp");
     }
 
     /// <summary>
@@ -148,6 +157,7 @@ public class GachaManager : MonoBehaviour
     {
         MapPresenter.Instance.ExpandMap();
         Debug.Log("Map拡大");
+        SoundSE.Instance?.Play("Expansion");
     }
 
     // トリプル7
@@ -160,14 +170,64 @@ public class GachaManager : MonoBehaviour
 
         Triple7Cnt++;
 
-        // 3つ揃ったら壁消滅
+        // 3つ揃ったら無敵
         if (Triple7Cnt == max7Num)
         {
-            isWallDeactive = true;
-
-            StartCoroutine(WallBreak());
+            rainbowIndex = 0;
+            StartCoroutine(Invincible());
+            SoundSE.Instance?.Play("777");
         }
+        else
+        {
+            SoundSE.Instance?.Play("SlotResult");
+        }
+        Debug.Log("トリプル7：" + Triple7Cnt + "回目");
     }
+
+    IEnumerator Invincible()
+    {
+        isInvincible = true;
+        player.Instance.SetInvincible(true);
+
+        SoundBGM.Instance.Stop();
+        SoundBGM.Instance.Play("777");
+
+        for (int i = 0; i < 3; i++)
+        {
+            img[i] = sevenImages[i].GetComponent<Image>();
+        }
+
+        float time = 0f;
+        // レインボー777テクスチャに変更
+        while (time < InvincibleTime)
+        {
+            for (int i = 0;i < 3; i++)
+            {
+                rainbowIndex = (rainbowIndex + 1) % rainbowSprites.Length;
+                img[i].sprite = rainbowSprites[rainbowIndex];
+            }
+            
+            yield return new WaitForSeconds(switchInterval);
+            time += switchInterval;
+        }
+
+        //777の初期化 & 非アクティブ化
+        for (int i = 0; i < 3; i++)
+        {
+            img[i].sprite = rainbowSprites[0];
+        }
+        foreach (GameObject obj in sevenImages)
+        {
+            obj.SetActive(false);
+        }
+
+        Triple7Cnt = 0;
+        player.Instance.SetInvincible(false);
+        isInvincible = false;
+        SoundBGM.Instance.Stop();
+        SoundBGM.Instance.Play("InGame");
+    }
+
 
     IEnumerator WallBreak()
     {
@@ -180,15 +240,16 @@ public class GachaManager : MonoBehaviour
             if (destroyEffectPrefab != null)
             {
                 Transform child = wall.transform.Find("Cube");
-                Vector3 effectPos = child.position;
+                Vector3 effectPos = child != null ? child.position : wall.transform.position;
                 Quaternion effectRot = Quaternion.Euler(90f, 0f, 0f);
                 GameObject effect = Instantiate(destroyEffectPrefab, effectPos, effectRot);
                 effect.transform.localScale *= 2f;
                 Destroy(effect, 1f);
             }
 
-            wall.gameObject.SetActive(false);
+            wall.ForceBreak(); // ← ここを wall.gameObject.SetActive(false) の代わりに
         }
+
         circlemanager.SetActive(false);
 
         yield return new WaitForSeconds(WallDeactiveTime);
@@ -204,4 +265,5 @@ public class GachaManager : MonoBehaviour
 
         isWallDeactive = false;
     }
+
 }
