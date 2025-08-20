@@ -93,7 +93,7 @@ public class GachaManager : MonoBehaviour
         }
         Sprite selected = rollingSprites[index];
         gachaImage.sprite = selected;
-        SoundSE.Instance?.Play("SlotResult");
+        //SoundSE.Instance?.Play("SlotResult");
 
         //効果発動
         switch (index)
@@ -132,6 +132,7 @@ public class GachaManager : MonoBehaviour
         PlayerHP.Instance.RecoverHP();
         hp = PlayerHP.Instance?.GetCurrentHP() ?? 0;
         Debug.Log("HP回復：" + hp);
+        SoundSE.Instance?.Play("Recovery");
     }
 
     // ボム発動
@@ -146,6 +147,7 @@ public class GachaManager : MonoBehaviour
     {
         player.Instance.ChangeSpeed();
         Debug.Log("スピードアップ");
+        SoundSE.Instance?.Play("SpeedUp");
     }
 
     /// <summary>
@@ -155,6 +157,7 @@ public class GachaManager : MonoBehaviour
     {
         MapPresenter.Instance.ExpandMap();
         Debug.Log("Map拡大");
+        SoundSE.Instance?.Play("Expansion");
     }
 
     // トリプル7
@@ -172,6 +175,11 @@ public class GachaManager : MonoBehaviour
         {
             rainbowIndex = 0;
             StartCoroutine(Invincible());
+            SoundSE.Instance?.Play("777");
+        }
+        else
+        {
+            SoundSE.Instance?.Play("SlotResult");
         }
         Debug.Log("トリプル7：" + Triple7Cnt + "回目");
     }
