@@ -93,7 +93,15 @@ public class PlayerAttack : MonoBehaviour
                 projectile.GetComponent<Projectile>().Initialize(transform.forward);
                 SoundSE.Instance?.Play("Shot");
 
-                currentAmmo--;
+                if (GachaManager.Instance.isInvincible)
+                {
+                    // 777中は弾は無限
+                }
+                else
+                {
+                    currentAmmo--;
+                }
+                
                 
                 // UIへ発射を通知
                 OnShotFired?.Invoke(currentAmmo);
