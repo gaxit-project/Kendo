@@ -189,6 +189,9 @@ public class GachaManager : MonoBehaviour
         isInvincible = true;
         player.Instance.SetInvincible(true);
 
+        SoundBGM.Instance.Stop();
+        SoundBGM.Instance.Play("777");
+
         for (int i = 0; i < 3; i++)
         {
             img[i] = sevenImages[i].GetComponent<Image>();
@@ -221,6 +224,8 @@ public class GachaManager : MonoBehaviour
         Triple7Cnt = 0;
         player.Instance.SetInvincible(false);
         isInvincible = false;
+        SoundBGM.Instance.Stop();
+        SoundBGM.Instance.Play("InGame");
     }
 
 
