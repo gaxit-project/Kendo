@@ -9,7 +9,7 @@ public class RelayTrigger : MonoBehaviour
         parent = GetComponentInParent<BreakCircle>();
         if (parent == null)
         {
-            Debug.LogWarning("e‚É BreakCircle ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+            Debug.LogWarning("è¦ªã« BreakCircle ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
         }
     }
 

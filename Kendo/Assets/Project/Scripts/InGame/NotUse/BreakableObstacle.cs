@@ -3,7 +3,7 @@ using UnityEngine;
 public class BreakableObstacle : MonoBehaviour
 {
     [SerializeField] private int maxHits = 2;
-    [SerializeField] private GameObject[] stages; // ƒqƒbƒg‚²‚Æ‚É•\¦‚·‚é GameObject ‚ğŠi”[i—á: 2ŒÂj
+    [SerializeField] private GameObject[] stages; // ãƒ’ãƒƒãƒˆã”ã¨ã«è¡¨ç¤ºã™ã‚‹ GameObject ã‚’æ ¼ç´ï¼ˆä¾‹: 2å€‹ï¼‰
 
     private int currentHits = 0;
 
@@ -20,21 +20,21 @@ public class BreakableObstacle : MonoBehaviour
         if (currentHits >= maxHits)
         {
             Debug.Log("BreakableObstacle destroyed.");
-            gameObject.SetActive(false); // áŠQ•¨‚²‚ÆÁ‚¦‚é
+            gameObject.SetActive(false); // éšœå®³ç‰©ã”ã¨æ¶ˆãˆã‚‹
         }
         else
         {
-            UpdateStageAppearance(); // Ÿ‚ÌŒ©‚½–Ú‚ÉØ‚è‘Ö‚¦
+            UpdateStageAppearance(); // æ¬¡ã®è¦‹ãŸç›®ã«åˆ‡ã‚Šæ›¿ãˆ
         }
     }
 
-    //ŠO‚©‚çŒÄ‚Ño‚µ‚Ä‰ó‚·
+    //å¤–ã‹ã‚‰å‘¼ã³å‡ºã—ã¦å£Šã™
     public void ForceBreak()
     {
         currentHits = maxHits;
         UpdateStageAppearance();
         gameObject.SetActive(false);
-        Debug.Log("777‚Å•Ç‰ó‚·");
+        Debug.Log("777ã§å£å£Šã™");
     }
 
 

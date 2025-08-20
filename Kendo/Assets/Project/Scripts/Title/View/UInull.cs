@@ -9,7 +9,7 @@ public class UInull : MonoBehaviour
 
     private void Update()
     {
-        // currentSelected ‚ª null ‚©A”ñƒAƒNƒeƒBƒu‚È‚à‚Ì‚ğ‘I‚ñ‚Å‚¢‚½‚ç•œ‹A
+        // currentSelected ãŒ null ã‹ã€éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚‚ã®ã‚’é¸ã‚“ã§ã„ãŸã‚‰å¾©å¸°
         if (EventSystem.current.currentSelectedGameObject == null ||
             !EventSystem.current.currentSelectedGameObject.activeInHierarchy)
         {

@@ -2,9 +2,12 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Billboard.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/FixedScreenScaleObject.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/BlackhallManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/BreakCircle.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/BreakableObstacle.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/MobManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Model/RelayTrigger.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/CircleManager.cs" charset="Shift_JIS" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/GachaManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/MapOutLine.cs" charset="UTF-8" />
@@ -12,9 +15,13 @@
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/PlayerBom.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/ScoreManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/player.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Presenter/ruretto.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Title/ConfigBotton.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Title/ResultManager.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Title/TitleManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/Title/UInull.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/View/MasterVolumeManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/View/test.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Project/Scripts/aiming.cs" charset="UTF-8" />
   </component>
 </project>

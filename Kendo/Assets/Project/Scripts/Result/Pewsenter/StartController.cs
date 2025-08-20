@@ -3,16 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class StartController : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
     public void onClickStartButton()
     {
         SoundSE.Instance?.Play("Enter");
