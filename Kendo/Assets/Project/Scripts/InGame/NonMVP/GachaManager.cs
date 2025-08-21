@@ -2,6 +2,7 @@ using System.Collections;
 using Main.Presenter;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GachaManager : MonoBehaviour
 {
@@ -31,6 +32,23 @@ public class GachaManager : MonoBehaviour
     [SerializeField] private float InvincibleTime = 30f;
     private int rainbowIndex = 0;
     public bool isInvincible = false;
+
+    //Feverカットイン
+    [SerializeField] private GameObject feverRoot;      // FEVERパネル
+    [SerializeField] private TMP_Text feverText;        // テキスト
+    [SerializeField] private float feverDuration = 1.2f;
+    [SerializeField] private bool pauseDuringFever = true;
+    private bool _feverRunning = false;
+    [SerializeField] private bool feverRainbow = true;
+    [SerializeField] private float feverHueSpeed = 0.9f;       // 色相回転速度
+    [SerializeField] private float feverGradientSpread = 0.28f;// 4隅の位相差
+    [SerializeField] private float feverSaturation = 1f;
+    [SerializeField] private float feverValue = 1f;
+    [SerializeField] private float feverTextScale = 3f;
+    [SerializeField] private float feverPopStart = 0.6f;
+    [SerializeField] private float feverMaxScale = 6f;   // 最終文字倍率
+    [SerializeField] private float feverGrowDuration = 3f; // 文字拡大秒数
+
 
 
     private void Awake()
@@ -98,20 +116,16 @@ public class GachaManager : MonoBehaviour
         switch (index)
         {
             case 0:
-                //health();
-                triple7();
+                health();
                 break;
             case 1:
-                //bomb();
-                triple7();
+                bomb();
                 break;
             case 2:
-                //speed();
-                triple7();
+                speed();
                 break;
             case 3:
-                //ExtendMap();
-                triple7();
+                ExtendMap();
                 break;
             case 4:
                 triple7();
@@ -177,7 +191,8 @@ public class GachaManager : MonoBehaviour
         if (Triple7Cnt == max7Num)
         {
             rainbowIndex = 0;
-            StartCoroutine(Invincible());
+            //StartCoroutine(Invincible());
+            StartCoroutine(FeverThenInvincible());
             SoundSE.Instance?.Play("777");
         }
         else
@@ -247,10 +262,113 @@ public class GachaManager : MonoBehaviour
         Triple7Cnt = 0;
         player.Instance.SetInvincible(false);
         isInvincible = false;
-        SoundBGM.Instance.Stop();
+        //SoundBGM.Instance.Stop();
         SoundBGM.Instance.Play("InGame");
         Debug.Log("無敵状態終わり" + isInvincible);
     }
+
+    //Feverカットイン
+    private IEnumerator FeverThenInvincible()
+    {
+        if (_feverRunning) yield break;
+        _feverRunning = true;
+
+        float prevTimeScale = Time.timeScale;
+        if (pauseDuringFever) Time.timeScale = 0f;
+
+        // Canvasを最前面に
+        if (feverRoot != null)
+        {
+            feverRoot.SetActive(true);
+            var localCanvas = feverRoot.GetComponent<Canvas>();
+            if (!localCanvas) localCanvas = feverRoot.AddComponent<Canvas>();
+            localCanvas.overrideSorting = true;
+            localCanvas.sortingOrder = 999;
+
+            var prt = feverRoot.GetComponent<RectTransform>();
+            if (prt != null) { prt.anchorMin = Vector2.zero; prt.anchorMax = Vector2.one; prt.offsetMin = prt.offsetMax = Vector2.zero; }
+        }
+
+        // テキストの設定
+        RectTransform rt = null;
+        Vector3 baseScale = Vector3.one;
+        if (feverText != null)
+        {
+            feverText.text = "FEVER";
+            feverText.alpha = 1f;
+            rt = feverText.rectTransform;
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = Vector2.zero;
+
+            // 最初の倍率を決定
+            baseScale = Vector3.one * feverTextScale;
+            Vector3 start = baseScale * feverPopStart;
+            rt.localScale = start;
+
+            float tIn = 0f, inDur = 0.18f;
+            while (tIn < inDur)
+            {
+                tIn += Time.unscaledDeltaTime;
+                rt.localScale = Vector3.Lerp(start, baseScale, tIn / inDur);
+                yield return null;
+            }
+
+            if (feverRainbow) feverText.enableVertexGradient = true;
+        }
+
+        SoundBGM.Instance.Stop();
+        SoundSE.Instance?.Play("Fever");
+
+        //文字の演出
+        float elapsed = 0f, hueBase = 0f;
+        float displayTotal = Mathf.Max(feverDuration, feverGrowDuration); // 表示総時間
+        Vector3 maxScale = Vector3.one * feverMaxScale;
+
+        while (elapsed < displayTotal)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            // 虹色に光る
+            if (feverRainbow && feverText != null)
+            {
+                hueBase = Mathf.Repeat(hueBase + feverHueSpeed * Time.unscaledDeltaTime, 1f);
+                float h1 = hueBase;
+                float h2 = Mathf.Repeat(hueBase + feverGradientSpread, 1f);
+                float h3 = Mathf.Repeat(hueBase + feverGradientSpread * 2f, 1f);
+                float h4 = Mathf.Repeat(hueBase + feverGradientSpread * 3f, 1f);
+                Color c1 = Color.HSVToRGB(h1, feverSaturation, feverValue);
+                Color c2 = Color.HSVToRGB(h2, feverSaturation, feverValue);
+                Color c3 = Color.HSVToRGB(h3, feverSaturation, feverValue);
+                Color c4 = Color.HSVToRGB(h4, feverSaturation, feverValue);
+                feverText.colorGradient = new VertexGradient(c1, c2, c3, c4);
+            }
+            //拡大していく
+            if (rt != null)
+            {
+                float tGrow = Mathf.Clamp01(elapsed / feverGrowDuration);
+                float e = 1f - Mathf.Pow(1f - tGrow, 3f);  // EaseOutCubic
+                rt.localScale = Vector3.Lerp(baseScale, maxScale, e);
+            }
+
+            yield return null;
+        }
+
+
+        // 演出終了処理
+        if (feverText != null)
+        {
+            if (feverRainbow) { feverText.enableVertexGradient = false; feverText.color = Color.white; }
+            if (rt != null) rt.localScale = Vector3.one;
+        }
+        if (feverRoot != null) feverRoot.SetActive(false);
+        if (pauseDuringFever) Time.timeScale = prevTimeScale;
+        _feverRunning = false;
+
+        StartCoroutine(Invincible());
+    }
+
+
+
 
 
     IEnumerator WallBreak()

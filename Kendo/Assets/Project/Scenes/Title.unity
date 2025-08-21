@@ -1841,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.size
-      value: 22
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[0].clip
@@ -1894,6 +1894,14 @@ PrefabInstance:
     - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: seList.Array.data[21].name
       value: 777
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[22].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7f9366368c537e849916ab046e9f3114, type: 3}
+    - target: {fileID: 4278199393294997983, guid: 798acafda9031ad4e882063719fb1618, type: 3}
+      propertyPath: seList.Array.data[22].name
+      value: Fever
       objectReference: {fileID: 0}
     - target: {fileID: 7447850714824617423, guid: 798acafda9031ad4e882063719fb1618, type: 3}
       propertyPath: m_Name
