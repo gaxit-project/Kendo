@@ -98,16 +98,20 @@ public class GachaManager : MonoBehaviour
         switch (index)
         {
             case 0:
-                health();
+                //health();
+                triple7();
                 break;
             case 1:
-                bomb();
+                //bomb();
+                triple7();
                 break;
             case 2:
-                speed();
+                //speed();
+                triple7();
                 break;
             case 3:
-                ExtendMap();
+                //ExtendMap();
+                triple7();
                 break;
             case 4:
                 triple7();
@@ -197,18 +201,35 @@ public class GachaManager : MonoBehaviour
         }
 
         float time = 0f;
+        bool slowBlinkStarted = false;
+        bool fastBlinkStarted = false;
+
         // レインボー777テクスチャに変更
         while (time < InvincibleTime)
         {
+            float remaining = InvincibleTime - time;
+            // 残り10秒で「ゆっくり点滅」開始
+            if (!slowBlinkStarted && remaining <= 10f)
+            {
+                player.Instance?.StartPreEndBlink(false); // false=ゆっくり
+                slowBlinkStarted = true;
+            }
+            // 残り3秒で「速い点滅」に切り替え
+            if (!fastBlinkStarted && remaining <= 3f)
+            {
+                player.Instance?.SetPreEndBlinkSpeed(true); // true=速い
+                fastBlinkStarted = true;
+            }
+
             for (int i = 0;i < 3; i++)
             {
                 rainbowIndex = (rainbowIndex + 1) % rainbowSprites.Length;
                 img[i].sprite = rainbowSprites[rainbowIndex];
             }
-            
             yield return new WaitForSeconds(switchInterval);
             time += switchInterval;
         }
+
 
         //777の初期化 & 非アクティブ化
         for (int i = 0; i < 3; i++)
@@ -220,6 +241,8 @@ public class GachaManager : MonoBehaviour
             obj.SetActive(false);
             Debug.Log("トリプル7非アクティブ");
         }
+        //点滅の停止処理
+        player.Instance?.StopPreEndBlink();
 
         Triple7Cnt = 0;
         player.Instance.SetInvincible(false);

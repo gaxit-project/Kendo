@@ -21,12 +21,18 @@ public class player : MonoBehaviour
     [SerializeField] private Texture[] invincibletextures;
     private int textureIndex = 0;
 
-    //無敵用
+    //ダメージ後無敵用
     [SerializeField] private float invincibleTime = 1.0f; // 無敵時間
     [SerializeField] private float blinkInterval = 0.1f;   // 点滅間隔
     private bool isInvincible = false; // 無敵フラグ
-    
     private Vector2 _moveInput;
+
+    //777終了予告点滅用
+    [SerializeField] private float preEndBlinkSlowInterval = 0.25f; // 残り10～3秒の速度
+    [SerializeField] private float preEndBlinkFastInterval = 0.08f; // 残り3秒～の速度
+    private Coroutine _preEndBlinkCo;
+    private bool _preEndBlinking = false;
+    private float _preEndBlinkInterval;
 
     //登場
     [SerializeField] private GameObject appearEffectPrefab; // 登場時エフェクト
@@ -251,7 +257,7 @@ public class player : MonoBehaviour
         }
     }
 
-    //無敵処理
+    //ダメージ後無敵処理
     private IEnumerator InvincibleCoroutine()
     {
         isInvincible = true;
@@ -380,5 +386,35 @@ public class player : MonoBehaviour
     public void SetInvincible(bool Bool)
     {
         isInvincible = Bool;
+    }
+    // ゆっくり点滅開始
+    public void StartPreEndBlink(bool fast = false)
+    {
+        _preEndBlinkInterval = fast ? preEndBlinkFastInterval : preEndBlinkSlowInterval;
+        _preEndBlinking = true;
+        if (_preEndBlinkCo != null) StopCoroutine(_preEndBlinkCo);
+        _preEndBlinkCo = StartCoroutine(PreEndBlinkCoroutine());
+    }
+    // 点滅速度の切り替え（ゆっくり→速い）
+    public void SetPreEndBlinkSpeed(bool fast)
+    {
+        _preEndBlinkInterval = fast ? preEndBlinkFastInterval : preEndBlinkSlowInterval;
+    }
+    // 点滅停止
+    public void StopPreEndBlink()
+    {
+        _preEndBlinking = false;
+        if (_preEndBlinkCo != null) StopCoroutine(_preEndBlinkCo);
+        _preEndBlinkCo = null;
+        if (rend != null) rend.enabled = true;
+    }
+    //
+    private IEnumerator PreEndBlinkCoroutine()
+    {
+        while (_preEndBlinking)
+        {
+            if (rend != null) rend.enabled = !rend.enabled;
+            yield return new WaitForSeconds(_preEndBlinkInterval);
+        }
     }
 }
