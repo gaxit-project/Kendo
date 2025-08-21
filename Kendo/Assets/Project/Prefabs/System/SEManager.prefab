@@ -79,6 +79,20 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 530f343a1782e8e4fa3f10041a75148c, type: 3}
   - name: Blackhall
     clip: {fileID: 8300000, guid: f596b71aa36a279429b8089342697017, type: 3}
+  - name: Slot
+    clip: {fileID: 8300000, guid: 15a4be90f4cb07046bc2fc0c0528b18b, type: 3}
+  - name: SlotResult
+    clip: {fileID: 8300000, guid: e078e68a11466e74282f7b1a19d380e0, type: 3}
+  - name: Recovery
+    clip: {fileID: 8300000, guid: 47ba924b3934a6f4aa00662f3af4a8d6, type: 3}
+  - name: SpeedUp
+    clip: {fileID: 8300000, guid: 79387cd1f1a05594fbab082372b32a46, type: 3}
+  - name: Expansion
+    clip: {fileID: 8300000, guid: 439b3c9429395124ab706d6b371636c3, type: 3}
+  - name: 777
+    clip: {fileID: 8300000, guid: 4ad3a73ded2b38d48b7bde4fd692024b, type: 3}
+  - name: Fever
+    clip: {fileID: 8300000, guid: 7f9366368c537e849916ab046e9f3114, type: 3}
 --- !u!82 &1911262532735681534
 AudioSource:
   m_ObjectHideFlags: 0

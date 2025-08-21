@@ -2328,9 +2328,9 @@ MonoBehaviour:
   playerTag: Player
   suckDuration: 1.5
   initialScale: {x: 0, y: 0, z: 0}
-  expandRatePerSecond: 0.3
-  expandRatePerMinute: 0.2
-  shrinkFactor: 0.9
+  expandRatePerSecond: 0.65
+  expandRatePerMinute: 0.35
+  shrinkFactor: 0.95
   circleManager: {fileID: 988917414}
 --- !u!1 &1193584481
 GameObject:
