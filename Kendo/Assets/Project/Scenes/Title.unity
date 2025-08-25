@@ -2052,7 +2052,7 @@ PrefabInstance:
     - target: {fileID: 7355049877133827104, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
       propertyPath: bgmList.Array.data[2].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 3819350df64717a47baedb9fa9b4966d, type: 3}
+      objectReference: {fileID: 8300000, guid: 6ed1ecbb93952244ea4bd1ffaacef7ea, type: 3}
     - target: {fileID: 7355049877133827104, guid: 2759f9337b0543a42a7ccb38d3532dc6, type: 3}
       propertyPath: bgmList.Array.data[2].name
       value: 777
