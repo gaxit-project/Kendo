@@ -224,13 +224,13 @@ public class GachaManager : MonoBehaviour
         {
             float remaining = InvincibleTime - time;
             // 残り10秒で「ゆっくり点滅」開始
-            if (!slowBlinkStarted && remaining <= 10f)
+            if (!slowBlinkStarted && remaining <= 5f)
             {
                 player.Instance?.StartPreEndBlink(false); // false=ゆっくり
                 slowBlinkStarted = true;
             }
             // 残り3秒で「速い点滅」に切り替え
-            if (!fastBlinkStarted && remaining <= 3f)
+            if (!fastBlinkStarted && remaining <= 2f)
             {
                 player.Instance?.SetPreEndBlinkSpeed(true); // true=速い
                 fastBlinkStarted = true;
